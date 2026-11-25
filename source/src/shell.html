@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4B2D8E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Zover Packages">
+<title>زوفر | صانع الباكيدجات – Zover Package Builder</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="/*ICON*/">
+<link rel="apple-touch-icon" href="/*ICON*/">
+<style>/*FONTS*/</style>
+<style>/*APPCSS*/</style>
+<style>/*DOCCSS*/</style>
+</head>
+<body>
+<header class="hd"><div class="hin">
+ <div class="lg"><img id="hLogo" alt="Zover"></div>
+ <div class="tt"><b id="hTitle">صانع الباكيدجات</b><small id="hSub"></small></div>
+ <div class="acts">
+  <button class="ib" data-a="newp" title="باكيدج جديد">＋<span class="lb">جديد</span></button>
+  <button class="ib" data-a="lib" title="المكتبة">📁<span class="lb">المكتبة</span></button>
+  <button class="ib" data-a="set" title="الإعدادات">⚙️</button>
+  <button class="ib sv" data-a="save" title="حفظ">💾<span class="lb">حفظ</span></button>
+ </div></div><div class="rb"></div>
+ <nav class="tabs" id="tabs"></nav>
+</header>
+<main id="main"></main>
+<div class="mdl" id="mLib"><div class="box"><div class="mh"><span class="x">📁 مكتبة الباكيدجات</span><button class="btn xs gh" data-a="close">✕</button></div><div class="mb" id="libBody"></div></div></div>
+<div class="mdl" id="mSet"><div class="box"><div class="mh"><span class="x">⚙️ الإعدادات</span><button class="btn xs gh" data-a="close">✕</button></div><div class="mb" id="setBody"></div></div></div>
+<div id="toast"></div>
+<div class="busy" id="busy"><div class="spin"></div><div id="busyMsg">جاري التجهيز…</div></div>
+<div id="printRoot"></div>
+<script>/*LIBS*/</script>
+<script>
+const IMG={logo:"/*LOGO*/",dove:"/*DOVE*/"};
+/*DATA*/
+/*APPJS*/
+/*OUTJS*/
+document.getElementById('hLogo').src=IMG.logo;
+boot();
+</script>
+</body>
+</html>
