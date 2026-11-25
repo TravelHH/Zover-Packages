@@ -41,7 +41,7 @@ const ZV={
   const dims={sq:['42%',210],pt:['41%',310],st:['36%',450]}[sz];
   return{cls:'poster',vars:`--hh:${dims[0]};--th:${dims[1]}px`,html:`
   <div class="hero">${H.img(c0.photos[0],c0.ar)}<div class="ov"></div>
-  <div class="htx" data-tmin="20">${O.badge?`<span class="badge in">${esc(O.badge)}</span>`:''}${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}
+  <div class="htx" data-tmin="20">${O.badge?`<span class="badge in">${esc(O.badge)}</span>`:''}${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}${O.badge?`<span class="badge sqb">${esc(O.badge)}</span>`:''}
   <div class="tiles">${tiles.map(t=>`<div class="tile">${H.img(t.src,t.t)}${multi?`<span class="n">${t.n}</span>`:''}${t.t?`<div class="lab">${esc(t.t)}${t.s?`<br><small>${esc(t.s)}</small>`:''}</div>`:''}</div>`).join('')}</div>
   <div class="low ${pr?'':'np'} ${inc.length?'':'ni'}">${inc.length?`<div class="incl" data-fit><h4>البرنامج يشمل</h4>${lis(inc)}</div>`:''}${pr?`<div class="prs" data-fit>${pr}</div>`:''}</div>${this.ftr()}`}},
  /* ---------- carousel ---------- */
