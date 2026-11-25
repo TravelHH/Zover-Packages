@@ -4,36 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#4B2D8E">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Zover عروض">
-<title>زوفر | صانع عروض الباكيدجات</title>
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Zover Studio">
+<title>زوفر ستوديو | عروض الباكيدجات</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="/*ICON*/"><link rel="apple-touch-icon" href="/*ICON*/">
 <style>/*FONTS*/</style>
 <style>/*UICSS*/</style>
-<style>/*PCSS*/</style>
+<style>/*THEMECSS*/</style>
 </head>
 <body>
 <header class="hd"><div class="hin">
  <div class="lg"><img id="hLogo" alt="Zover"></div>
- <div class="tt">صانع عروض الباكيدجات</div>
+ <div class="tt">زوفر ستوديو – عروض الباكيدجات</div>
  <button class="ib" data-a="newo">＋<span class="lb">عرض جديد</span></button>
  <button class="ib" data-a="lib">📁<span class="lb">عروضي</span></button>
+ <button class="ib" data-a="save">💾<span class="lb">حفظ</span></button>
 </div><div class="rbw"></div></header>
 <div class="lay">
- <div class="pvcol"><div class="pvbox" id="pvbox"><div class="pvw" id="pvw"><div id="poster" class="pst"></div></div></div>
-  <div class="acts"><button class="btn o" data-a="dl">⬇️ تحميل الصورة</button><button class="btn wa" data-a="share">📤 مشاركة</button><button class="btn gh" data-a="save">💾 حفظ</button></div></div>
+ <div class="pvcol"><div class="outs" id="outs"></div><div id="pv"></div><div class="acts" id="acts"></div></div>
  <div id="form"></div>
 </div>
-<div class="mbar"><button class="btn o" data-a="dl">⬇️ تحميل</button><button class="btn wa" data-a="share">📤 واتساب</button><button class="btn gh" data-a="save">💾 حفظ</button></div>
+<div class="mbar" id="mbar"></div>
 <div class="mdl" id="mLib"><div class="box"><div class="mh"><span>📁 عروضي المحفوظة</span><button class="btn gh sm" data-a="close">✕</button></div><div class="mb" id="libBody"></div></div></div>
 <div id="toast"></div>
 <div class="busy" id="busy"><div class="spin"></div><div id="busyMsg">جاري التجهيز…</div></div>
 <script>/*LIBS*/</script>
 <script>
 const IMG={logo:"/*LOGO*/",dove:"/*DOVE*/"};
+const LIB=/*LIBMAP*/;
 /*DATA*/
+/*SPOTS*/
+/*THEMES*/
 /*APPJS*/
 boot();
 </script>
