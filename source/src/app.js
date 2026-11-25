@@ -10,7 +10,7 @@ function busy(on,m){$('#busy').classList.toggle('on',!!on);if(m)$('#busyMsg').te
 
 const SIZES={sq:[1080,1080,'مربع 1:1'],pt:[1080,1350,'طولي 4:5'],st:[1080,1920,'ستوري 9:16']};
 const OUTS=[['poster','🖼️','صورة شاملة'],['slides','🎞️','مجموعة صور'],['pdf','📄','بروشور PDF']];
-const THEME_LIST=[['zover','زوفر','بنفسجي وبرتقالي – هوية الشركة',1],['lux','فاخر','كحلي وذهبي – قريبًا',0],['mag','مجلة','أبيض نظيف – قريبًا',0],['viv','حيوي','ألوان جريئة – قريبًا',0]];
+const THEME_LIST=[['zover','زوفر','بنفسجي وبرتقالي – هوية الشركة',1],['lux','فاخر','كحلي وذهبي – خط كلاسيكي',1],['mag','مجلة','أبيض نظيف – قريبًا',0],['viv','حيوي','ألوان جريئة – قريبًا',0]];
 const CURS=['ر.س','€','$','£','د.إ'];
 const LABELS=['السعر للشخصين','السعر للفرد','للفرد في غرفة مزدوجة','السعر للعائلة','فندق 4 نجوم','فندق 5 نجوم'];
 const BADGES=['عرض خاص','عروض الصيف','عروض الشتاء','عرض محدود','شامل الطيران','أفضل سعر'];
@@ -48,7 +48,7 @@ function frameSpecs(){const T=THEMES[O.theme]||ZV,sz=O.size,[w,h]=SIZES[sz];
  return T.pdf().map(f=>({...f,w:794,h:1123,sz:'a4'}))}
 function renderFrames(){const pv=$('#pv');const specs=frameSpecs();pv.innerHTML='';
  specs.forEach((f,i)=>{const wr=document.createElement('div');wr.className='fw';
-  wr.innerHTML=`<div class="fr ${O.theme==='zover'?'zv':O.theme} ${f.cls} s-${f.sz}" style="width:${f.w}px;height:${f.h}px;${f.vars||''}">${f.html}</div>${O.out!=='poster'?`<span class="fno">${i+1}</span>`:''}`;
+  wr.innerHTML=`<div class="fr ${({zover:'zv',lux:'lx',mag:'mg',viv:'vv'})[O.theme]||'zv'} ${f.cls} s-${f.sz}" style="width:${f.w}px;height:${f.h}px;${f.vars||''}">${f.html}</div>${O.out!=='poster'?`<span class="fno">${i+1}</span>`:''}`;
   pv.appendChild(wr)});
  const imgs=$$('img',pv);Promise.all(imgs.map(im=>im.complete?0:new Promise(r=>{im.onload=im.onerror=r}))).then(()=>{$$('.fr',pv).forEach(fit);scale()});
  $$('.fr',pv).forEach(fit);scale()}
@@ -146,7 +146,7 @@ document.addEventListener('change',e=>{const t=e.target,d=t.dataset;if(d.p&&t.ta
 /* ---------- export ---------- */
 let _fc=null;
 async function capture(fr,ratio){await document.fonts.ready;if(!_fc)_fc=await htmlToImage.getFontEmbedCSS(fr);const w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');
- const o={width:w,height:h,pixelRatio:ratio||1,fontEmbedCSS:_fc,style:{transform:'none'},backgroundColor:'#ffffff',cacheBust:false};
+ const o={width:w,height:h,pixelRatio:ratio||1,fontEmbedCSS:_fc,style:{transform:'none'},backgroundColor:getComputedStyle(fr).backgroundColor,cacheBust:false};
  if(!capture.w){await htmlToImage.toCanvas(fr,{...o,pixelRatio:.2}).catch(()=>{});capture.w=1}return htmlToImage.toCanvas(fr,o)}
 const blobOf=c=>new Promise(r=>c.toBlob(r,'image/jpeg',.93));
 const base=()=>`Zover-${(O.title||'offer').replace(/[\\/:*?"<>|\s]+/g,'-')}`;
