@@ -112,3 +112,18 @@
 .mg.pg .cb b{font-size:26px}.mg.pg .cb span{font-weight:700;font-size:15px}
 .mg.pg .cb .cta{margin-inline-start:auto;background:var(--a);color:#fff;padding:8px 18px;font-size:16px}
 .mg.poster .il div{font-size:calc(var(--f,1)*29px)}
+/* ===== v2 refresh ===== */
+.mg .ttl,.mg.city h2,.mg.itin .mhd h2,.mg.price .mhd h2,.mg.pg h3,.mg.pg.pcity .t h2{font-family:'Alexandria','IBM Plex Sans Arabic',sans-serif;font-weight:800;letter-spacing:0}
+.mg .ttl{line-height:1.15}
+.mg .top{top:22px;padding-bottom:12px}
+.mg .top img{height:108px}
+.mg .top .is{display:flex;flex-direction:column;align-items:flex-end;gap:8px;letter-spacing:1px;font-weight:600;font-size:24px}
+.mg .top .is b{display:flex;align-items:center;justify-content:center;line-height:1;background:var(--a);color:#fff;padding:11px 22px 9px;border-radius:99px;font-size:24px;letter-spacing:0}
+.mg.poster .mhd,.mg.itin .mhd,.mg.price .mhd{top:168px}
+.mg.cover .pic{top:168px}
+.mg.price .bd{top:300px}
+.s-st.mg .top{top:70px}
+.s-st.mg.poster .mhd,.s-st.mg.itin .mhd,.s-st.mg.price .mhd{top:220px}
+.s-st.mg.cover .pic{top:220px}
+.mg.pg .top{top:22px}.mg.pg .top img{height:64px}.mg.pg .top .is b{font-size:13px;padding:6px 12px 5px}.mg.pg .top .is{font-size:13px;gap:4px}
+.mg .ttl{line-height:1.08}

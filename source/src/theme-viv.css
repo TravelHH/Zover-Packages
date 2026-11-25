@@ -142,3 +142,14 @@
 .vv .p2 b{line-height:1.25;margin:4px 0}
 .vv .p2 small{display:block;line-height:1.35}
 .s-sq.vv.poster .stk{top:180px}
+/* ===== v2 refresh ===== */
+.vv .logo img{height:175px}
+.s-sq.vv .logo img{height:140px}
+.s-st.vv .logo img{height:200px}
+.vv.pg .logo img{height:96px}
+.vv.poster .stk,.s-sq.vv.poster .stk{left:auto;right:44px;top:36px}
+.s-sq.vv.poster .tt{padding-left:0}
+.vv .stk{line-height:1.15;padding-top:24px}
+.vv .burst div{max-width:72%}
+.vv .burst em{white-space:normal}
+.vv.cover .burst{top:240px}.s-sq.vv.cover .burst{top:190px}.s-st.vv.cover .burst{top:270px}

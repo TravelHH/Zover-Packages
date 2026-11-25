@@ -5,7 +5,7 @@ const LX={
  meta(){const n=H.tot();return`<div class="meta">${n?`<span><b>${n}</b> ${nW(n)}</span><span><b>${n+1}</b> ${dW(n+1)}</span>`:''}${O.dates?`<span>${esc(O.dates)}</span>`:''}</div>`},
  dv:()=>`<div class="div"><i></i></div>`,
  prices(){const P=H.prices();if(!P.length)return'';return`<div class="prs">${P.map(p=>`<div class="pr">${+p.stars?`<div class="st">${IC.star(22).repeat(+p.stars)}</div>`:''}<div class="am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div>${p.lab?`<div class="lb">${esc(p.lab)}</div>`:''}</div>`).join('')}</div>`},
- inc(max){const L=H.incl().slice(0,max||6);return L.length?`<div class="inc">${L.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''},
+ inc(max){const L=H.incl().slice(0,max==null?6:max);return L.length?`<div class="inc">${L.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''},
  ft(){const c=H.contacts();return`<div class="ft">${c.map(([t,v])=>`<span class="ct">${esc(v)}</span>`).join('')}${C.cta?`<span class="cta">${esc(C.cta)}</span>`:''}</div>`},
  circles(){const c0=O.cities[0]||{photos:[],spots:[]},multi=O.cities.length>1;
   const L=multi?O.cities.slice(0,4).map((c,i)=>({s:H.cityPh(c,i===0?1:0),t:c.ar,m:`${c.n} ${nW(+c.n)}`})):[1,2,3].map(i=>({s:c0.photos[i]||'',t:(c0.spots||[])[i-1]||'',m:''})).filter(x=>x.s);
@@ -13,7 +13,7 @@ const LX={
  poster(sz){const c0=O.cities[0]||{photos:[]};
   return{cls:'poster',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div><div class="frame"></div>${this.logo()}${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
   <div class="c" data-fit>${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>${this.dv()}${this.meta()}
-  ${this.circles()}${H.prices().length?`<div class="frm">تبدأ الأسعار من</div>${this.prices()}`:''}${this.inc(5)}${this.ft()}</div>`}},
+  ${this.circles()}${H.prices().length?`<div class="frm">تبدأ الأسعار من</div>${this.prices()}`:''}${this.inc(sz==="st"?3:0)}${this.ft()}</div>`}},
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]},f=H.from();
   return{cls:'cover',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div><div class="frame"></div>${this.logo()}<span class="swp">اسحب ←</span>${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
   <div class="c" data-fit>${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>${this.dv()}${this.meta()}

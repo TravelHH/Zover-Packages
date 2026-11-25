@@ -643,6 +643,24 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .lx .frm{white-space:nowrap}
 .lx .logo img{height:120px}
 .lx .sub{line-height:1.5}.mg .sub{line-height:1.5;margin-bottom:6px}
+/* ===== v2 refresh: bigger logo, modern type, cleaner poster ===== */
+.fr.lx{font-family:'Readex Pro','El Messiri','Tajawal',sans-serif}
+.lx .ttl,.lx.city h2,.lx.itin .hd2 h2,.lx.price .tt,.lx.pg .h3,.lx.pg.pcity .t h2,.lx.pg.pfin .bx h5,.lx.pg.pfin .cb b,.lx .fa{font-family:'El Messiri','Readex Pro',serif!important;font-weight:700}
+.lx .ttl{line-height:1.25;letter-spacing:0}
+.lx .sub{font-family:'El Messiri';font-weight:600}
+.lx .badge{display:flex;align-items:center;justify-content:center;line-height:1;padding:12px 24px 10px;font-family:'El Messiri'}
+.lx.poster .logo img,.lx.cover .logo img{height:190px}
+.s-sq.lx.poster .logo img,.s-sq.lx.cover .logo img{height:150px}
+.s-st.lx.poster .logo img,.s-st.lx.cover .logo img{height:215px}
+.lx.poster .logo,.lx.cover .logo{padding-top:26px!important}
+.s-st.lx.poster .logo,.s-st.lx.cover .logo{padding-top:70px!important}
+.lx.poster .c{top:270px}
+.s-sq.lx.poster .c{top:220px}
+.s-st.lx.poster .c{top:340px}
+.lx.poster .cir span{width:calc(var(--f,1)*136px);height:calc(var(--f,1)*136px)}
+.lx.poster .badge{top:56px;right:56px}
+.s-sq.lx.poster .badge,.s-sq.lx.cover .badge{top:40px;right:40px;font-size:22px}
+.lx .ttl{align-self:stretch;text-align:center}
 /* ===================== THEME: MAGAZINE (مجلة) ===================== */
 .fr.mg{background:#fff;color:#111;font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;--a:#F97A30;--k:#111;--m:#777}
 .mg .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -757,6 +775,21 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .mg.pg .cb b{font-size:26px}.mg.pg .cb span{font-weight:700;font-size:15px}
 .mg.pg .cb .cta{margin-inline-start:auto;background:var(--a);color:#fff;padding:8px 18px;font-size:16px}
 .mg.poster .il div{font-size:calc(var(--f,1)*29px)}
+/* ===== v2 refresh ===== */
+.mg .ttl,.mg.city h2,.mg.itin .mhd h2,.mg.price .mhd h2,.mg.pg h3,.mg.pg.pcity .t h2{font-family:'Alexandria','IBM Plex Sans Arabic',sans-serif;font-weight:800;letter-spacing:0}
+.mg .ttl{line-height:1.15}
+.mg .top{top:22px;padding-bottom:12px}
+.mg .top img{height:108px}
+.mg .top .is{display:flex;flex-direction:column;align-items:flex-end;gap:8px;letter-spacing:1px;font-weight:600;font-size:24px}
+.mg .top .is b{display:flex;align-items:center;justify-content:center;line-height:1;background:var(--a);color:#fff;padding:11px 22px 9px;border-radius:99px;font-size:24px;letter-spacing:0}
+.mg.poster .mhd,.mg.itin .mhd,.mg.price .mhd{top:168px}
+.mg.cover .pic{top:168px}
+.mg.price .bd{top:300px}
+.s-st.mg .top{top:70px}
+.s-st.mg.poster .mhd,.s-st.mg.itin .mhd,.s-st.mg.price .mhd{top:220px}
+.s-st.mg.cover .pic{top:220px}
+.mg.pg .top{top:22px}.mg.pg .top img{height:64px}.mg.pg .top .is b{font-size:13px;padding:6px 12px 5px}.mg.pg .top .is{font-size:13px;gap:4px}
+.mg .ttl{line-height:1.08}
 /* ===================== THEME: VIVID (حيوي) ===================== */
 .fr.vv{background:#1E1240;color:#fff;font-family:'Changa','Tajawal',sans-serif;--pk:#FF2E63;--yl:#FFC300;--cy:#08D9D6;--ink:#1E1240}
 .vv .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -901,6 +934,17 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .vv .p2 b{line-height:1.25;margin:4px 0}
 .vv .p2 small{display:block;line-height:1.35}
 .s-sq.vv.poster .stk{top:180px}
+/* ===== v2 refresh ===== */
+.vv .logo img{height:175px}
+.s-sq.vv .logo img{height:140px}
+.s-st.vv .logo img{height:200px}
+.vv.pg .logo img{height:96px}
+.vv.poster .stk,.s-sq.vv.poster .stk{left:auto;right:44px;top:36px}
+.s-sq.vv.poster .tt{padding-left:0}
+.vv .stk{line-height:1.15;padding-top:24px}
+.vv .burst div{max-width:72%}
+.vv .burst em{white-space:normal}
+.vv.cover .burst{top:240px}.s-sq.vv.cover .burst{top:190px}.s-st.vv.cover .burst{top:270px}
 </style>
 </head>
 <body>
@@ -1441,7 +1485,7 @@ const LX={
  meta(){const n=H.tot();return`<div class="meta">${n?`<span><b>${n}</b> ${nW(n)}</span><span><b>${n+1}</b> ${dW(n+1)}</span>`:''}${O.dates?`<span>${esc(O.dates)}</span>`:''}</div>`},
  dv:()=>`<div class="div"><i></i></div>`,
  prices(){const P=H.prices();if(!P.length)return'';return`<div class="prs">${P.map(p=>`<div class="pr">${+p.stars?`<div class="st">${IC.star(22).repeat(+p.stars)}</div>`:''}<div class="am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div>${p.lab?`<div class="lb">${esc(p.lab)}</div>`:''}</div>`).join('')}</div>`},
- inc(max){const L=H.incl().slice(0,max||6);return L.length?`<div class="inc">${L.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''},
+ inc(max){const L=H.incl().slice(0,max==null?6:max);return L.length?`<div class="inc">${L.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''},
  ft(){const c=H.contacts();return`<div class="ft">${c.map(([t,v])=>`<span class="ct">${esc(v)}</span>`).join('')}${C.cta?`<span class="cta">${esc(C.cta)}</span>`:''}</div>`},
  circles(){const c0=O.cities[0]||{photos:[],spots:[]},multi=O.cities.length>1;
   const L=multi?O.cities.slice(0,4).map((c,i)=>({s:H.cityPh(c,i===0?1:0),t:c.ar,m:`${c.n} ${nW(+c.n)}`})):[1,2,3].map(i=>({s:c0.photos[i]||'',t:(c0.spots||[])[i-1]||'',m:''})).filter(x=>x.s);
@@ -1449,7 +1493,7 @@ const LX={
  poster(sz){const c0=O.cities[0]||{photos:[]};
   return{cls:'poster',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div><div class="frame"></div>${this.logo()}${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
   <div class="c" data-fit>${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>${this.dv()}${this.meta()}
-  ${this.circles()}${H.prices().length?`<div class="frm">تبدأ الأسعار من</div>${this.prices()}`:''}${this.inc(5)}${this.ft()}</div>`}},
+  ${this.circles()}${H.prices().length?`<div class="frm">تبدأ الأسعار من</div>${this.prices()}`:''}${this.inc(sz==="st"?3:0)}${this.ft()}</div>`}},
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]},f=H.from();
   return{cls:'cover',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div><div class="frame"></div>${this.logo()}<span class="swp">اسحب ←</span>${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
   <div class="c" data-fit>${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>${this.dv()}${this.meta()}

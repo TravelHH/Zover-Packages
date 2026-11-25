@@ -151,3 +151,21 @@
 .lx .frm{white-space:nowrap}
 .lx .logo img{height:120px}
 .lx .sub{line-height:1.5}.mg .sub{line-height:1.5;margin-bottom:6px}
+/* ===== v2 refresh: bigger logo, modern type, cleaner poster ===== */
+.fr.lx{font-family:'Readex Pro','El Messiri','Tajawal',sans-serif}
+.lx .ttl,.lx.city h2,.lx.itin .hd2 h2,.lx.price .tt,.lx.pg .h3,.lx.pg.pcity .t h2,.lx.pg.pfin .bx h5,.lx.pg.pfin .cb b,.lx .fa{font-family:'El Messiri','Readex Pro',serif!important;font-weight:700}
+.lx .ttl{line-height:1.25;letter-spacing:0}
+.lx .sub{font-family:'El Messiri';font-weight:600}
+.lx .badge{display:flex;align-items:center;justify-content:center;line-height:1;padding:12px 24px 10px;font-family:'El Messiri'}
+.lx.poster .logo img,.lx.cover .logo img{height:190px}
+.s-sq.lx.poster .logo img,.s-sq.lx.cover .logo img{height:150px}
+.s-st.lx.poster .logo img,.s-st.lx.cover .logo img{height:215px}
+.lx.poster .logo,.lx.cover .logo{padding-top:26px!important}
+.s-st.lx.poster .logo,.s-st.lx.cover .logo{padding-top:70px!important}
+.lx.poster .c{top:270px}
+.s-sq.lx.poster .c{top:220px}
+.s-st.lx.poster .c{top:340px}
+.lx.poster .cir span{width:calc(var(--f,1)*136px);height:calc(var(--f,1)*136px)}
+.lx.poster .badge{top:56px;right:56px}
+.s-sq.lx.poster .badge,.s-sq.lx.cover .badge{top:40px;right:40px;font-size:22px}
+.lx .ttl{align-self:stretch;text-align:center}
