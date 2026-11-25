@@ -1,5 +1,6 @@
 import asyncio,json,sys
 from playwright.async_api import async_playwright
+FONT=__import__('os').environ.get('FONT','alexandria')
 QA=open('/home/claude/qa/qa.js').read()
 SC={
  'maldives':"loadDest(DESTS.find(d=>d.id==='mle'));O.badge='أفضل سعر';O.dates='1 الى 15 يونيو';O.prices=[{amt:'7990',cur:'ر.س',lab:'السعر للشخصين',stars:'5'}];",
@@ -20,7 +21,7 @@ async def main():
             for th in themes:
                 for out in ('poster','slides','pdf'):
                     for sz in (('sq','pt','st') if out!='pdf' else ('pt',)):
-                        await pg.evaluate(f"O=newOffer();{code}O.theme='{th}';O.out='{out}';O.size='{sz}';O.showItin=true;form();renderFrames()")
+                        await pg.evaluate(f"O=newOffer();{code}O.theme='{th}';O.font='{FONT}';O.out='{out}';O.size='{sz}';O.showItin=true;form();renderFrames()")
                         await pg.wait_for_timeout(600)
                         await pg.evaluate("$$('#pv .fr').forEach(fit)")
                         r=await pg.evaluate("__qa()")

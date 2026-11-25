@@ -38,10 +38,10 @@ const ZV={
  poster(sz){const c0=O.cities[0]||{photos:[],ar:''},multi=O.cities.length>1;
   const tiles=multi?O.cities.slice(0,4).map((c,i)=>({src:H.cityPh(c,i===0?1:0),t:c.ar,s:`${c.n} ${nW(+c.n)}`,n:i+1})):[1,2,3].map(i=>({src:c0.photos[i]||'',t:(c0.spots||[])[i-1]||'',s:''}));
   const inc=H.incl().slice(0,7),pr=pcards();
-  const dims={sq:['39%',220],pt:['37%',330],st:['33%',470]}[sz];
+  const dims={sq:['42%',210],pt:['41%',310],st:['36%',450]}[sz];
   return{cls:'poster',vars:`--hh:${dims[0]};--th:${dims[1]}px`,html:`
   <div class="hero">${H.img(c0.photos[0],c0.ar)}<div class="ov"></div>
-  <div class="htx" data-tmin="185">${O.badge?`<span class="badge in">${esc(O.badge)}</span>`:''}${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}
+  <div class="htx" data-tmin="20">${O.badge?`<span class="badge in">${esc(O.badge)}</span>`:''}${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}
   <div class="tiles">${tiles.map(t=>`<div class="tile">${H.img(t.src,t.t)}${multi?`<span class="n">${t.n}</span>`:''}${t.t?`<div class="lab">${esc(t.t)}${t.s?`<br><small>${esc(t.s)}</small>`:''}</div>`:''}</div>`).join('')}</div>
   <div class="low ${pr?'':'np'} ${inc.length?'':'ni'}">${inc.length?`<div class="incl" data-fit><h4>البرنامج يشمل</h4>${lis(inc)}</div>`:''}${pr?`<div class="prs" data-fit>${pr}</div>`:''}</div>${this.ftr()}`}},
  /* ---------- carousel ---------- */

@@ -19,7 +19,7 @@ const EXCL0=['المصاريف الشخصية والإكراميات','الوج�
 
 const libPhotos=k=>(LIB[k]||[]).map(f=>`img/${k}/${f}`);
 const mkCity=(k,n)=>{const c=CITIES[k]||{ar:k};return{id:uid(),key:k,ar:c.ar,n:n||3,photos:libPhotos(k),spots:(SPOTS[k]||['','','','']).slice()}};
-const newOffer=()=>({v:3,id:uid(),theme:'zover',size:'pt',out:'poster',destId:'',sub:'',title:'',cities:[],dates:'',badge:'',
+const newOffer=()=>({v:3,id:uid(),theme:'zover',font:'alexandria',size:'pt',out:'poster',destId:'',sub:'',title:'',cities:[],dates:'',badge:'',
  prices:[{amt:'',cur:'ر.س',lab:'السعر للشخصين',stars:''}],incl:[],excl:EXCL0.slice(),notes:'',showItin:true,days:[],updated:Date.now()});
 let O=newOffer();
 let C=Object.assign({phone:'',wa:'',web:'',cta:'احجز الآن'},JSON.parse(localStorage.getItem('zst_set')||'{}'));
@@ -48,7 +48,7 @@ function frameSpecs(){const T=THEMES[O.theme]||ZV,sz=O.size,[w,h]=SIZES[sz];
  return T.pdf().map(f=>({...f,w:794,h:1123,sz:'a4'}))}
 function renderFrames(){const pv=$('#pv');const specs=frameSpecs();pv.innerHTML='';
  specs.forEach((f,i)=>{const wr=document.createElement('div');wr.className='fw';
-  wr.innerHTML=`<div class="fr ${({zover:'zv',lux:'lx',mag:'mg',viv:'vv'})[O.theme]||'zv'} ${f.cls} s-${f.sz}" style="width:${f.w}px;height:${f.h}px;${f.vars||''}">${f.html}</div>${O.out!=='poster'?`<span class="fno">${i+1}</span>`:''}`;
+  wr.innerHTML=`<div class="fr ${({zover:'zv',lux:'lx',mag:'mg',viv:'vv'})[O.theme]||'zv'} ${f.cls} s-${f.sz} zf-${O.font||'alexandria'}" style="width:${f.w}px;height:${f.h}px;${f.vars||''}">${f.html}</div>${O.out!=='poster'?`<span class="fno">${i+1}</span>`:''}`;
   pv.appendChild(wr)});
  const imgs=$$('img',pv);Promise.all(imgs.map(im=>im.complete?0:new Promise(r=>{im.onload=im.onerror=r}))).then(()=>{$$('.fr',pv).forEach(fit);scale()});
  $$('.fr',pv).forEach(fit);scale()}
@@ -75,6 +75,7 @@ function form(){const n=O.cities.reduce((a,c)=>a+(+c.n||0),0)||6;
  $('#mbar').innerHTML=$('#acts').innerHTML+'<button class="btn gh" data-a="save">💾</button>';
  $('#form').innerHTML=`
  <div class="card"><h3>🎨 الثيم</h3><div class="ths">${THEME_LIST.map(([k,l,d,on])=>`<button class="th ${O.theme===k?'on':''} ${on?'':'soon'}" data-a="${on?'theme':''}" data-v="${k}"><span class="sw sw-${k}"></span><b>${l}</b><small>${d}</small></button>`).join('')}</div>
+  ${O.theme==='zover'?`<div class="seg">${[['alexandria','Alexandria'],['readex','Readex'],['kufi','كوفي'],['tajawal','Tajawal']].map(([k,l])=>`<button class="${(O.font||'alexandria')===k?'on':''}" data-a="font" data-v="${k}" style="font-family:${({alexandria:'Alexandria',readex:'Readex Pro',kufi:'Noto Kufi Arabic',tajawal:'Tajawal'})[k]}">${l}</button>`).join('')}</div>`:''}
   ${O.out!=='pdf'?`<div class="seg">${Object.entries(SIZES).map(([k,v])=>`<button class="${O.size===k?'on':''}" data-a="size" data-v="${k}">${v[2]}</button>`).join('')}</div>`:''}</div>
  <div class="card"><h3>🌍 الوجهة</h3>
   <label class="fl"><span>اختيار باكيدج جاهز</span><select class="in" id="qd"><option value="">— اختار من ${DESTS.length} وجهة —</option>${DESTS.map(d=>`<option value="${d.id}" ${O.destId===d.id?'selected':''}>${d.ar}</option>`).join('')}</select></label>
@@ -120,7 +121,7 @@ async function addPhotos(ci,files){busy(true,'جاري تجهيز الصور…'
 
 /* ---------- events ---------- */
 const A={
- out:e=>{O.out=e.dataset.v;touch();form()},theme:e=>{O.theme=e.dataset.v;touch();form()},size:e=>{O.size=e.dataset.v;touch();form()},
+ out:e=>{O.out=e.dataset.v;touch();form()},theme:e=>{O.theme=e.dataset.v;touch();form()},font:e=>{O.font=e.dataset.v;touch();form()},size:e=>{O.size=e.dataset.v;touch();form()},
  st:e=>{const [_,i,k]=e.dataset.k.split('.');const c=O.cities[+i];c[k]=Math.max(+(e.dataset.min||1),(+c[k]||0)+(+e.dataset.d));O.days=[];touch();form()},
  cmv:e=>{const i=+e.dataset.i;[O.cities[i-1],O.cities[i]]=[O.cities[i],O.cities[i-1]];O.days=[];touch();form()},
  cdel:e=>{O.cities.splice(+e.dataset.i,1);O.days=[];touch();form()},

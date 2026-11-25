@@ -254,3 +254,45 @@
 .zv .ttl{line-height:1.18}
 .zv .sub{margin-bottom:4px;line-height:1.35}
 .zv .sub,.vv .sub,.lx .sub{text-shadow:0 2px 12px rgba(0,0,0,.65),0 0 2px rgba(0,0,0,.5)}.zv.poster .hero .ov{background:linear-gradient(180deg,rgba(20,8,50,.5) 0%,rgba(20,8,50,.15) 30%,rgba(36,16,79,.45) 55%,rgba(36,16,79,.95) 100%)}
+/* ===== modern font system + refined layout ===== */
+.zv.zf-alexandria{--zh:'Alexandria';--zb:'Alexandria'}
+.zv.zf-readex{--zh:'Readex Pro';--zb:'Readex Pro'}
+.zv.zf-kufi{--zh:'Noto Kufi Arabic';--zb:'Noto Kufi Arabic'}
+.zv.zf-tajawal{--zh:'Tajawal';--zb:'Tajawal'}
+.fr.zv{font-family:var(--zb),'Outfit','Tajawal',sans-serif}
+.zv .ttl,.zv.city h2,.zv.itin .ihd h2,.zv.price .top h2,.zv .pc .am b,.zv.cover .fromb b,.zv .incl h4,.zv.poster .incl h4{font-family:var(--zh),'Outfit','Tajawal',sans-serif}
+.zf-alexandria.zv .ttl{font-weight:900;letter-spacing:-1px;line-height:1.25}
+.zf-readex.zv .ttl{font-weight:700;line-height:1.25}
+.zf-kufi.zv .ttl{font-weight:900;line-height:1.35}
+.zv .sub{font-weight:600;letter-spacing:.5px}
+.zv .chip{font-weight:600}
+.zv .chip b{font-family:var(--zh);font-weight:800}
+.zv .incl .li{font-weight:500}
+.zv .pc .am b{font-weight:800;letter-spacing:-1px}
+/* bigger integrated logo */
+.zv.poster .logo{top:28px;left:44px}
+.zv.poster .logo img{height:190px}
+.s-sq.zv.poster .logo img{height:150px}
+.s-st.zv.poster .logo img{height:220px}
+.zv.cover .logo img,.zv.price .logo img{height:170px}
+.zv.city .mini img{height:96px}
+.zv.itin .logo img{height:120px}
+.zv.pg.pcov .logo img{height:120px}
+/* consistent 44px grid */
+.zv.poster .tiles{left:44px;right:44px;gap:18px}
+.zv.poster .htx{left:44px;right:44px}
+.zv.poster .low{gap:18px}
+.zv .badge.in{font-size:24px;padding:7px 20px;border-width:3px;transform:rotate(-2deg);margin-bottom:16px}
+.zv.poster .htx .chips{margin-top:18px}
+.zv.poster .tile .lab{font-family:var(--zh);font-weight:700}
+.zv.poster .htx{left:300px}
+.s-sq.zv.poster .htx{left:250px}
+.zv.poster .htx .chips{justify-content:flex-start}
+.zv.poster .ttl{font-size:var(--ts,104px)}
+.s-sq.zv.poster .ttl{font-size:var(--ts,88px)}
+.zv.poster .logo img{height:235px}
+.s-sq.zv.poster .logo img{height:180px}
+.s-st.zv.poster .logo img{height:260px}
+.zv.poster .logo{top:18px;left:30px}
+.zv.poster .htx{left:330px}
+.s-sq.zv.poster .htx{left:270px}

@@ -13,6 +13,9 @@ for w in (500,600,700): fonts+=ff('El Messiri',f'{NM}/@fontsource/el-messiri/fil
 for w in (300,500,700): fonts+=ff('IBM Plex Sans Arabic',f'{NM}/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-{w}-normal.woff2',w,AR)+ff('IBM Plex Sans Arabic',f'{NM}/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-latin-{w}-normal.woff2',w)
 fonts+=ff('Lalezar',f'{NM}/@fontsource/lalezar/files/lalezar-arabic-400-normal.woff2',400,AR)+ff('Lalezar',f'{NM}/@fontsource/lalezar/files/lalezar-latin-400-normal.woff2',400)
 for w in (500,700,800): fonts+=ff('Changa',f'{NM}/@fontsource/changa/files/changa-arabic-{w}-normal.woff2',w,AR)+ff('Changa',f'{NM}/@fontsource/changa/files/changa-latin-{w}-normal.woff2',w)
+for w in (400,600,800,900): fonts+=ff('Alexandria',f'{NM}/@fontsource/alexandria/files/alexandria-arabic-{w}-normal.woff2',w,AR)+ff('Alexandria',f'{NM}/@fontsource/alexandria/files/alexandria-latin-{w}-normal.woff2',w)
+for w in (400,600,700): fonts+=ff('Readex Pro',f'{NM}/@fontsource/readex-pro/files/readex-pro-arabic-{w}-normal.woff2',w,AR)+ff('Readex Pro',f'{NM}/@fontsource/readex-pro/files/readex-pro-latin-{w}-normal.woff2',w)
+for w in (500,700,900): fonts+=ff('Noto Kufi Arabic',f'{NM}/@fontsource/noto-kufi-arabic/files/noto-kufi-arabic-arabic-{w}-normal.woff2',w,AR)
 for w in (700,900): fonts+=ff('Playfair Display',f'{NM}/@fontsource/playfair-display/files/playfair-display-latin-{w}-normal.woff2',w)
 for w in (500,700,800,900):
     fonts+="@font-face{font-family:'Outfit';font-weight:%d;font-display:block;src:url(data:font/woff2;base64,%s) format('woff2');}\n"%(w,b64(f'{NM}/@fontsource/outfit/files/outfit-latin-{w}-normal.woff2'))
