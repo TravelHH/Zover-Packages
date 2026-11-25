@@ -490,6 +490,13 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .s-sq.zv.poster .badge.sqb{display:flex}
 .zv.cover .badge,.zv.pg.pcov .badge{padding-top:calc(.55em);padding-bottom:calc(.35em)}
 .s-sq.zv.poster .badge.sqb{width:max-content;max-width:240px;white-space:nowrap}
+/* ===== polish v3: breathing room, calmer chips ===== */
+.zv .sub{margin-bottom:14px!important;line-height:1.55!important;font-weight:700}
+.zv .ttl,.zf-alexandria.zv .ttl,.zf-readex.zv .ttl,.zf-kufi.zv .ttl,.zf-tajawal.zv .ttl{line-height:1.42!important;letter-spacing:0!important}
+.zv .badge.in{margin-bottom:22px!important}
+.zv.poster .htx .chip{background:rgba(255,255,255,.12)!important;border:1.5px solid rgba(255,255,255,.5);color:#fff!important;font-weight:600;font-size:28px;padding:8px 22px;margin-top:6px}
+.zv.poster .htx .chip b{color:var(--y)!important}
+.zv.poster .htx .chip svg{opacity:.85}
 /* ===================== THEME: LUXURY (فاخر) ===================== */
 .lx{--n:#0B1626;--n2:#13233B;--g:#C8A45A;--g2:#E8D29B;--cr:#F6F0E2;--ink:#1a2233;font-family:'El Messiri','Tajawal',serif;color:#fff;background:var(--n)}
 .lx .fa{font-family:'Amiri','El Messiri',serif}
@@ -661,6 +668,9 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .lx.poster .badge{top:56px;right:56px}
 .s-sq.lx.poster .badge,.s-sq.lx.cover .badge{top:40px;right:40px;font-size:22px}
 .lx .ttl{align-self:stretch;text-align:center}
+/* polish v3 */
+.lx .sub{margin-bottom:8px}
+.lx .ttl{line-height:1.45!important}
 /* ===================== THEME: MAGAZINE (مجلة) ===================== */
 .fr.mg{background:#fff;color:#111;font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;--a:#F97A30;--k:#111;--m:#777}
 .mg .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -790,6 +800,11 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .s-st.mg.cover .pic{top:220px}
 .mg.pg .top{top:22px}.mg.pg .top img{height:64px}.mg.pg .top .is b{font-size:13px;padding:6px 12px 5px}.mg.pg .top .is{font-size:13px;gap:4px}
 .mg .ttl{line-height:1.08}
+/* polish v3 */
+.mg .sub{margin-bottom:12px!important;line-height:1.6!important}
+.mg .ttl{line-height:1.35!important}
+.mg .facts b{white-space:nowrap}
+.mg.poster .ttl{font-size:var(--ts,100px)}.s-sq.mg.poster .ttl{font-size:var(--ts,76px)}.mg .ttl{line-height:1.28!important}
 /* ===================== THEME: VIVID (حيوي) ===================== */
 .fr.vv{background:#1E1240;color:#fff;font-family:'Changa','Tajawal',sans-serif;--pk:#FF2E63;--yl:#FFC300;--cy:#08D9D6;--ink:#1E1240}
 .vv .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -945,6 +960,17 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .vv .burst div{max-width:72%}
 .vv .burst em{white-space:normal}
 .vv.cover .burst{top:240px}.s-sq.vv.cover .burst{top:190px}.s-st.vv.cover .burst{top:270px}
+/* polish v3: less noise */
+.vv .ttl{text-shadow:4px 4px 0 var(--pk)!important;line-height:1.4!important}
+.vv .sub{margin-bottom:14px!important;line-height:1.6!important}
+.vv .stks div,.vv .stks div:nth-child(odd),.vv .stks div:nth-child(even){transform:none!important}
+.vv .stk{transform:none!important;border:4px solid var(--ink)!important;box-shadow:0 8px 20px rgba(0,0,0,.25)!important}
+.vv .ftr .cta,.vv .p2{transform:none!important}
+.vv .burst:before{transform:none}
+.vv .sub{margin-bottom:30px!important}.vv .tt .row1{margin-top:14px}
+.vv.poster .tt,.s-sq.vv.poster .tt,.s-st.vv.poster .tt{top:auto!important;bottom:calc(100% - var(--ph,46%) + 50px)}
+.vv .ttl{line-height:1.24!important}
+.s-sq.vv.poster .stks{display:none}
 </style>
 </head>
 <body>
@@ -1542,7 +1568,7 @@ const MG={
  il(L){return`<div class="il">${L.map((x,k)=>`<div><i>${String(k+1).padStart(2,'0')}</i>${esc(x)}</div>`).join('')}</div>`},
  grid(){const c0=O.cities[0]||{photos:[],spots:[]},multi=O.cities.length>1;
   const L=multi?O.cities.slice(0,3).map((c,i)=>({s:H.cityPh(c,0),t:c.ar,n:i+1})):[0,1,2].map(i=>({s:c0.photos[i]||'',t:i?(c0.spots||[])[i-1]||'':c0.ar,n:i+1})).filter(x=>x.s);
-  return`<div class="grid ${L.length<2?'n1':''}">${L.map(x=>`<div>${H.img(x.s,x.t)}<span><i>${String(x.n).padStart(2,'0')}</i>${esc(x.t)}</span></div>`).join('')}</div>`},
+  return`<div class="grid ${L.length<2?'n1':''}" data-below=".mhd">${L.map(x=>`<div>${H.img(x.s,x.t)}<span><i>${String(x.n).padStart(2,'0')}</i>${esc(x.t)}</span></div>`).join('')}</div>`},
  prc(){const P=H.prices();return P.length?`<div class="prc">${P.map(p=>`<div class="p">${+p.stars?`<span class="stars">${'★'.repeat(+p.stars)}</span>`:''}<small>${esc(p.lab||'')}</small><b>${fmtAmt(p.amt)}<em>${esc(p.cur)}</em></b></div>`).join('')}</div>`:''},
  poster(sz){const g={sq:['300px','400px'],pt:['330px','540px'],st:['420px','800px']}[sz];
   return{cls:'poster',vars:`--gt:${g[0]};--gh:${g[1]}`,html:`${this.top()}<div class="mhd">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div></div>
@@ -1593,9 +1619,9 @@ const VV={
   const L=multi?O.cities.slice(0,3).map((c,i)=>({s:H.cityPh(c,i===0?1:0),t:c.ar})):[1,2,3].map(i=>({s:c0.photos[i]||'',t:(c0.spots||[])[i-1]||''})).filter(x=>x.s);
   return L.length?`<div class="stks">${L.map(x=>`<div><i>${H.img(x.s,x.t)}</i><span>${esc(x.t)}</span></div>`).join('')}</div>`:''},
  poster(sz){const c0=O.cities[0]||{photos:[]},P=H.prices(),f=H.from();
-  const d={sq:['44%','230px','210px'],pt:['44%','290px','270px'],st:['40%','320px','320px']}[sz];
+  const d={sq:['50%','200px','180px'],pt:['50%','262px','242px'],st:['44%','300px','300px']}[sz];
   return{cls:'poster',vars:`--ph:${d[0]};--sw:${d[1]};--sh:${d[2]}`,html:`<div class="pic">${H.img(c0.photos[0],O.title)}</div>${this.logo()}${this.stk()}
-  <div class="tt" data-tmin="150">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div><div class="row1">${this.pills()}</div></div>
+  <div class="tt" data-tmin="205">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="row1">${this.pills()}</div></div>
   <div class="mid" data-fit>${this.stks()}<div class="pr">${P.length>1?this.p2s():this.burst(f)}</div>${this.chips(H.incl().slice(0,6))}</div>${this.ftr()}`}},
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]};
   return{cls:'cover',vars:`--bb:${{sq:'300px',pt:'360px',st:'480px'}[sz]}`,html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div>${this.logo()}${this.stk()}${this.burst(H.from())}
@@ -1688,6 +1714,7 @@ function fit(fr){
  const ovf=el=>{if(el.scrollHeight>el.clientHeight+1||el.scrollWidth>el.clientWidth+1)return true;const er=el.getBoundingClientRect();for(const c of el.children){const r=c.getBoundingClientRect();if(r.height&&(r.top<er.top-2||r.bottom>er.bottom+2))return true}return false};
  $$('[data-fit]',fr).forEach(el=>{let f=1;el.style.setProperty('--f',1);let g=0;while(g++<30&&ovf(el)&&f>.5){f-=.04;el.style.setProperty('--f',f.toFixed(2))}
   const t=el.querySelector('[data-ft]');if(t){let ts=parseFloat(t.style.fontSize||getComputedStyle(t).fontSize);g=0;while(g++<30&&ovf(el)&&ts>40){ts-=4;t.style.fontSize=ts+'px'}}});
+ $$('[data-below]',fr).forEach(el=>{const ref=fr.querySelector(el.dataset.below);if(!ref)return;el.style.top='';el.style.height='';const fy=fr.getBoundingClientRect().top;const rb=(ref.getBoundingClientRect().bottom-fy)/sc+26,et=(el.getBoundingClientRect().top-fy)/sc;if(rb>et){const h=el.getBoundingClientRect().height/sc;el.style.top=rb+'px';el.style.height=Math.max(120,h-(rb-et))+'px'}});
  $$('[data-tmin]',fr).forEach(el=>{const t=el.querySelector('[data-ft]');if(!t)return;const top=()=>(el.getBoundingClientRect().top-fr.getBoundingClientRect().top)/sc;let ts=parseFloat(t.style.fontSize||getComputedStyle(t).fontSize),g=0;while(g++<30&&top()<+el.dataset.tmin&&ts>40){ts-=4;t.style.fontSize=ts+'px'}})}
 function scale(){const pv=$('#pv');const W=pv.clientWidth-4;const mob=innerWidth<=900;
  $$('.fw',pv).forEach(wr=>{const fr=wr.firstElementChild,w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');

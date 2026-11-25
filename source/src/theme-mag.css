@@ -127,3 +127,8 @@
 .s-st.mg.cover .pic{top:220px}
 .mg.pg .top{top:22px}.mg.pg .top img{height:64px}.mg.pg .top .is b{font-size:13px;padding:6px 12px 5px}.mg.pg .top .is{font-size:13px;gap:4px}
 .mg .ttl{line-height:1.08}
+/* polish v3 */
+.mg .sub{margin-bottom:12px!important;line-height:1.6!important}
+.mg .ttl{line-height:1.35!important}
+.mg .facts b{white-space:nowrap}
+.mg.poster .ttl{font-size:var(--ts,100px)}.s-sq.mg.poster .ttl{font-size:var(--ts,76px)}.mg .ttl{line-height:1.28!important}

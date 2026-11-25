@@ -153,3 +153,14 @@
 .vv .burst div{max-width:72%}
 .vv .burst em{white-space:normal}
 .vv.cover .burst{top:240px}.s-sq.vv.cover .burst{top:190px}.s-st.vv.cover .burst{top:270px}
+/* polish v3: less noise */
+.vv .ttl{text-shadow:4px 4px 0 var(--pk)!important;line-height:1.4!important}
+.vv .sub{margin-bottom:14px!important;line-height:1.6!important}
+.vv .stks div,.vv .stks div:nth-child(odd),.vv .stks div:nth-child(even){transform:none!important}
+.vv .stk{transform:none!important;border:4px solid var(--ink)!important;box-shadow:0 8px 20px rgba(0,0,0,.25)!important}
+.vv .ftr .cta,.vv .p2{transform:none!important}
+.vv .burst:before{transform:none}
+.vv .sub{margin-bottom:30px!important}.vv .tt .row1{margin-top:14px}
+.vv.poster .tt,.s-sq.vv.poster .tt,.s-st.vv.poster .tt{top:auto!important;bottom:calc(100% - var(--ph,46%) + 50px)}
+.vv .ttl{line-height:1.24!important}
+.s-sq.vv.poster .stks{display:none}

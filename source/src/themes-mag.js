@@ -9,7 +9,7 @@ const MG={
  il(L){return`<div class="il">${L.map((x,k)=>`<div><i>${String(k+1).padStart(2,'0')}</i>${esc(x)}</div>`).join('')}</div>`},
  grid(){const c0=O.cities[0]||{photos:[],spots:[]},multi=O.cities.length>1;
   const L=multi?O.cities.slice(0,3).map((c,i)=>({s:H.cityPh(c,0),t:c.ar,n:i+1})):[0,1,2].map(i=>({s:c0.photos[i]||'',t:i?(c0.spots||[])[i-1]||'':c0.ar,n:i+1})).filter(x=>x.s);
-  return`<div class="grid ${L.length<2?'n1':''}">${L.map(x=>`<div>${H.img(x.s,x.t)}<span><i>${String(x.n).padStart(2,'0')}</i>${esc(x.t)}</span></div>`).join('')}</div>`},
+  return`<div class="grid ${L.length<2?'n1':''}" data-below=".mhd">${L.map(x=>`<div>${H.img(x.s,x.t)}<span><i>${String(x.n).padStart(2,'0')}</i>${esc(x.t)}</span></div>`).join('')}</div>`},
  prc(){const P=H.prices();return P.length?`<div class="prc">${P.map(p=>`<div class="p">${+p.stars?`<span class="stars">${'★'.repeat(+p.stars)}</span>`:''}<small>${esc(p.lab||'')}</small><b>${fmtAmt(p.amt)}<em>${esc(p.cur)}</em></b></div>`).join('')}</div>`:''},
  poster(sz){const g={sq:['300px','400px'],pt:['330px','540px'],st:['420px','800px']}[sz];
   return{cls:'poster',vars:`--gt:${g[0]};--gh:${g[1]}`,html:`${this.top()}<div class="mhd">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div></div>

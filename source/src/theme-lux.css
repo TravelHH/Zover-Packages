@@ -169,3 +169,6 @@
 .lx.poster .badge{top:56px;right:56px}
 .s-sq.lx.poster .badge,.s-sq.lx.cover .badge{top:40px;right:40px;font-size:22px}
 .lx .ttl{align-self:stretch;text-align:center}
+/* polish v3 */
+.lx .sub{margin-bottom:8px}
+.lx .ttl{line-height:1.45!important}

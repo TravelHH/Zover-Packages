@@ -12,9 +12,9 @@ const VV={
   const L=multi?O.cities.slice(0,3).map((c,i)=>({s:H.cityPh(c,i===0?1:0),t:c.ar})):[1,2,3].map(i=>({s:c0.photos[i]||'',t:(c0.spots||[])[i-1]||''})).filter(x=>x.s);
   return L.length?`<div class="stks">${L.map(x=>`<div><i>${H.img(x.s,x.t)}</i><span>${esc(x.t)}</span></div>`).join('')}</div>`:''},
  poster(sz){const c0=O.cities[0]||{photos:[]},P=H.prices(),f=H.from();
-  const d={sq:['44%','230px','210px'],pt:['44%','290px','270px'],st:['40%','320px','320px']}[sz];
+  const d={sq:['50%','200px','180px'],pt:['50%','262px','242px'],st:['44%','300px','300px']}[sz];
   return{cls:'poster',vars:`--ph:${d[0]};--sw:${d[1]};--sh:${d[2]}`,html:`<div class="pic">${H.img(c0.photos[0],O.title)}</div>${this.logo()}${this.stk()}
-  <div class="tt" data-tmin="150">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div><div class="row1">${this.pills()}</div></div>
+  <div class="tt" data-tmin="205">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="row1">${this.pills()}</div></div>
   <div class="mid" data-fit>${this.stks()}<div class="pr">${P.length>1?this.p2s():this.burst(f)}</div>${this.chips(H.incl().slice(0,6))}</div>${this.ftr()}`}},
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]};
   return{cls:'cover',vars:`--bb:${{sq:'300px',pt:'360px',st:'480px'}[sz]}`,html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div>${this.logo()}${this.stk()}${this.burst(H.from())}

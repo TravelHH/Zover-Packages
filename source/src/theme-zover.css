@@ -306,3 +306,10 @@
 .s-sq.zv.poster .badge.sqb{display:flex}
 .zv.cover .badge,.zv.pg.pcov .badge{padding-top:calc(.55em);padding-bottom:calc(.35em)}
 .s-sq.zv.poster .badge.sqb{width:max-content;max-width:240px;white-space:nowrap}
+/* ===== polish v3: breathing room, calmer chips ===== */
+.zv .sub{margin-bottom:14px!important;line-height:1.55!important;font-weight:700}
+.zv .ttl,.zf-alexandria.zv .ttl,.zf-readex.zv .ttl,.zf-kufi.zv .ttl,.zf-tajawal.zv .ttl{line-height:1.42!important;letter-spacing:0!important}
+.zv .badge.in{margin-bottom:22px!important}
+.zv.poster .htx .chip{background:rgba(255,255,255,.12)!important;border:1.5px solid rgba(255,255,255,.5);color:#fff!important;font-weight:600;font-size:28px;padding:8px 22px;margin-top:6px}
+.zv.poster .htx .chip b{color:var(--y)!important}
+.zv.poster .htx .chip svg{opacity:.85}
