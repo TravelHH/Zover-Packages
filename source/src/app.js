@@ -1,382 +1,176 @@
-/* ================= Zover Package Builder — app ================= */
 'use strict';
-const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
-const clone=o=>JSON.parse(JSON.stringify(o));
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const AD='٠١٢٣٤٥٦٧٨٩', PD='۰۱۲۳۴۵۶۷۸۹';
-const num=v=>{if(typeof v==='number')return v;v=String(v==null?'':v).replace(/[٠-٩]/g,d=>AD.indexOf(d)).replace(/[۰-۹]/g,d=>PD.indexOf(d)).replace(/[٫,]/g,'.').replace(/[^0-9.\-]/g,'');const n=parseFloat(v);return isFinite(n)?n:0};
-const fmt=n=>Math.round(n||0).toLocaleString('en-US');
-const fmt2=n=>(Math.round((n||0)*100)/100).toLocaleString('en-US',{maximumFractionDigits:2});
-const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
-  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){toast('⚠️ مساحة التخزين على الجهاز ممتلئة – صدّر الباكيدجات واحذف القديم');return false}}};
-function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2600)}
-function busy(on,msg){const b=$('#busy');b.classList.toggle('on',!!on);if(msg)$('#busyMsg').textContent=msg}
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
+const AD='٠١٢٣٤٥٦٧٨٩';
+const digits=v=>String(v==null?'':v).replace(/[٠-٩]/g,d=>AD.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+const fmtAmt=v=>{v=digits(v).replace(/[^\d.]/g,'');if(!v)return'';const [a,b]=v.split('.');return Number(a).toLocaleString('en-US')+(b?'.'+b:'')};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2400)}
+function busy(on,m){$('#busy').classList.toggle('on',!!on);if(m)$('#busyMsg').textContent=m}
+const nW=n=>n>=3&&n<=10?'ليالي':'ليلة',dW=n=>n>=3&&n<=10?'أيام':'يوم';
 
-/* ---------- Arabic wording ---------- */
-const nAr=n=>n==1?'ليلة واحدة':n==2?'ليلتان':n<=10?`${n} ليالٍ`:`${n} ليلة`;
-const dAr=n=>n==1?'يوم واحد':n==2?'يومان':n<=10?`${n} أيام`:`${n} يومًا`;
-const nEn=n=>`${n} Night${n==1?'':'s'}`, dEn=n=>`${n} Day${n==1?'':'s'}`;
-const PTYPES={family:['عائلي','Family'],honeymoon:['شهر عسل','Honeymoon'],group:['مجموعات','Group'],corporate:['شركات','Corporate'],individual:['أفراد','Individuals'],students:['طلاب','Students']};
-const CLS={economy:['اقتصادي','Economy'],premium:['اقتصادي مميز','Premium Economy'],business:['رجال الأعمال','Business'],first:['الأولى','First']};
-const SVC_PRESETS=[
- ['استقبال وتوديع من وإلى المطار','Airport meet & assist with transfers','transfer','grp'],
- ['تنقلات بسيارة خاصة مع سائق طوال البرنامج','Private car with driver throughout the trip','transfer','grp'],
- ['الجولات حسب البرنامج','Tours as per itinerary','tours','grp'],
- ['تذاكر دخول المعالم المذكورة','Entrance tickets to listed sights','tickets','pp'],
- ['تأشيرة الدخول','Entry visa','visa','pp'],
- ['تأمين السفر','Travel insurance','ins','pp'],
- ['شريحة اتصال وإنترنت','SIM card with data','sim','pp'],
- ['مرشد سياحي يتحدث العربية','Arabic-speaking tour guide','guide','grp']
-];
-const dateLoc=l=>l==='ar'?'ar-EG-u-nu-latn-ca-gregory':'en-GB';
-function fDate(s,l,o){if(!s)return'';const d=new Date(s+'T12:00:00');if(isNaN(d))return s;return new Intl.DateTimeFormat(dateLoc(l),o||{day:'numeric',month:'long',year:'numeric'}).format(d)}
-function addDays(s,n){const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
-const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const SIZES={sq:{h:1080,l:'مربع'},pt:{h:1350,l:'طولي'},st:{h:1920,l:'ستوري'}};
+const THEMES={zover:['#6a3fc2','#24104f','36,16,79'],sea:['#1b8fd6','#062a52','6,42,82'],green:['#2aa36d','#08301f','8,48,31'],gold:['#6b4c2c','#140d07','20,13,7'],red:['#cf3050','#3d0712','61,7,18']};
+const TPLS=[['collage','كولاج صور'],['photo','صورة كاملة'],['card','بطاقة']];
+const CURS=['ر.س','€','$','£','د.إ'];
+const LABELS=['السعر للشخصين','السعر للفرد','للفرد في غرفة مزدوجة','السعر للعائلة','فندق 4 نجوم','فندق 5 نجوم'];
+const BADGES=['عرض خاص','عروض الصيف','عرض محدود','شامل الطيران','عروض الشتاء','أفضل سعر'];
+const INCL=n=>['تذاكر الطيران ذهاب وعودة',`الإقامة ${n} ${nW(n)} مع الإفطار`,'فنادق 4 نجوم','فنادق 5 نجوم','الاستقبال والتوديع من وإلى المطار','سيارة خاصة مع سائق','جولات سياحية حسب البرنامج','سيارة حديثة بدون سائق','شريحة اتصال وإنترنت','تأمين السفر','التأشيرة','شامل الضرائب'];
 
-/* ---------- settings ---------- */
-function defSettings(){return{v:1,rates:{...CURRENCIES},
- co:{ar:'زوفر العالمية للسفر والسياحة',en:'Zover International Travel & Tourism',phone:'',wa:'',email:'',web:'',addrAr:'الرياض – المملكة العربية السعودية',addrEn:'Riyadh – Saudi Arabia',lic:''},
- def:{markType:'pct',pct:12,fixA:300,fixC:150,vat:'margin',round:10,optPct:15},
- excl:[{ar:'المصاريف الشخصية والإكراميات',en:'Personal expenses and tips'},{ar:'الوجبات غير المذكورة في البرنامج',en:'Meals not mentioned in the program'},{ar:'الجولات الاختيارية',en:'Optional tours'},{ar:'أي خدمة غير مذكورة ضمن ما يشمله البرنامج',en:'Any service not listed under inclusions'}],
- terms:[{ar:'الأسعار خاضعة للتوافر وقت تأكيد الحجز',en:'Prices are subject to availability at the time of confirmation'},{ar:'الإلغاء والتعديل حسب سياسة شركات الطيران والفنادق',en:'Cancellations and changes follow airline and hotel policies'},{ar:'يجب أن يكون جواز السفر ساريًا لمدة 6 أشهر على الأقل من تاريخ السفر',en:'Passports must be valid for at least 6 months from the travel date'}]}}
-let S=Object.assign(defSettings(),LS.get('zpb_set',{}));
-S.rates=Object.assign({},CURRENCIES,S.rates||{});
-const saveS=()=>LS.set('zpb_set',S);
+const newOffer=()=>({id:uid(),tpl:'collage',size:'sq',theme:'zover',sub:'',title:'',nights:6,dates:'',badge:'',photos:[],
+ prices:[{amt:'',cur:'ر.س',lab:'السعر للشخصين',stars:''}],incl:[],updated:Date.now()});
+let O=newOffer();
+let C=Object.assign({phone:'',wa:'',web:'',cta:'احجز الآن'},JSON.parse(localStorage.getItem('zof_set')||'{}'));
+const saveC=()=>localStorage.setItem('zof_set',JSON.stringify(C));
 
-/* ---------- package model ---------- */
-function genQ(){const d=new Date();return`ZV-${String(d.getFullYear()).slice(2)}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(100+Math.random()*900)}`}
-function newHotelOpt(i){const L=[['الخيار الأول','Option 1'],['الخيار الثاني','Option 2'],['الخيار الثالث','Option 3'],['الخيار الرابع','Option 4']][i]||[`الخيار ${i+1}`,`Option ${i+1}`];return{lab:{ar:L[0],en:L[1]},cur:'USD',rows:{}}}
-function newPkg(){return{id:uid(),v:1,created:Date.now(),updated:Date.now(),destId:null,
- title:{ar:'',en:''},country:{ar:'',en:''},col:['#4B2D8E','#F97A30'],hl:[{ar:'',en:''},{ar:'',en:''},{ar:'',en:''},{ar:'',en:''}],
- client:'',quoteNo:genQ(),start:'',valid:addDays(today(),7),type:'family',pax:{adt:2,chd:0,inf:0},cities:[],
- flights:{incl:true,segs:[],cur:'SAR',adt:'',chd:'',inf:'',bag:'',cls:'economy'},
- hotels:[newHotelOpt(0)],svcs:[],days:[],inclX:[],exclX:clone(S.excl),terms:clone(S.terms),notes:{ar:'',en:''},
- pr:{...S.def},room:{auto:true,sgl:0,dbl:1,trp:0,cwb:0,cnb:0},out:{lang:'ar',showPrice:true,showTotal:false,bg:null}}}
-let P=LS.get('zpb_cur',null)||newPkg();
-let TAB=LS.get('zpb_tab','dest'), hOpt=0, pick=!P.destId, fQ='', fR='all', outView='pdf', dirty=false;
+/* ---------- IndexedDB ---------- */
+const DB={db:null,
+ open(){return new Promise(r=>{try{const q=indexedDB.open('zover-offers',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{this.db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})},
+ get(k){return new Promise(r=>{if(!this.db)return r(null);const q=this.db.transaction('kv').objectStore('kv').get(k);q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)})},
+ set(k,v){return new Promise(r=>{if(!this.db)return r(false);const t=this.db.transaction('kv','readwrite');t.objectStore('kv').put(v,k);t.oncomplete=()=>r(true);t.onerror=()=>r(false)})}};
+let _sv;function touch(){O.updated=Date.now();clearTimeout(_sv);_sv=setTimeout(()=>DB.set('draft',O),500);schedule()}
 
-let _st;function touch(){P.updated=Date.now();dirty=true;clearTimeout(_st);_st=setTimeout(()=>{LS.set('zpb_cur',P);hdr()},350)}
-function getPath(o,p){return p.split('.').reduce((a,k)=>a==null?a:a[k],o)}
-function setPath(o,p,v){const ks=p.split('.');let a=o;for(let i=0;i<ks.length-1;i++){if(a[ks[i]]==null||typeof a[ks[i]]!=='object')a[ks[i]]={};a=a[ks[i]]}a[ks[ks.length-1]]=v}
+/* ---------- icons ---------- */
+const IC={
+ ck:'<svg viewBox="0 0 20 20"><path d="M4.5 10.5l3.6 3.6L15.5 6.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+ cal:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+ star:'<svg width="30" height="30" viewBox="0 0 24 24"><path fill="#FBC42E" stroke="#e0a800" stroke-width=".6" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6z"/></svg>',
+ ph:'<svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 013 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>',
+ wa:'<svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.3.1.2.1.8-.1 1.4z"/></svg>',
+ web:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>',
+ arr:'<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>'};
 
-const totalNights=()=>P.cities.reduce((a,c)=>a+num(c.n),0);
-const fromTemplate=k=>CITIES[k]||null;
-
-/* ---------- destination template ---------- */
-function loadDest(d){
- P.destId=d.id;P.title={ar:d.ar,en:d.en};P.country={ar:d.car,en:d.cen};P.col=d.col.slice();
- P.hl=d.hl.map(h=>({ar:h[0],en:h[1]}));
- P.cities=d.cities.map(([k,n,via])=>{const c=CITIES[k];return{id:uid(),key:k,ar:c.ar,en:c.en,n,via:via||'air'}});
- P.hotels.forEach(o=>o.rows={});
- if(!P.svcs.length)P.svcs=[mkSvc(SVC_PRESETS[0]),mkSvc(SVC_PRESETS[2])];
- P.days=genDays();
-}
-function mkSvc(p){return{id:uid(),ar:p[0],en:p[1],kind:p[2],basis:p[3],incl:true,cur:'USD',adt:'',chd:''}}
-function genDays(){
- const D=[],cs=P.cities;if(!cs.length)return D;
- cs.forEach((c,ci)=>{const t=fromTemplate(c.key),acts=t?t.act:[];let ai=0;const n=Math.max(1,num(c.n));
-  for(let k=0;k<n;k++){
-   if(ci===0&&k===0){const a=t&&t.arr;D.push(a?{ar:a[0],en:a[1]}:{ar:`الوصول إلى ${c.ar} والاستقبال في المطار ثم التوجه إلى الفندق وتسجيل الدخول`,en:`Arrival in ${c.en}, meet & assist at the airport and transfer to the hotel for check-in`})}
-   else if(k===0){const v=VIA[c.via]||VIA.air;D.push({ar:`تسجيل الخروج والانتقال ${v[0]} إلى ${c.ar} ثم تسجيل الدخول في الفندق`,en:`Check-out and travel ${v[1]} to ${c.en}, then hotel check-in`})}
-   else if(ai<acts.length){const a=acts[ai++];D.push({ar:a[0],en:a[1]})}
-   else D.push({ar:`يوم حر للراحة أو التسوق في ${c.ar}`,en:`Free day for leisure or shopping in ${c.en}`});
-  }});
- D.push({ar:'تسجيل الخروج من الفندق والتوجه إلى المطار للمغادرة مع أطيب الأمنيات',en:'Check-out and transfer to the airport for departure. Bon voyage!'});
- return D;
-}
-
-/* ---------- PNR parser (Amadeus itinerary) ---------- */
-const MON={JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
-function pnrDate(dm){const m=MON[dm.slice(2,5)];if(m==null)return'';const d=+dm.slice(0,2);const base=P.start?new Date(P.start+'T12:00:00'):new Date();let y=base.getFullYear();
- let dt=new Date(y,m,d,12);const ref=new Date(base);ref.setDate(ref.getDate()-60);if(dt<ref)dt=new Date(y+1,m,d,12);return`${dt.getFullYear()}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`}
-function parsePNR(txt){
- const out=[];const re=/^\s*\d{1,2}\s*\.?\s*([A-Z0-9]{2})\s*(\d{1,4})\s*([A-Z])\s+(\d{2}[A-Z]{3})\s+(?:\d\s*\*?\s*)?([A-Z]{3})\s*([A-Z]{3})\s+(?:[A-Z]{2}\d{1,3}\s+)?(?:\S+\s+)*?(\d{4})\s+(\d{4})(\s*\+1)?/;
- txt.toUpperCase().split(/\r?\n/).forEach(l=>{const m=l.match(re);if(!m)return;
-  out.push({id:uid(),al:m[1],fn:m[2],rbd:m[3],from:m[5],to:m[6],date:pnrDate(m[4]),dep:m[7].slice(0,2)+':'+m[7].slice(2),arr:m[8].slice(0,2)+':'+m[8].slice(2),nd:!!m[9]})});
- return out;
-}
-
-/* ---------- pricing engine ---------- */
-const rate=c=>num(S.rates[c]||(c==='SAR'?1:0))||1;
-function calc(){
- const pax=P.pax,adt=num(pax.adt),chd=num(pax.chd),inf=num(pax.inf),pay=Math.max(1,adt+chd);
- const f=P.flights,fr=rate(f.cur);
- const base={a:0,c:0,i:0},fl={a:0,c:0,i:0};
- if(f.incl){fl.a=num(f.adt)*fr;fl.c=(f.chd===''?num(f.adt):num(f.chd))*fr;fl.i=num(f.inf)*fr}
- base.a+=fl.a;base.c+=fl.c;base.i+=fl.i;
- let svA=0,svC=0;
- P.svcs.filter(s=>s.incl).forEach(s=>{const r=rate(s.cur);if(s.basis==='grp'){const sh=num(s.adt)*r/pay;svA+=sh;svC+=sh}else{svA+=num(s.adt)*r;svC+=(s.chd===''?num(s.adt):num(s.chd))*r}});
- base.a+=svA;base.c+=svC;
- const pr=P.pr;
- const sell=(cost,kind)=>{if(!(cost>0))return{cost:0,price:0,vat:0,profit:0};
-  let m=pr.markType==='pct'?cost*num(pr.pct)/100:(kind==='i'?0:kind==='c'?num(pr.fixC):num(pr.fixA));
-  let pre=cost+m,vat=pr.vat==='margin'?m*.15:pr.vat==='total'?pre*.15:0;
-  const rd=num(pr.round)||1;const price=Math.ceil((pre+vat-1e-9)/rd)*rd;return{cost,price,vat,profit:price-cost-vat}};
- const opts=P.hotels.map(o=>{const r=rate(o.cur);const h={sgl:0,dbl:0,trp:0,cwb:0,cnb:0},has={};
-  P.cities.forEach(c=>{const w=o.rows[c.id]||{},n=num(c.n);['sgl','dbl','trp','cwb','cnb'].forEach(k=>{if(num(w[k])>0)has[k]=1});
-   h.sgl+=num(w.sgl)*n*r;h.dbl+=num(w.dbl)*n*r/2;h.trp+=num(w.trp)*n*r/3;h.cwb+=num(w.cwb)*n*r;h.cnb+=num(w.cnb)*n*r});
-  const any=Object.keys(has).length>0;
-  const T={sgl:has.sgl||!any?sell(base.a+h.sgl,'a'):null,dbl:has.dbl||!any?sell(base.a+h.dbl,'a'):null,trp:has.trp?sell(base.a+h.trp,'a'):null,
-   cwb:(chd||has.cwb)&&(has.cwb||!any)?sell(base.c+h.cwb,'c'):null,cnb:has.cnb?sell(base.c+h.cnb,'c'):null,inf:(inf||fl.i>0)?sell(base.i,'i'):null};
-  if(any&&!has.sgl)T.sgl=null;if(any&&!has.dbl)T.dbl=null;
-  if(!any&&chd&&!T.cwb)T.cwb=sell(base.c,'c');
-  const R=P.room;let tot={cost:0,price:0,vat:0,profit:0};
-  const addT=(t,q)=>{if(!t||!q)return;tot.cost+=t.cost*q;tot.price+=t.price*q;tot.vat+=t.vat*q;tot.profit+=t.profit*q};
-  addT(T.sgl,num(R.sgl));addT(T.dbl,num(R.dbl)*2);addT(T.trp,num(R.trp)*3);addT(T.cwb,num(R.cwb));addT(T.cnb,num(R.cnb));addT(T.inf,inf);
-  return{o,T,tot,from:(T.dbl&&T.dbl.price>0)?T.dbl.price:Math.min(...['sgl','trp'].map(k=>T[k]&&T[k].price>0?T[k].price:Infinity))}});
- const optional=P.svcs.filter(s=>!s.incl).map(s=>{const r=rate(s.cur),pp=s.basis==='grp'?1/pay:1;
-  const c=num(s.adt)*r*pp,m=c*num(pr.optPct)/100,v=pr.vat==='none'?0:m*.15,rd=num(pr.round)||1;
-  const cc=(s.chd===''?num(s.adt):num(s.chd))*r*pp,mc=cc*num(pr.optPct)/100,vc=pr.vat==='none'?0:mc*.15;
-  return{s,a:c>0?Math.ceil((c+m+v)/rd)*rd:0,c:cc>0?Math.ceil((cc+mc+vc)/rd)*rd:0}});
- const from=Math.min(...opts.map(x=>x.from));
- return{opts,optional,from:isFinite(from)?from:0,fl,svA,svC,pay};
-}
-function autoRoom(){const a=num(P.pax.adt),c=num(P.pax.chd);P.room={auto:true,sgl:a%2,dbl:Math.floor(a/2),trp:0,cwb:c,cnb:0}}
-
-/* ---------- header ---------- */
-function hdr(){$('#hTitle').textContent=P.title.ar||P.title.en||'باكيدج جديد';
- const n=totalNights();$('#hSub').textContent=[P.country.ar,n?nAr(n):'',P.quoteNo].filter(Boolean).join(' • ')}
-
-/* ---------- small UI builders ---------- */
-const F=(lab,k,o={})=>{const v=getPath(o.S?S:P,k);const t=o.t||'text';const kk=(o.S?'S:':'')+k;
- if(t==='select')return`<label class="fl"><span>${lab}</span><select class="in" data-k="${kk}" ${o.live?'data-live="1"':''}>${o.opts.map(([val,l])=>`<option value="${esc(val)}" ${String(v)===String(val)?'selected':''}>${esc(l)}</option>`).join('')}</select></label>`;
- if(t==='area')return`<label class="fl"><span>${lab}</span><textarea class="in" data-k="${kk}" ${o.dir?`dir="${o.dir}"`:''} rows="${o.rows||2}">${esc(v)}</textarea></label>`;
- const isN=t==='num';return`<label class="fl"><span>${lab}</span><input class="in ${isN?'num':''}" ${isN?'inputmode="decimal" data-n="1"':''} type="${isN?'text':t}" data-k="${kk}" value="${esc(v)}" ${o.dir?`dir="${o.dir}"`:''} ${o.ph?`placeholder="${esc(o.ph)}"`:''} ${o.live?'data-live="1"':''} ${o.up?'data-up="1" style="text-transform:uppercase"':''}></label>`};
-const curOpts=()=>Object.keys(S.rates).map(c=>[c,c]);
-const STP=(lab,k,min=0)=>`<label class="fl"><span>${lab}</span><div class="stp"><button type="button" data-a="step" data-k2="${k}" data-d="1">+</button><input data-k="${k}" data-n="1" data-live="1" inputmode="numeric" value="${esc(getPath(P,k))}"><button type="button" data-a="step" data-k2="${k}" data-d="-1" data-min="${min}">−</button></div></label>`;
-const doveMini=()=>`<img class="dv" src="${IMG.dove}" alt="">`;
-
-/* ---------- tabs ---------- */
-const TABS=[['dest','🧭','الوجهة'],['flt','✈️','الطيران'],['htl','🏨','الفنادق'],['svc','🚐','الخدمات'],['prog','🗓️','البرنامج'],['price','💰','التسعير'],['out','📄','الإخراج']];
-function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,ic,l],i)=>`<button data-a="tab" data-t="${k}" class="${TAB===k?'on':''}"><span class="ic">${ic}</span><span>${l}</span></button>`).join('')}
-function go(t){TAB=t;LS.set('zpb_tab',t);renderTabs();render();window.scrollTo({top:0})}
-function render(){const m=$('#main');m.innerHTML=(R[TAB]||R.dest)();if(R['_'+TAB])R['_'+TAB]();$$('textarea.in',m).forEach(grow)}
-function grow(t){if(CSS.supports&&CSS.supports('field-sizing','content'))return;t.style.height='auto';t.style.height=(t.scrollHeight+3)+'px'}
-document.addEventListener('input',e=>{if(e.target.matches&&e.target.matches('textarea.in'))grow(e.target)});
-const R={};
-
-/* ===== TAB: destination ===== */
-R.dest=()=>{
- let h='';
- if(pick||!P.destId&&!P.cities.length){
-  const list=DESTS.filter(d=>(fR==='all'||d.r===fR)&&(!fQ||(d.ar+d.en+d.car+d.cen).toLowerCase().includes(fQ.toLowerCase())));
-  h+=`<section class="card"><h3>🧭 اختار الوجهة <span class="badge p">${DESTS.length} وجهة</span><span class="sp"></span>${P.destId?'<button class="btn sm gh" data-a="pickoff">إلغاء</button>':''}</h3>
-  <div class="srch"><input class="in" id="dq" placeholder="ابحث: تركيا، Bali، باريس…" value="${esc(fQ)}"></div>
-  <div class="chips" style="margin-top:10px">${REGIONS.map(r=>`<button class="chip ${fR===r.id?'on':''}" data-a="reg" data-r="${r.id}">${r.ar}</button>`).join('')}</div>
-  <div class="dgrid">${list.map(d=>{const n=d.cities.reduce((a,c)=>a+c[1],0);return`<button class="dc" data-a="dest" data-id="${d.id}" style="background:linear-gradient(140deg,${d.col[0]},${d.col[1]})">${doveMini()}<span class="nn">${nAr(n)}</span><span class="cn">${esc(d.car)}</span><b>${esc(d.ar)}</b><small>${esc(d.en)}</small></button>`}).join('')||'<div class="empty" style="grid-column:1/-1">مفيش نتائج</div>'}</div>
-  <div style="margin-top:12px"><button class="btn ln wide" data-a="custom">✏️ باكيدج مخصص بدون قالب</button></div></section>`;
+/* ---------- poster builders ---------- */
+const dtsHTML=()=>O.dates?`<div class="dts">${IC.cal}<span>${esc(O.dates)}</span></div>`:'';
+const dIn=()=>O.size==='sq';
+function partHdr(){const n=+O.nights||0;return`<div class="hdr"><div class="logo"><img src="${IMG.logo}"></div><div class="hside">${n?`<div class="nts"><b>${n}</b> ${nW(n)} • <b>${n+1}</b> ${dW(n+1)}</div>`:''}${dIn()?dtsHTML():''}</div></div>`}
+function partTitle(noD){return`<div class="ttlb ${O.badge&&O.tpl!=='collage'?'nb':''}">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl">${esc(O.title||'اسم الوجهة')}</div>${!noD&&!dIn()?dtsHTML():''}</div>`}
+function partIncl(){const L=O.incl.filter(Boolean);if(!L.length)return'';return`<div class="incl ${L.length<3?'n1':''}"><div class="ih">البرنامج يشمل</div>${L.map(x=>`<div class="li"><i>${IC.ck}</i><span>${esc(x)}</span></div>`).join('')}</div>`}
+function partPrices(){const P=O.prices.filter(p=>fmtAmt(p.amt));if(!P.length)return'';return`<div class="prc">${P.map(p=>`<div class="pc">${+p.stars?`<div class="stars">${IC.star.repeat(+p.stars)}</div>`:''}<div class="am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div>${p.lab?`<div class="lb">${esc(p.lab)}</div>`:''}</div>`).join('')}</div>`}
+function partBtm(){const i=partIncl(),p=partPrices();if(!i&&!p)return'';return`<div class="btm ${i&&p?'':'one'}">${i}${p}</div>`}
+function partFtr(){const c=[];if(C.phone)c.push(`<div class="ct"><i>${IC.ph}</i>${esc(C.phone)}</div>`);if(C.wa&&C.wa!==C.phone)c.push(`<div class="ct"><i class="wa">${IC.wa}</i>${esc(C.wa)}</div>`);if(C.web)c.push(`<div class="ct"><i>${IC.web}</i>${esc(C.web)}</div>`);
+ return`<div class="ftr"><div class="rb"></div><div class="bar"><div class="cts">${c.join('')||'<span class="co">زوفر العالمية للسفر والسياحة</span>'}</div>${C.cta?`<div class="cta">${esc(C.cta)} ${IC.arr}</div>`:''}</div></div>`}
+const partBadge=st=>O.badge?`<div class="badge" style="${st}"><span>${esc(O.badge)}</span></div>`:'';
+const POL={1:[[8,3,84,94,-2]],2:[[50,6,47,86,4],[3,2,47,86,-3]],3:[[64,10,35,80,6],[31,1,38,92,-1],[1,12,34,78,-6]],4:[[74,13,26,74,6],[49,4,27,82,2],[24,6,27,82,-3],[0,14,26,72,-7]]};
+function bgPlain(){return`<div class="bg"><div class="ov" style="background:linear-gradient(150deg,var(--c) 0%,var(--a) 45%,var(--b) 100%)"></div><div class="pat"></div><img class="dove" src="${IMG.dove}"></div>`}
+function build(){const t=O.tpl,ph=O.photos,rgb=THEMES[O.theme][2];let h='';
+ if(t==='collage'){
+  const bg=ph.length?`<div class="bg"><img class="blur" src="${ph[0].s}"><div class="ov" style="background:linear-gradient(170deg,rgba(${rgb},.80) 0%,rgba(${rgb},.88) 55%,rgba(${rgb},.97) 100%)"></div><div class="pat"></div><img class="dove" src="${IMG.dove}"></div>`:bgPlain();
+  const n=Math.min(ph.length,4),pos=POL[n]||[];
+  const pols=pos.map((p,i)=>`<div class="pol" style="left:${p[0]}%;top:${p[1]}%;width:${p[2]}%;height:${p[3]}%;transform:rotate(${p[4]}deg)"><img src="${ph[i].m}"></div>`).join('');
+  const acc=n?`<div class="accb" style="left:${pos[0][0]+pos[0][2]-12}%;top:${pos[0][1]-3}%;width:16%;height:30%;transform:rotate(${pos[0][4]+4}deg)"></div><div class="accb" style="left:${pos[n-1][0]-2}%;top:${pos[n-1][1]+pos[n-1][3]-24}%;width:14%;height:30%;transform:rotate(${pos[n-1][4]-4}deg)"></div>`:'';
+  h=`${bg}<div class="wrap">${partHdr()}${partTitle()}${n?`<div class="photos">${acc}${pols}${partBadge('left:-24px;top:-40px')}</div>`:`<div style="flex:1;position:relative">${partBadge('left:0;top:10px')}</div>`}${partBtm()}${partFtr()}</div>`;
+ }else if(t==='photo'){
+  const bg=ph.length?`<div class="bg"><img src="${ph[0].m}"><div class="ov" style="background:linear-gradient(180deg,rgba(${rgb},.88) 0%,rgba(${rgb},.45) 26%,rgba(${rgb},0) 44%,rgba(${rgb},.15) 58%,rgba(${rgb},.85) 78%,rgba(${rgb},.97) 100%)"></div></div>`:bgPlain();
+  const th=ph.slice(1,4).map(p=>`<div><img src="${p.m}"></div>`).join('');
+  h=`${bg}<div class="wrap">${partHdr()}${partTitle()}${partBadge('left:28px;top:'+(O.size==='sq'?205:150)+'px')}<div class="spacer">${th?`<div class="thumbs">${th}</div>`:''}</div>${partBtm()}${partFtr()}</div>`;
  }else{
-  h+=`<section class="card" style="padding:0;overflow:hidden"><div class="dsel" style="background:linear-gradient(130deg,${P.col[0]},${P.col[1]})">${doveMini()}<div class="x"><small>${esc(P.country.ar)}</small><b>${esc(P.title.ar||'باكيدج مخصص')}</b><small style="font-family:Outfit">${esc(P.title.en)}</small></div><button class="btn sm" style="background:#fff;color:var(--p)" data-a="pickon">تغيير الوجهة</button></div></section>`;
+  const hb=ph.length?`<div class="hbg"><img src="${ph[0].m}"><div class="ov"></div></div>`:`<div class="hbg" style="background:linear-gradient(150deg,var(--c),var(--a) 50%,var(--b))"><img src="${IMG.dove}" style="position:absolute;height:120%;width:auto;left:-6%;top:-10%;opacity:.13"></div>`;
+  const th=O.size==='sq'?'':ph.slice(1,4).map(p=>`<div><img src="${p.m}"></div>`).join('');const n=+O.nights||0;
+  const T=partTitle(true);
+  h=`<div class="wrap"><div class="hero" style="${th?'padding-bottom:110px':''}">${hb}<div class="hdr"><div class="logo"><img src="${IMG.logo}"></div></div>${partBadge('left:30px;top:150px')}${T}${th?`<div class="thumbs">${th}</div>`:''}</div>
+  <div class="body" style="${th?'padding-top:84px':''}"><div class="row">${n?`<span class="nts2"><b>${n}</b> ${nW(n)} • <b>${n+1}</b> ${dW(n+1)}</span>`:''}${dtsHTML()}</div>${partIncl()}${partPrices()}</div>${partFtr()}</div>`;
  }
- h+=`<section class="card"><h3>📋 بيانات الباكيدج</h3><div class="g g2">
-  ${F('اسم الباكيدج (عربي)','title.ar')}${F('Package name (English)','title.en',{dir:'ltr'})}
-  ${F('الدولة (عربي)','country.ar')}${F('Country (English)','country.en',{dir:'ltr'})}
-  ${F('اسم العميل / الجهة','client',{ph:'اختياري'})}${F('رقم العرض','quoteNo',{dir:'ltr'})}
-  ${F('تاريخ السفر','start',{t:'date',live:1})}${F('العرض صالح حتى','valid',{t:'date'})}
-  ${F('نوع الباكيدج','type',{t:'select',opts:Object.entries(PTYPES).map(([k,v])=>[k,v[0]])})}
- </div><h4 style="margin-top:14px">👨‍👩‍👧 المسافرين</h4><div class="g g3">${STP('بالغ','pax.adt',1)}${STP('طفل (2-11)','pax.chd')}${STP('رضيع (أقل من سنتين)','pax.inf')}</div></section>`;
- h+=`<section class="card"><h3>🏙️ المدن والليالي <span class="badge" id="totN">${nAr(totalNights())}</span></h3>
-  ${P.cities.map((c,i)=>`<div class="sub"><div class="top"><span class="badge p">${i+1}</span><span class="t">${esc(c.ar)}</span>
-   <button class="btn xs gh" data-a="cmove" data-i="${i}" data-d="-1" ${i?'':'disabled'}>▲</button><button class="btn xs gh" data-a="cmove" data-i="${i}" data-d="1" ${i<P.cities.length-1?'':'disabled'}>▼</button><button class="btn xs rd" data-a="cdel" data-i="${i}">✕</button></div>
-   <div class="g g4">${F('المدينة','cities.'+i+'.ar')}${F('City','cities.'+i+'.en',{dir:'ltr'})}${STP('عدد الليالي','cities.'+i+'.n',1)}
-   ${i?F('الانتقال إليها','cities.'+i+'.via',{t:'select',opts:Object.entries(VIA).map(([k,v])=>[k,v[0]])}):'<div></div>'}</div></div>`).join('')||'<div class="empty">اختار وجهة من فوق أو ضيف مدينة</div>'}
-  <div class="row" style="margin-top:6px"><select class="in" id="addCity" style="flex:1;min-width:180px"><option value="">+ إضافة مدينة من القائمة…</option>${Object.entries(CITIES).map(([k,c])=>`<option value="${k}">${c.ar} – ${c.en}</option>`).join('')}</select><button class="btn gh" data-a="cadd">+ مدينة فاضية</button></div>
-  <div class="hint" style="margin-top:8px">بعد تعديل المدن، روح لتبويب «البرنامج» واضغط «توليد البرنامج» عشان الأيام تتحدّث.</div></section>`;
- h+=`<section class="card"><h3>⭐ أهم المميزات <small style="color:var(--mut);font-weight:600;font-size:12.5px">(بتظهر في الغلاف والصورة)</small></h3>
-  ${P.hl.map((x,i)=>`<div class="g g2" style="margin-bottom:8px">${F('ميزة '+(i+1),'hl.'+i+'.ar')}${F('Highlight '+(i+1),'hl.'+i+'.en',{dir:'ltr'})}</div>`).join('')}</section>`;
- return h;
-};
-R._dest=()=>{const q=$('#dq');if(q){q.oninput=()=>{fQ=q.value;const p=q.selectionStart;render();const n=$('#dq');n.focus();n.setSelectionRange(p,p)}}
- const ac=$('#addCity');if(ac)ac.onchange=()=>{const k=ac.value;if(!k)return;const c=CITIES[k];P.cities.push({id:uid(),key:k,ar:c.ar,en:c.en,n:2,via:'air'});touch();render()}};
+ return h}
 
-/* ===== TAB: flights ===== */
-R.flt=()=>{const f=P.flights;
- return`<section class="card"><h3>✈️ الطيران<span class="sp"></span><label class="sw"><input type="checkbox" data-k="flights.incl" ${f.incl?'checked':''}><i></i>مشمول في الباكيدج</label></h3>
- <div class="hint">لو الطيران مش مشمول، اقفل الزرار وهيتشال من السعر ومن العرض.</div>
- <h4>📋 لصق الحجز من أماديوس (اختياري)</h4>
- <textarea class="in" id="pnr" dir="ltr" rows="4" placeholder=" 1  SV 123 Y 15DEC 1 RUHIST HK2  0130 0600  15DEC  E  SV/ABC123&#10; 2  SV 124 Y 22DEC 1 ISTRUH HK2  0745 1200  22DEC  E  SV/ABC123"></textarea>
- <div class="row" style="margin-top:8px"><button class="btn o" data-a="pnr">قراءة الرحلات</button><span class="hint" style="margin:0">بيقرا شاشة الـ itinerary (RT) ويملا الرحلات تحت.</span></div></section>
- <section class="card"><h3>🛫 الرحلات <span class="badge p">${f.segs.length}</span></h3>
- ${f.segs.map((s,i)=>`<div class="sub"><div class="top"><span class="badge p">${i+1}</span><span class="t" style="font-family:Outfit">${esc(s.al)} ${esc(s.fn)} • ${esc(s.from)} → ${esc(s.to)}</span><button class="btn xs rd" data-a="sdel" data-i="${i}">✕</button></div>
-  <div class="g g4">${F('شركة الطيران (كود)','flights.segs.'+i+'.al',{dir:'ltr',up:1,ph:'SV'})}${F('رقم الرحلة','flights.segs.'+i+'.fn',{dir:'ltr'})}${F('من (كود المطار)','flights.segs.'+i+'.from',{dir:'ltr',up:1,ph:'RUH'})}${F('إلى (كود المطار)','flights.segs.'+i+'.to',{dir:'ltr',up:1,ph:'IST'})}
-  ${F('التاريخ','flights.segs.'+i+'.date',{t:'date'})}${F('الإقلاع','flights.segs.'+i+'.dep',{t:'time'})}${F('الوصول','flights.segs.'+i+'.arr',{t:'time'})}
-  <label class="fl"><span>الوصول اليوم التالي</span><label class="sw" style="height:44px"><input type="checkbox" data-k="flights.segs.${i}.nd" ${s.nd?'checked':''}><i></i>+1</label></label></div></div>`).join('')||'<div class="empty">مفيش رحلات لسه – الصق الحجز أو ضيف رحلة</div>'}
- <button class="btn gh" data-a="sadd" style="margin-top:6px">+ إضافة رحلة</button></section>
- <section class="card"><h3>💵 أسعار التذاكر (تكلفة للفرد)</h3><div class="g g4">
-  ${F('العملة','flights.cur',{t:'select',opts:curOpts()})}${F('بالغ','flights.adt',{t:'num'})}${F('طفل','flights.chd',{t:'num',ph:'= بالغ'})}${F('رضيع','flights.inf',{t:'num'})}
-  ${F('الدرجة','flights.cls',{t:'select',opts:Object.entries(CLS).map(([k,v])=>[k,v[0]])})}${F('الأمتعة','flights.bag',{ph:'مثال: 2 × 23 كجم'})}</div></section>`};
+let poster,_rt;const schedule=()=>{clearTimeout(_rt);_rt=setTimeout(renderPoster,60)};
+function renderPoster(){const H=SIZES[O.size].h;poster.className=`pst t-${O.tpl} s-${O.size} th-${O.theme}`;poster.style.height=H+'px';poster.innerHTML=build();fit();scalePv()}
+function fit(){const H=SIZES[O.size].h,P=poster;let ts={sq:88,pt:108,st:120}[O.size];const ttl=$('.ttl',P);
+ if(O.tpl==='card')P.style.setProperty('--hh',{sq:'49%',pt:'52%',st:'54%'}[O.size]);
+ if(ttl){ttl.style.whiteSpace='normal';const fitT=()=>{P.style.setProperty('--ts',ts+'px');return ttl.scrollHeight<=ts*1.12*2+8&&ttl.scrollWidth<=ttl.clientWidth+2};while(!fitT()&&ts>54)ts-=4}
+ const minPh={sq:210,pt:360,st:560}[O.size];let k=1;
+ const over=()=>{const w=$('.wrap',P);if(w.scrollHeight>H+1)return true;const ph=$('.photos',P);if(ph&&ph.clientHeight<minPh)return true;const b=$('.body',P);if(b&&b.scrollHeight>b.clientHeight+1)return true;const sp=$('.spacer',P);if(sp&&sp.clientHeight<{sq:120,pt:220,st:420}[O.size]&&O.photos.length)return true;return false};
+ P.style.setProperty('--k',k);while(over()&&k>0.6){k-=0.03;P.style.setProperty('--k',k.toFixed(2))}
+ if(over()&&ts>60){while(over()&&ts>56){ts-=4;P.style.setProperty('--ts',ts+'px')}}
+}
+function scalePv(){const box=$('#pvbox'),pw=$('#pvw');const H=SIZES[O.size].h;const mob=innerWidth<=900;
+ const aw=box.clientWidth-(mob?20:28),ah=mob?innerHeight*0.62:innerHeight-190;const s=Math.min(aw/1080,ah/H,1);
+ pw.style.width=1080*s+'px';pw.style.height=H*s+'px';poster.style.transform=`scale(${s})`}
 
-/* ===== TAB: hotels ===== */
-R.htl=()=>{if(hOpt>=P.hotels.length)hOpt=0;const o=P.hotels[hOpt],ok='hotels.'+hOpt;
- let h=`<section class="card"><h3>🏨 خيارات الفنادق</h3><div class="hint">ضيف أكتر من خيار (مثلاً 4 نجوم و5 نجوم) وكل خيار هيطلع له سعر منفصل في العرض.</div>
- <div class="chips">${P.hotels.map((x,i)=>`<button class="chip ${i===hOpt?'on':''}" data-a="hopt" data-i="${i}">${esc(x.lab.ar||'خيار '+(i+1))}</button>`).join('')}${P.hotels.length<4?'<button class="chip add" data-a="hadd">+ خيار</button>':''}</div></section>
- <section class="card"><h3>${esc(o.lab.ar)}<span class="sp"></span>${P.hotels.length>1?`<button class="btn sm gh" data-a="hdup">نسخ الخيار</button><button class="btn sm rd" data-a="hdel">حذف</button>`:`<button class="btn sm gh" data-a="hdup">نسخ الخيار</button>`}</h3>
- <div class="g g3">${F('اسم الخيار (عربي)',ok+'.lab.ar')}${F('Option name',ok+'.lab.en',{dir:'ltr'})}${F('عملة أسعار الفنادق',ok+'.cur',{t:'select',opts:curOpts()})}</div></section>`;
- if(!P.cities.length)return h+'<div class="empty">ضيف المدن الأول من تبويب «الوجهة»</div>';
- h+=P.cities.map(c=>{const rk=ok+'.rows.'+c.id;if(!o.rows[c.id])o.rows[c.id]={hotel:'',stars:'4',room:'',meal:'BB',sgl:'',dbl:'',trp:'',cwb:'',cnb:''};
-  return`<section class="card"><h3>📍 ${esc(c.ar)} <span class="badge">${nAr(num(c.n))}</span></h3>
-  <div class="g g4">${F('اسم الفندق',rk+'.hotel',{dir:'ltr',ph:'Hotel name'})}${F('التصنيف',rk+'.stars',{t:'select',opts:[['3','3 نجوم'],['4','4 نجوم'],['5','5 نجوم'],['0','بدون']]})}
-  ${F('نوع الغرفة',rk+'.room',{dir:'ltr',ph:'Standard Room'})}${F('الوجبات',rk+'.meal',{t:'select',opts:Object.entries(MEALS).map(([k,v])=>[k,v[0]])})}</div>
-  <h4 style="margin-top:12px">سعر الليلة للغرفة (${esc(o.cur)})</h4><div class="g g5">${F('مفردة SGL',rk+'.sgl',{t:'num'})}${F('مزدوجة DBL',rk+'.dbl',{t:'num'})}${F('ثلاثية TRP',rk+'.trp',{t:'num'})}${F('طفل بسرير',rk+'.cwb',{t:'num'})}${F('طفل بدون سرير',rk+'.cnb',{t:'num'})}</div></section>`}).join('');
- return h};
+/* ---------- form ---------- */
+function stp(k,min=0){return`<div class="stp"><button type="button" data-a="st" data-k="${k}" data-d="1">+</button><input data-b="${k}" inputmode="numeric" value="${esc(O[k])}"><button type="button" data-a="st" data-k="${k}" data-d="-1" data-min="${min}">−</button></div>`}
+function form(){const n=+O.nights||0;
+ $('#form').innerHTML=`
+ <div class="card"><h3>🎨 التصميم</h3>
+  <div class="tpls">${TPLS.map(([k,l])=>`<button class="tpl ${O.tpl===k?'on':''}" data-a="tpl" data-v="${k}"><span class="ic">${tplIcon(k)}</span>${l}</button>`).join('')}</div>
+  <div class="seg">${Object.entries(SIZES).map(([k,v])=>`<button class="${O.size===k?'on':''}" data-a="size" data-v="${k}">${v.l} <small style="opacity:.7;font-family:Outfit">${k==='sq'?'1:1':k==='pt'?'4:5':'9:16'}</small></button>`).join('')}</div>
+  <div class="ths">${Object.entries(THEMES).map(([k,v])=>`<button class="th ${O.theme===k?'on':''}" data-a="theme" data-v="${k}" style="background:linear-gradient(135deg,${v[0]},${v[1]})"></button>`).join('')}</div></div>
+ <div class="card"><h3>🌍 الوجهة</h3>
+  <label class="fl"><span>اختيار سريع (اختياري)</span><select class="in" id="qd"><option value="">— اختار وجهة جاهزة —</option>${DESTS.map(d=>`<option value="${d.id}">${d.ar}</option>`).join('')}</select></label>
+  <label class="fl"><span>السطر الصغير فوق الاسم</span><input class="in" data-b="sub" value="${esc(O.sub)}" placeholder="مثال: باكيدج شهر مايو في"></label>
+  <label class="fl"><span>اسم الوجهة</span><input class="in" data-b="title" value="${esc(O.title)}" placeholder="مثال: البوسنة والهرسك"></label>
+  <div class="g2"><label class="fl"><span>عدد الليالي ${n?`(${n} ${nW(n)} / ${n+1} ${dW(n+1)})`:''}</span>${stp('nights')}</label>
+  <label class="fl"><span>المواعيد</span><input class="in" data-b="dates" value="${esc(O.dates)}" placeholder="من 1 إلى 30 يونيو"></label></div>
+  <label class="fl" style="margin:0"><span>شارة العرض (اختياري)</span><input class="in" data-b="badge" value="${esc(O.badge)}" list="bdl" placeholder="مثال: عروض الصيف"><datalist id="bdl">${BADGES.map(b=>`<option value="${b}">`).join('')}</datalist></label></div>
+ <div class="card"><h3>🖼️ الصور <span style="font-weight:600;color:var(--mut);font-size:12.5px">حتى 4 صور – الأولى هي الرئيسية</span></h3>
+  <div class="phs">${O.photos.map((p,i)=>`<div class="ph"><img src="${p.s}"><button class="x" data-a="pdel" data-i="${i}">✕</button><button class="m ${i?'':'on'}" data-a="pmain" data-i="${i}">${i?'اجعلها رئيسية':'الرئيسية'}</button></div>`).join('')}
+  ${O.photos.length<4?`<label class="ph add">＋<br>إضافة صور<input type="file" id="phin" accept="image/*" multiple hidden></label>`:''}</div></div>
+ <div class="card"><h3>💰 الأسعار<span class="sp"></span>${O.prices.length<3?'<button class="btn gh sm" data-a="padd">+ سعر</button>':''}</h3>
+  ${O.prices.map((p,i)=>`<div class="prow"><div class="top"><input class="in am" data-p="${i}.amt" inputmode="decimal" value="${esc(p.amt)}" placeholder="السعر"><select class="in" data-p="${i}.cur">${CURS.map(c=>`<option ${p.cur===c?'selected':''}>${c}</option>`).join('')}</select><select class="in" data-p="${i}.stars"><option value="">بدون نجوم</option>${[3,4,5].map(s=>`<option value="${s}" ${+p.stars===s?'selected':''}>${s} ★</option>`).join('')}</select><button class="btn rd sm" data-a="prm" data-i="${i}" style="width:38px;padding:0">✕</button></div>
+  <input class="in" style="margin-top:8px" data-p="${i}.lab" value="${esc(p.lab)}" list="lbl" placeholder="مثال: السعر للشخصين"></div>`).join('')}<datalist id="lbl">${LABELS.map(b=>`<option value="${b}">`).join('')}</datalist>
+  <div class="hint" style="margin:4px 0 0">مثال: سعرين لفندق 4 و5 نجوم، كل سعر بنجومه.</div></div>
+ <div class="card"><h3>✅ البرنامج يشمل</h3><div class="hint">اضغط لإضافة سطر – يفضّل 4 إلى 6 سطور</div>
+  <div class="chips">${INCL(n||6).map(x=>`<button class="chip ${O.incl.includes(x)?'on':''}" data-a="ich" data-v="${esc(x)}">${O.incl.includes(x)?'✓ ':'+ '}${esc(x)}</button>`).join('')}</div>
+  ${O.incl.map((x,i)=>`<div class="irow"><input class="in" data-i2="${i}" value="${esc(x)}"><button class="btn gh" data-a="iup" data-i="${i}" ${i?'':'disabled'}>▲</button><button class="btn rd" data-a="idel" data-i="${i}">✕</button></div>`).join('')}
+  <button class="btn gh sm" data-a="iadd">+ سطر بخطك</button></div>
+ <div class="card"><h3>☎️ بيانات التواصل <span style="font-weight:600;color:var(--mut);font-size:12.5px">بتتحفظ لكل العروض</span></h3>
+  <div class="g2"><label class="fl"><span>رقم الهاتف</span><input class="in" dir="ltr" data-c="phone" value="${esc(C.phone)}" placeholder="+966 …"></label><label class="fl"><span>واتساب</span><input class="in" dir="ltr" data-c="wa" value="${esc(C.wa)}"></label></div>
+  <div class="g2"><label class="fl"><span>الموقع</span><input class="in" dir="ltr" data-c="web" value="${esc(C.web)}" placeholder="www.zuvar.com.sa"></label><label class="fl"><span>زرار الحجز</span><input class="in" data-c="cta" value="${esc(C.cta)}"></label></div></div>`;
+ const pi=$('#phin');if(pi)pi.onchange=()=>addPhotos(pi.files);
+ $('#qd').onchange=e=>{const d=DESTS.find(x=>x.id===e.target.value);if(!d)return;const n=d.cities.reduce((a,c)=>a+c[1],0);
+  O.title=d.ar;O.sub=d.ar===d.car||d.ar.includes(d.car)?'باكيدج':`باكيدج ${d.car}`;O.nights=n;
+  if(!O.incl.length)O.incl=[`الإقامة ${n} ${nW(n)} مع الإفطار`,'الاستقبال والتوديع من وإلى المطار','جولات سياحية حسب البرنامج','شريحة اتصال وإنترنت'];touch();form()};
+}
+function tplIcon(k){if(k==='collage')return'<i style="position:absolute;left:12%;top:28%;width:28%;height:46%;background:#fff;transform:rotate(-8deg);border-radius:2px"></i><i style="position:absolute;left:38%;top:22%;width:28%;height:50%;background:#fff;border-radius:2px"></i><i style="position:absolute;left:62%;top:30%;width:26%;height:44%;background:#FBC42E;transform:rotate(7deg);border-radius:2px"></i>';
+ if(k==='photo')return'<i style="position:absolute;inset:0;background:linear-gradient(180deg,#24104f,#1b8fd6 50%,#24104f)"></i><i style="position:absolute;left:10%;right:10%;bottom:10%;height:26%;background:#fff;border-radius:4px"></i>';
+ return'<i style="position:absolute;inset:0 0 45% 0;background:#1b8fd6;border-radius:0 0 12px 12px"></i><i style="position:absolute;inset:55% 0 0 0;background:#fff"></i><i style="position:absolute;left:12%;right:12%;bottom:10%;height:18%;background:#4B2D8E;border-radius:3px"></i>'}
 
-/* ===== TAB: services ===== */
-R.svc=()=>`<section class="card"><h3>🚐 الخدمات والجولات</h3><div class="hint">«مشمول» بيدخل في سعر الباكيدج، و«اختياري» بيظهر في جدول الجولات الاختيارية بسعره.</div>
- <div class="chips">${SVC_PRESETS.map((p,i)=>`<button class="chip add" data-a="svadd" data-i="${i}">+ ${p[0]}</button>`).join('')}<button class="chip add" data-a="svadd" data-i="-1">+ خدمة أخرى</button></div></section>
- ${P.svcs.map((s,i)=>{const k='svcs.'+i;return`<section class="card" style="${s.incl?'':'border-color:#F5DC8F;background:#FFFCF2'}"><h3><span class="badge ${s.incl?'g':''}">${s.incl?'مشمول':'اختياري'}</span> ${esc(s.ar||'خدمة')}<span class="sp"></span><button class="btn xs gh" data-a="svmove" data-i="${i}" data-d="-1" ${i?'':'disabled'}>▲</button><button class="btn xs gh" data-a="svmove" data-i="${i}" data-d="1" ${i<P.svcs.length-1?'':'disabled'}>▼</button><button class="btn xs rd" data-a="svdel" data-i="${i}">✕</button></h3>
- <div class="g g2">${F('الخدمة (عربي)',k+'.ar')}${F('Service (English)',k+'.en',{dir:'ltr'})}</div>
- <div class="g g5" style="margin-top:10px">${F('الحالة',k+'.incl',{t:'select',opts:[['true','مشمول'],['false','اختياري']]})}${F('طريقة الحساب',k+'.basis',{t:'select',opts:[['pp','للفرد'],['grp','للمجموعة كلها']]})}${F('العملة',k+'.cur',{t:'select',opts:curOpts()})}${F(s.basis==='grp'?'التكلفة الكلية':'تكلفة البالغ',k+'.adt',{t:'num'})}${s.basis==='grp'?'<div></div>':F('تكلفة الطفل',k+'.chd',{t:'num',ph:'= بالغ'})}</div></section>`}).join('')||'<div class="empty">مفيش خدمات – اختار من فوق</div>'}`;
+/* ---------- photos ---------- */
+const loadImg=src=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=src});
+function shrink(im,max,q){const s=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);return c.toDataURL('image/jpeg',q)}
+async function addPhotos(files){busy(true,'جاري تجهيز الصور…');try{for(const f of [...files].slice(0,4-O.photos.length)){const url=URL.createObjectURL(f);const im=await loadImg(url);O.photos.push({m:shrink(im,1600,.85),s:shrink(im,64,.7)});URL.revokeObjectURL(url)}}catch(e){toast('⚠️ في صورة مقدرتش أفتحها')}busy(false);touch();form()}
 
-/* ===== TAB: program ===== */
-const listEd=(key,title,icon)=>`<section class="card"><h3>${icon} ${title}<span class="sp"></span><button class="btn sm gh" data-a="ladd" data-l="${key}">+ سطر</button></h3>
- ${P[key].map((x,i)=>`<div class="g g2 m1" style="margin-bottom:8px;align-items:end;grid-template-columns:1fr 1fr auto">${F('عربي',key+'.'+i+'.ar')}${F('English',key+'.'+i+'.en',{dir:'ltr'})}<button class="btn xs rd" style="height:44px" data-a="ldel" data-l="${key}" data-i="${i}">✕</button></div>`).join('')||'<div class="hint">مفيش سطور</div>'}</section>`;
-R.prog=()=>{const auto=autoIncl('ar');
- return`<section class="card"><h3>🗓️ البرنامج اليومي <span class="badge p">${P.days.length} يوم</span><span class="sp"></span><button class="btn sm o" data-a="gen">⚡ توليد البرنامج من المدن</button></h3>
- ${P.days.map((d,i)=>`<div class="day"><div class="dn"><b>${i+1}</b><small>${P.start?fDate(addDays(P.start,i),'ar',{day:'numeric',month:'short'}):''}</small></div>
-  <div class="bd">${`<textarea class="in" rows="2" data-k="days.${i}.ar">${esc(d.ar)}</textarea><textarea class="in" rows="2" dir="ltr" data-k="days.${i}.en">${esc(d.en)}</textarea>`}</div>
-  <div class="ct"><button class="btn xs gh" data-a="dmove" data-i="${i}" data-d="-1" ${i?'':'disabled'}>▲</button><button class="btn xs gh" data-a="dmove" data-i="${i}" data-d="1" ${i<P.days.length-1?'':'disabled'}>▼</button><button class="btn xs gh" data-a="dins" data-i="${i}">＋</button><button class="btn xs rd" data-a="ddel" data-i="${i}">✕</button></div></div>`).join('')||'<div class="empty">اضغط «توليد البرنامج» بعد اختيار المدن</div>'}
- <button class="btn gh" data-a="dadd">+ إضافة يوم</button></section>
- <section class="card"><h3>✅ يشمل البرنامج (تلقائي)</h3><div class="hint">السطور دي بتتكتب لوحدها من الطيران والفنادق والخدمات المشمولة.</div><div class="chips">${auto.map(x=>`<span class="badge g" style="font-size:12.5px;padding:5px 11px">${esc(x)}</span>`).join('')||'<span class="hint">—</span>'}</div></section>
- ${listEd('inclX','إضافات على «يشمل»','➕')}${listEd('exclX','لا يشمل','⛔')}${listEd('terms','الشروط والأحكام','📌')}
- <section class="card"><h3>📝 ملاحظات إضافية</h3><div class="g g2">${F('ملاحظات (عربي)','notes.ar',{t:'area',rows:3})}${F('Notes (English)','notes.en',{t:'area',rows:3,dir:'ltr'})}</div></section>`};
-
-/* ===== TAB: pricing ===== */
-R.price=()=>{const pr='pr.';
- const used=[...new Set([P.flights.cur,...P.hotels.map(o=>o.cur),...P.svcs.map(s=>s.cur)])].filter(c=>c!=='SAR');
- return`<section class="card"><h3>⚙️ إعدادات التسعير</h3><div class="g g4">
- ${F('نوع هامش الربح',pr+'markType',{t:'select',live:1,opts:[['pct','نسبة مئوية %'],['fix','مبلغ ثابت للفرد']]})}
- ${P.pr.markType==='pct'?F('نسبة الربح %',pr+'pct',{t:'num',live:1}):F('ربح البالغ (ر.س)',pr+'fixA',{t:'num',live:1})+F('ربح الطفل (ر.س)',pr+'fixC',{t:'num',live:1})}
- ${F('ضريبة القيمة المضافة',pr+'vat',{t:'select',live:1,opts:[['margin','15% على هامش الربح'],['total','15% على السعر كله'],['none','بدون ضريبة']]})}
- ${F('تقريب السعر لأعلى',pr+'round',{t:'select',live:1,opts:[['1','1'],['5','5'],['10','10'],['50','50'],['100','100']]})}
- ${F('هامش الجولات الاختيارية %',pr+'optPct',{t:'num',live:1})}</div>
- <div class="hint" style="margin-top:10px">⚠️ راجع طريقة احتساب الضريبة مع المحاسب حسب نوع الخدمة.</div>
- ${used.length?`<h4 style="margin-top:12px">💱 أسعار الصرف (1 عملة = ؟ ريال)</h4><div class="g g4">${used.map(c=>F(c,'rates.'+c,{t:'num',live:1,S:1})).join('')}</div>`:''}</section>
- <section class="card"><h3>🛏️ التسكين (لحساب الإجمالي)<span class="sp"></span><button class="btn sm gh" data-a="autoroom">تلقائي من عدد المسافرين</button></h3>
- <div class="g g5">${F('غرف مفردة','room.sgl',{t:'num',live:1})}${F('غرف مزدوجة','room.dbl',{t:'num',live:1})}${F('غرف ثلاثية','room.trp',{t:'num',live:1})}${F('أطفال بسرير','room.cwb',{t:'num',live:1})}${F('أطفال بدون سرير','room.cnb',{t:'num',live:1})}</div><div id="roomWarn"></div></section>
- <div id="prRes"></div>`};
-R._price=()=>prRes();
-function prRes(){const el=$('#prRes');if(!el)return;const C=calc();const R2=P.room,a=num(P.pax.adt),c=num(P.pax.chd);
- const inRooms=num(R2.sgl)+num(R2.dbl)*2+num(R2.trp)*3,ch=num(R2.cwb)+num(R2.cnb);
- const w=$('#roomWarn');if(w)w.innerHTML=(inRooms!==a?`<div class="warn">عدد البالغين في الغرف (${inRooms}) مش مساوي لعدد البالغين (${a})</div>`:'')+(ch!==c?`<div class="warn">عدد الأطفال في التسكين (${ch}) مش مساوي لعدد الأطفال (${c})</div>`:'');
- const LBL={sgl:'بالغ – غرفة مفردة',dbl:'بالغ – غرفة مزدوجة',trp:'بالغ – غرفة ثلاثية',cwb:'طفل بسرير',cnb:'طفل بدون سرير',inf:'رضيع'};
- let h='';
- C.opts.forEach(x=>{const T=x.T;const rows=Object.keys(LBL).filter(k=>T[k]);
-  h+=`<section class="card"><h3>💰 ${esc(x.o.lab.ar)}</h3>
-  <div class="kpis"><div class="kpi"><small>إجمالي التكلفة</small><b>${fmt(x.tot.cost)}</b></div><div class="kpi o"><small>إجمالي البيع للعميل</small><b>${fmt(x.tot.price)}</b></div><div class="kpi g"><small>صافي الربح التقريبي</small><b>${fmt(x.tot.profit)}</b></div></div>
-  <div class="tw"><table class="t"><tr><th>الفئة</th><th>التكلفة</th><th>سعر البيع</th><th>الضريبة</th><th>الربح</th></tr>
-  ${rows.map(k=>`<tr><td>${LBL[k]}</td><td class="n">${fmt2(T[k].cost)}</td><td class="n" style="color:var(--o)">${fmt(T[k].price)}</td><td class="n">${fmt2(T[k].vat)}</td><td class="n ${T[k].profit>=0?'pos':'neg'}">${fmt2(T[k].profit)}</td></tr>`).join('')}</table></div>
-  <div class="hint" style="margin-top:8px">كل الأرقام بالريال السعودي وللفرد. الإجمالي محسوب على التسكين اللي فوق.</div></section>`});
- if(C.optional.length)h+=`<section class="card"><h3>🎟️ الجولات الاختيارية (سعر البيع للفرد)</h3><div class="tw"><table class="t"><tr><th>الجولة</th><th>بالغ</th><th>طفل</th></tr>${C.optional.map(o=>`<tr><td>${esc(o.s.ar)}</td><td class="n">${fmt(o.a)}</td><td class="n">${fmt(o.c)}</td></tr>`).join('')}</table></div></section>`;
- h+=`<section class="card"><h3>🔎 تفاصيل التكلفة للفرد</h3><div class="tw"><table class="t"><tr><th>البند</th><th>بالغ</th><th>طفل</th></tr>
- <tr><td>الطيران</td><td class="n">${fmt2(C.fl.a)}</td><td class="n">${fmt2(C.fl.c)}</td></tr><tr><td>الخدمات المشمولة</td><td class="n">${fmt2(C.svA)}</td><td class="n">${fmt2(C.svC)}</td></tr></table></div><div class="hint" style="margin-top:8px">خدمات «للمجموعة» بتتقسم على ${C.pay} فرد (بالغين + أطفال).</div></section>`;
- el.innerHTML=h}
-
-/* ===== TAB: output ===== */
-R.out=()=>{const o=P.out;
- return`<section class="card"><h3>📄 الإخراج</h3>
- <div class="row" style="margin-bottom:12px"><div class="seg"><button class="${o.lang==='ar'?'on':''}" data-a="olang" data-l="ar">عربي</button><button class="${o.lang==='en'?'on':''}" data-a="olang" data-l="en">English</button></div>
- <div class="seg"><button class="${outView==='pdf'?'on':''}" data-a="oview" data-v="pdf">📄 عرض PDF</button><button class="${outView==='img'?'on':''}" data-a="oview" data-v="img">🖼️ صورة JPEG</button></div></div>
- <div class="row" style="gap:18px;margin-bottom:12px"><label class="sw"><input type="checkbox" data-k="out.showPrice" data-rerender="1" ${o.showPrice?'checked':''}><i></i>إظهار الأسعار</label>
- <label class="sw"><input type="checkbox" data-k="out.showTotal" data-rerender="1" ${o.showTotal?'checked':''}><i></i>إظهار الإجمالي للمجموعة</label></div>
- <div class="row" style="margin-bottom:12px">${o.bg?`<img class="bgthumb" src="${o.bg}"><button class="btn sm rd" data-a="bgdel">حذف الصورة</button>`:''}<label class="btn sm gh" style="cursor:pointer">🏞️ ${o.bg?'تغيير':'إضافة'} صورة خلفية للوجهة<input type="file" accept="image/*" id="bgIn" hidden></label><span class="hint" style="margin:0">بتظهر في الغلاف وصورة السوشيال</span></div>
- <div class="row">${outView==='pdf'?`<button class="btn o" data-a="pdf">⬇️ تحميل PDF</button><button class="btn ln" data-a="print">🖨️ طباعة</button>`:`<button class="btn o" data-a="jpg">⬇️ تحميل الصورة</button>`}<button class="btn gh" data-a="share" id="shareBtn" style="display:none">📤 مشاركة</button></div></section>
- <section class="card" style="padding:10px"><div class="pvw" id="pvw">${outView==='pdf'?'<div id="docPages" style="display:contents"></div>':'<img id="posterImg" alt="">'}</div></section>`};
-R._out=()=>{const bi=$('#bgIn');if(bi)bi.onchange=()=>loadBg(bi.files[0]);
- if(navigator.canShare&&navigator.canShare({files:[new File([''],'a.pdf',{type:'application/pdf'})]}))$('#shareBtn').style.display='';
- setTimeout(()=>{if(outView==='pdf')buildDoc();else drawPoster().then(c=>{$('#posterImg').src=c.toDataURL('image/jpeg',.9)})},30)};
-function loadBg(file){if(!file)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=1400,s=Math.min(1,W/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);P.out.bg=c.toDataURL('image/jpeg',.82);touch();render()};im.src=r.result};r.readAsDataURL(file)}
-
-/* ---------- inclusions helper ---------- */
-function autoIncl(l){const A=[],ar=l==='ar',f=P.flights,n=totalNights();
- if(f.incl&&(f.segs.length||num(f.adt)>0)){const c=CLS[f.cls]||CLS.economy;A.push(ar?`تذاكر الطيران ذهابًا وعودة – درجة ${c[0]}${f.bag?` (الأمتعة: ${f.bag})`:''}`:`Return flight tickets – ${c[1]} class${f.bag?` (baggage: ${f.bag})`:''}`)}
- if(n)A.push(ar?`الإقامة ${nAr(n)} في الفنادق المذكورة حسب نظام الوجبات المحدد`:`${nEn(n)} accommodation in the listed hotels with the stated meal plan`);
- P.svcs.filter(s=>s.incl).forEach(s=>A.push(ar?s.ar:s.en||s.ar));
- P.inclX.forEach(x=>{const t=ar?x.ar:x.en||x.ar;if(t)A.push(t)});
- return A}
-function autoExcl(l){const ar=l==='ar',A=P.exclX.map(x=>ar?x.ar:x.en||x.ar).filter(Boolean);
- if(!P.svcs.some(s=>s.incl&&s.kind==='visa'))A.unshift(ar?'رسوم التأشيرة (إن وُجدت)':'Visa fees (if applicable)');
- if(!P.flights.incl)A.unshift(ar?'تذاكر الطيران':'Flight tickets');return A}
-
-/* ---------- actions ---------- */
+/* ---------- events ---------- */
 const A={
- tab:e=>go(e.dataset.t),
- reg:e=>{fR=e.dataset.r;render()},
- pickon:()=>{pick=true;render()},pickoff:()=>{pick=false;render()},
- dest:e=>{const d=DESTS.find(x=>x.id===e.dataset.id);if(P.cities.length&&!confirm('تحميل قالب الوجهة هيستبدل المدن والبرنامج الحاليين. تكمّل؟'))return;loadDest(d);pick=false;touch();render();toast('✅ تم تحميل قالب '+d.ar)},
- custom:()=>{P.destId='custom';pick=false;touch();render()},
- step:e=>{const k=e.dataset.k2,v=Math.max(num(e.dataset.min||0),num(getPath(P,k))+num(e.dataset.d));setPath(P,k,v);if(k.startsWith('pax.')&&P.room.auto)autoRoom();touch();const i=e.parentNode.querySelector('input');i.value=v;live()},
- cmove:e=>{mv(P.cities,+e.dataset.i,+e.dataset.d);touch();render()},
- cdel:e=>{P.cities.splice(+e.dataset.i,1);touch();render()},
- cadd:()=>{P.cities.push({id:uid(),key:'',ar:'',en:'',n:2,via:'air'});touch();render()},
- pnr:()=>{const s=parsePNR($('#pnr').value);if(!s.length)return toast('⚠️ مقدرتش أقرا رحلات – اتأكد من الصيغة');P.flights.segs=s;if(!P.start&&s[0].date)P.start=s[0].date;touch();render();toast(`✅ تم قراءة ${s.length} رحلات`)},
- sadd:()=>{P.flights.segs.push({id:uid(),al:'',fn:'',from:'',to:'',date:'',dep:'',arr:'',nd:false});touch();render()},
- sdel:e=>{P.flights.segs.splice(+e.dataset.i,1);touch();render()},
- hopt:e=>{hOpt=+e.dataset.i;render()},
- hadd:()=>{P.hotels.push(newHotelOpt(P.hotels.length));hOpt=P.hotels.length-1;touch();render()},
- hdup:()=>{const c=clone(P.hotels[hOpt]);const n=newHotelOpt(P.hotels.length);c.lab=n.lab;P.hotels.push(c);hOpt=P.hotels.length-1;touch();render();toast('تم نسخ الخيار')},
- hdel:()=>{if(!confirm('حذف الخيار ده؟'))return;P.hotels.splice(hOpt,1);hOpt=0;touch();render()},
- svadd:e=>{const i=+e.dataset.i;P.svcs.push(i<0?mkSvc(['','','other','pp']):mkSvc(SVC_PRESETS[i]));touch();render();window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})},
- svdel:e=>{P.svcs.splice(+e.dataset.i,1);touch();render()},
- svmove:e=>{mv(P.svcs,+e.dataset.i,+e.dataset.d);touch();render()},
- gen:()=>{if(!P.cities.length)return toast('ضيف المدن الأول');if(P.days.length&&!confirm('هيتم استبدال البرنامج الحالي. تكمّل؟'))return;P.days=genDays();touch();render();toast('✅ تم توليد البرنامج')},
- dmove:e=>{mv(P.days,+e.dataset.i,+e.dataset.d);touch();render()},
- ddel:e=>{P.days.splice(+e.dataset.i,1);touch();render()},
- dins:e=>{P.days.splice(+e.dataset.i+1,0,{ar:'',en:''});touch();render()},
- dadd:()=>{P.days.push({ar:'',en:''});touch();render()},
- ladd:e=>{P[e.dataset.l].push({ar:'',en:''});touch();render()},
- ldel:e=>{P[e.dataset.l].splice(+e.dataset.i,1);touch();render()},
- autoroom:()=>{autoRoom();touch();render()},
- olang:e=>{P.out.lang=e.dataset.l;touch();render()},
- oview:e=>{outView=e.dataset.v;render()},
- bgdel:()=>{P.out.bg=null;touch();render()},
- pdf:()=>exportPDF(),print:()=>doPrint(),jpg:()=>exportJPG(),share:()=>doShare(),
- save:()=>savePkg(),newp:()=>{if(!confirm('بدء باكيدج جديد؟ (احفظ الحالي الأول لو محتاجه)'))return;P=newPkg();autoRoom();pick=true;LS.set('zpb_cur',P);go('dest');hdr()},
- lib:()=>openLib(),set:()=>openSet(),close:()=>$$('.mdl').forEach(m=>m.classList.remove('on')),
- lopen:e=>{const L=lib(),p=L.find(x=>x.id===e.dataset.id);if(!p)return;P=migrate(clone(p));LS.set('zpb_cur',P);pick=false;A.close();go('dest');hdr();toast('📂 تم فتح '+(P.title.ar||'الباكيدج'))},
- ldup:e=>{const L=lib(),p=clone(L.find(x=>x.id===e.dataset.id));p.id=uid();p.quoteNo=genQ();p.title.ar=(p.title.ar||'')+' (نسخة)';p.updated=Date.now();L.unshift(p);LS.set('zpb_lib',L);openLib()},
- lrm:e=>{if(!confirm('حذف الباكيدج نهائيًا من الجهاز؟'))return;LS.set('zpb_lib',lib().filter(x=>x.id!==e.dataset.id));openLib()},
- lexp:e=>{const L=lib();const items=e.dataset.id?L.filter(x=>x.id===e.dataset.id):L;if(!items.length)return toast('المكتبة فاضية');download(new Blob([JSON.stringify({app:'zover-packages',v:1,pkgs:items})],{type:'application/json'}),(items.length===1?'Zover-'+(items[0].title.en||items[0].title.ar||'package'):'Zover-packages-'+today())+'.json')},
- setsave:()=>{saveS();A.close();toast('✅ تم حفظ الإعدادات');render()},
- setreset:()=>{if(!confirm('إرجاع أسعار الصرف للقيم الافتراضية؟'))return;S.rates={...CURRENCIES};saveS();openSet()},
- curadd:()=>{const c=(prompt('كود العملة (3 حروف) مثل QAR')||'').trim().toUpperCase();if(!/^[A-Z]{3}$/.test(c))return;const v=num(prompt('1 '+c+' = كام ريال؟')||0);if(v>0){S.rates[c]=v;saveS();openSet()}}
+ tpl:e=>{O.tpl=e.dataset.v;touch();form()},size:e=>{O.size=e.dataset.v;touch();form()},theme:e=>{O.theme=e.dataset.v;touch();form()},
+ st:e=>{const k=e.dataset.k;O[k]=Math.max(+(e.dataset.min||0),(+O[k]||0)+(+e.dataset.d));touch();form()},
+ pdel:e=>{O.photos.splice(+e.dataset.i,1);touch();form()},pmain:e=>{const i=+e.dataset.i;if(!i)return;const [p]=O.photos.splice(i,1);O.photos.unshift(p);touch();form()},
+ padd:()=>{O.prices.push({amt:'',cur:O.prices[0]?O.prices[0].cur:'ر.س',lab:'السعر للشخصين',stars:''});touch();form()},prm:e=>{O.prices.splice(+e.dataset.i,1);touch();form()},
+ ich:e=>{const v=e.dataset.v,i=O.incl.indexOf(v);if(i>=0)O.incl.splice(i,1);else O.incl.push(v);touch();form()},
+ idel:e=>{O.incl.splice(+e.dataset.i,1);touch();form()},iup:e=>{const i=+e.dataset.i;[O.incl[i-1],O.incl[i]]=[O.incl[i],O.incl[i-1]];touch();form()},
+ iadd:()=>{O.incl.push('');touch();form();const l=$$('[data-i2]');l[l.length-1].focus()},
+ dl:()=>exportJpg(),share:()=>share(),save:()=>saveOffer(),
+ newo:()=>{if(!confirm('بدء عرض جديد؟'))return;const t=O.tpl,s=O.size,th=O.theme;O=newOffer();O.tpl=t;O.size=s;O.theme=th;touch();form()},
+ lib:()=>openLib(),close:()=>$$('.mdl').forEach(m=>m.classList.remove('on')),
+ lo:async e=>{const L=await DB.get('offers')||[];const x=L.find(o=>o.id===e.dataset.id);if(x){O=JSON.parse(JSON.stringify(x.data));touch();form();A.close();toast('📂 تم فتح العرض')}},
+ lc:async e=>{const L=await DB.get('offers')||[];const x=L.find(o=>o.id===e.dataset.id);if(x){O=JSON.parse(JSON.stringify(x.data));O.id=uid();touch();form();A.close();toast('تم عمل نسخة – عدّل واحفظ')}},
+ ld:async e=>{if(!confirm('حذف العرض؟'))return;const L=(await DB.get('offers')||[]).filter(o=>o.id!==e.dataset.id);await DB.set('offers',L);openLib()}
 };
-function mv(a,i,d){const j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]]}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||b.disabled)return;const f=A[b.dataset.a];if(f){e.preventDefault();f(b)}});
-function onField(e){const el=e.target.closest('[data-k]');if(!el)return;let k=el.dataset.k,tgt=P;if(k.startsWith('S:')){k=k.slice(2);tgt=S}
- let v;if(el.type==='checkbox')v=el.checked;else if(el.tagName==='SELECT'&&(el.value==='true'||el.value==='false'))v=el.value==='true';else v=el.value;
- if(el.dataset.up&&typeof v==='string'){v=v.toUpperCase()}
- if(el.dataset.n)v=el.value===''?'':num(el.value);
- setPath(tgt,k,v);if(tgt===S)saveS();else{if(k.startsWith('pax.')&&P.room.auto)autoRoom();if(k.startsWith('room.'))P.room.auto=false;touch()}
- if(e.type==='change'&&(el.tagName==='SELECT'||el.type==='checkbox'||el.type==='date')){if(el.dataset.rerender||/\.basis$|\.incl$|markType|stars$|^start$/.test(k)||TAB==='out'){render();return}}
- if(el.dataset.live)live()}
-document.addEventListener('input',onField);document.addEventListener('change',onField);
-function live(){const t=$('#totN');if(t)t.textContent=nAr(totalNights());if(TAB==='price')prRes()}
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.dataset.b){O[t.dataset.b]=t.dataset.b==='nights'?(+digits(t.value)||0):t.value;touch()}
+ else if(t.dataset.p){const [i,k]=t.dataset.p.split('.');O.prices[+i][k]=t.value;touch()}
+ else if(t.dataset.i2!=null){O.incl[+t.dataset.i2]=t.value;touch()}
+ else if(t.dataset.c){C[t.dataset.c]=t.value;saveC();schedule()}});
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset.p&&t.tagName==='SELECT'){const [i,k]=t.dataset.p.split('.');O.prices[+i][k]=t.value;touch()}});
 
-/* ---------- library ---------- */
-const lib=()=>LS.get('zpb_lib',[]);
-function migrate(p){const d=newPkg();for(const k in d)if(p[k]===undefined)p[k]=d[k];p.out=Object.assign(d.out,p.out||{});p.pr=Object.assign(d.pr,p.pr||{});return p}
-function savePkg(){const L=lib();const i=L.findIndex(x=>x.id===P.id);P.updated=Date.now();if(i>=0)L[i]=clone(P);else L.unshift(clone(P));if(LS.set('zpb_lib',L)){LS.set('zpb_cur',P);dirty=false;toast('💾 تم الحفظ في المكتبة')}}
-function openLib(){const L=lib().sort((a,b)=>b.updated-a.updated);
- $('#libBody').innerHTML=`<div class="row" style="margin-bottom:12px"><button class="btn o sm" data-a="lexp">⬇️ تصدير الكل</button><label class="btn gh sm" style="cursor:pointer">⬆️ استيراد ملف<input type="file" accept=".json,application/json" id="impIn" hidden></label><span class="hint" style="margin:0">التصدير بيطلع ملف تقدر تبعته لأي موظف يستورده عنده.</span></div>`+
- (L.map(p=>`<div class="libi"><div class="sq" style="background:linear-gradient(135deg,${p.col[0]},${p.col[1]})"></div><div class="x"><b>${esc(p.title.ar||p.title.en||'بدون اسم')}</b><small>${esc(p.client||'')} ${p.client?'• ':''}${esc(p.quoteNo)} • ${new Date(p.updated).toLocaleDateString('en-GB')}</small></div>
- <button class="btn xs" data-a="lopen" data-id="${p.id}">فتح</button><button class="btn xs gh" data-a="ldup" data-id="${p.id}" title="نسخة">⧉</button><button class="btn xs gh" data-a="lexp" data-id="${p.id}" title="تصدير">⬇</button><button class="btn xs rd" data-a="lrm" data-id="${p.id}">✕</button></div>`).join('')||'<div class="empty">المكتبة فاضية – اضغط «حفظ» عشان تحفظ الباكيدج الحالي</div>');
- $('#impIn').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);const items=(j.pkgs||[j]).filter(x=>x&&x.id&&x.title);const L2=lib();items.forEach(p=>{const i=L2.findIndex(x=>x.id===p.id);if(i>=0)L2[i]=p;else L2.unshift(p)});LS.set('zpb_lib',L2);toast(`✅ تم استيراد ${items.length} باكيدج`);openLib()}catch(err){toast('⚠️ الملف مش صالح')}};r.readAsText(f)};
- $('#mLib').classList.add('on')}
-function openSet(){const c='co.';
- $('#setBody').innerHTML=`<h4>🏢 بيانات الشركة (بتظهر في العروض)</h4><div class="g g2">${F('اسم الشركة (عربي)',c+'ar',{S:1})}${F('Company name',c+'en',{S:1,dir:'ltr'})}${F('رقم الهاتف',c+'phone',{S:1,dir:'ltr',ph:'+966 …'})}${F('واتساب',c+'wa',{S:1,dir:'ltr'})}${F('البريد الإلكتروني',c+'email',{S:1,dir:'ltr'})}${F('الموقع الإلكتروني',c+'web',{S:1,dir:'ltr'})}${F('العنوان (عربي)',c+'addrAr',{S:1})}${F('Address',c+'addrEn',{S:1,dir:'ltr'})}${F('رقم الترخيص / السجل',c+'lic',{S:1,dir:'ltr'})}</div>
- <h4 style="margin-top:16px">💱 أسعار الصرف (1 عملة = ؟ ريال سعودي)</h4><div class="hint">قيم تقريبية – حدّثها حسب سعر اليوم.</div><div class="g g4">${Object.keys(S.rates).filter(k=>k!=='SAR').map(k=>F(k,'rates.'+k,{S:1,t:'num'})).join('')}</div>
- <div class="row" style="margin-top:10px"><button class="btn sm gh" data-a="curadd">+ عملة</button><button class="btn sm ln" data-a="setreset">استرجاع الافتراضي</button></div>
- <h4 style="margin-top:16px">💰 إعدادات التسعير الافتراضية للباكيدجات الجديدة</h4><div class="g g4">${F('نسبة الربح %','def.pct',{S:1,t:'num'})}${F('الضريبة','def.vat',{S:1,t:'select',opts:[['margin','على الهامش'],['total','على الإجمالي'],['none','بدون']]})}${F('التقريب','def.round',{S:1,t:'select',opts:[['1','1'],['5','5'],['10','10'],['50','50'],['100','100']]})}${F('هامش الاختياري %','def.optPct',{S:1,t:'num'})}</div>
- <div style="margin-top:16px"><button class="btn o wide" data-a="setsave">حفظ الإعدادات</button></div>`;
- $('#mSet').classList.add('on')}
-
-/* ---------- files ---------- */
-function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name.replace(/[\\/:*?"<>|]+/g,'-');document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
-const fileBase=()=>`Zover-${(P.title.en||P.title.ar||'Package').replace(/\s+/g,'-')}-${P.out.lang.toUpperCase()}`;
+/* ---------- export ---------- */
+let _fc=null,_warm=false;
+async function toCanvas(){await document.fonts.ready;if(!_fc)_fc=await htmlToImage.getFontEmbedCSS(poster);const H=SIZES[O.size].h;
+ const o={width:1080,height:H,pixelRatio:1,fontEmbedCSS:_fc,style:{transform:'none'},backgroundColor:'#ffffff'};
+ if(!_warm){await htmlToImage.toCanvas(poster,o).catch(()=>{});_warm=true}return htmlToImage.toCanvas(poster,o)}
+const fname=()=>`Zover-${(O.title||'offer').replace(/[\\/:*?"<>|\s]+/g,'-')}-${O.size}.jpg`;
+async function getBlob(){renderPoster();const c=await toCanvas();return new Promise(r=>c.toBlob(r,'image/jpeg',.93))}
+async function exportJpg(){busy(true,'جاري تجهيز الصورة…');try{const b=await getBlob();const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=fname();document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);toast('✅ تم تحميل الصورة')}catch(e){console.error(e);toast('⚠️ حصلت مشكلة – جرّب تاني')}busy(false)}
+async function share(){busy(true,'جاري التجهيز…');try{const b=await getBlob();const f=new File([b],fname(),{type:'image/jpeg'});busy(false);
+ if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f]});else{busy(false);exportJpg()}}catch(e){busy(false);if(e.name!=='AbortError')toast('⚠️ المشاركة مش متاحة – اتحمّلت الصورة بدلها')}}
+async function saveOffer(){busy(true,'جاري الحفظ…');try{const c=await toCanvas();const t=document.createElement('canvas');const s=300/1080;t.width=300;t.height=Math.round(c.height*s);t.getContext('2d').drawImage(c,0,0,t.width,t.height);
+ const L=await DB.get('offers')||[];const rec={id:O.id,title:O.title||'بدون اسم',thumb:t.toDataURL('image/jpeg',.75),updated:Date.now(),data:JSON.parse(JSON.stringify(O))};const i=L.findIndex(x=>x.id===O.id);if(i>=0)L[i]=rec;else L.unshift(rec);
+ const ok=await DB.set('offers',L);toast(ok?'💾 تم حفظ العرض في «عروضي»':'⚠️ الحفظ مش متاح على المتصفح ده')}catch(e){console.error(e);toast('⚠️ مقدرتش أحفظ')}busy(false)}
+async function openLib(){const L=(await DB.get('offers')||[]).sort((a,b)=>b.updated-a.updated);
+ $('#libBody').innerHTML=L.length?`<div class="ofs">${L.map(o=>`<div class="of"><img src="${o.thumb}"><b>${esc(o.title)}</b><div class="r"><button data-a="lo" data-id="${o.id}">فتح</button><button data-a="lc" data-id="${o.id}">نسخة</button><button class="d" data-a="ld" data-id="${o.id}">✕</button></div></div>`).join('')}</div>`:'<div class="empty">مفيش عروض محفوظة – اضغط «حفظ» بعد ما تخلّص العرض</div>';$('#mLib').classList.add('on')}
 
 /* ---------- boot ---------- */
-function boot(){if(!P.room)autoRoom();P=migrate(P);renderTabs();render();hdr();
- window.addEventListener('beforeunload',()=>LS.set('zpb_cur',P));
- if('serviceWorker'in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
- window.addEventListener('resize',()=>{if(TAB==='out'&&outView==='pdf')scalePages()})}
+async function boot(){poster=$('#poster');$('#hLogo').src=IMG.logo;await DB.open();const d=await DB.get('draft');if(d&&d.id)O=Object.assign(newOffer(),d);
+ form();renderPoster();document.fonts.ready.then(()=>renderPoster());addEventListener('resize',scalePv);
+ if('serviceWorker'in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}
