@@ -247,3 +247,10 @@
 .zv.poster .tile .lab{font-size:30px}
 .zv.poster .logo img{height:140px}
 .s-sq.zv.poster .logo img{height:118px}
+.zv .badge.in{position:static;display:inline-block;transform:rotate(-3deg);margin-bottom:14px;font-size:28px;padding:8px 24px;border-width:4px}
+.zv .badge.in{margin-bottom:20px}
+.zv.price .top .tx{left:250px}
+.zv .badge.in{width:max-content;max-width:70%}
+.zv .ttl{line-height:1.18}
+.zv .sub{margin-bottom:4px;line-height:1.35}
+.zv .sub,.vv .sub,.lx .sub{text-shadow:0 2px 12px rgba(0,0,0,.65),0 0 2px rgba(0,0,0,.5)}.zv.poster .hero .ov{background:linear-gradient(180deg,rgba(20,8,50,.5) 0%,rgba(20,8,50,.15) 30%,rgba(36,16,79,.45) 55%,rgba(36,16,79,.95) 100%)}

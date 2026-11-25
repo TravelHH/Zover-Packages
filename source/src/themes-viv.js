@@ -14,7 +14,7 @@ const VV={
  poster(sz){const c0=O.cities[0]||{photos:[]},P=H.prices(),f=H.from();
   const d={sq:['44%','230px','210px'],pt:['44%','290px','270px'],st:['40%','320px','320px']}[sz];
   return{cls:'poster',vars:`--ph:${d[0]};--sw:${d[1]};--sh:${d[2]}`,html:`<div class="pic">${H.img(c0.photos[0],O.title)}</div>${this.logo()}${this.stk()}
-  <div class="tt">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div><div class="row1">${this.pills()}</div></div>
+  <div class="tt" data-tmin="150">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div><div class="row1">${this.pills()}</div></div>
   <div class="mid" data-fit>${this.stks()}<div class="pr">${P.length>1?this.p2s():this.burst(f)}</div>${this.chips(H.incl().slice(0,6))}</div>${this.ftr()}`}},
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]};
   return{cls:'cover',vars:`--bb:${{sq:'300px',pt:'360px',st:'480px'}[sz]}`,html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div>${this.logo()}${this.stk()}${this.burst(H.from())}

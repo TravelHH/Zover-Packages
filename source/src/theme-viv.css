@@ -127,3 +127,18 @@
 .vv.poster .tt{top:calc(var(--ph,46%) - 300px)}
 .vv.cover .tt .ttl{margin-bottom:6px}
 .vv .chips span{font-size:calc(var(--f,1)*29px)}
+.vv.poster .stk{top:auto;bottom:auto;right:auto;left:40px;top:175px;width:150px;height:150px;font-size:30px;padding:14px}
+.vv.poster .stks div{width:calc(var(--f,1)*var(--sw,260px));height:calc(var(--f,1)*var(--sh,250px))}
+.vv.poster .burst{--bw:calc(var(--f,1)*330px)}
+.vv.cover .burst{bottom:auto;top:180px;left:44px}
+.vv.cover .stk{width:150px;height:150px;font-size:30px;padding:14px}
+.s-sq.vv.poster .stk{top:150px;width:130px;height:130px;font-size:26px}
+.s-sq.vv.poster .tt{padding-left:150px}.vv .stks div span{font-size:calc(var(--f,1)*26px)}
+.vv .stk{white-space:normal}
+.vv .sub{margin-bottom:10px;line-height:1.4}
+.vv .ttl{line-height:1.25}
+.vv .burst b{line-height:1.2;margin:2px 0}
+.vv .burst small,.vv .burst em{line-height:1.3;display:block}
+.vv .p2 b{line-height:1.25;margin:4px 0}
+.vv .p2 small{display:block;line-height:1.35}
+.s-sq.vv.poster .stk{top:180px}

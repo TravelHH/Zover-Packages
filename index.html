@@ -414,6 +414,13 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .zv.poster .tile .lab{font-size:30px}
 .zv.poster .logo img{height:140px}
 .s-sq.zv.poster .logo img{height:118px}
+.zv .badge.in{position:static;display:inline-block;transform:rotate(-3deg);margin-bottom:14px;font-size:28px;padding:8px 24px;border-width:4px}
+.zv .badge.in{margin-bottom:20px}
+.zv.price .top .tx{left:250px}
+.zv .badge.in{width:max-content;max-width:70%}
+.zv .ttl{line-height:1.18}
+.zv .sub{margin-bottom:4px;line-height:1.35}
+.zv .sub,.vv .sub,.lx .sub{text-shadow:0 2px 12px rgba(0,0,0,.65),0 0 2px rgba(0,0,0,.5)}.zv.poster .hero .ov{background:linear-gradient(180deg,rgba(20,8,50,.5) 0%,rgba(20,8,50,.15) 30%,rgba(36,16,79,.45) 55%,rgba(36,16,79,.95) 100%)}
 /* ===================== THEME: LUXURY (فاخر) ===================== */
 .lx{--n:#0B1626;--n2:#13233B;--g:#C8A45A;--g2:#E8D29B;--cr:#F6F0E2;--ink:#1a2233;font-family:'El Messiri','Tajawal',serif;color:#fff;background:var(--n)}
 .lx .fa{font-family:'Amiri','El Messiri',serif}
@@ -566,6 +573,7 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .lx .ft .cta{white-space:nowrap}
 .lx .frm{white-space:nowrap}
 .lx .logo img{height:120px}
+.lx .sub{line-height:1.5}.mg .sub{line-height:1.5;margin-bottom:6px}
 /* ===================== THEME: MAGAZINE (مجلة) ===================== */
 .fr.mg{background:#fff;color:#111;font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;--a:#F97A30;--k:#111;--m:#777}
 .mg .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -809,6 +817,21 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .vv.poster .tt{top:calc(var(--ph,46%) - 300px)}
 .vv.cover .tt .ttl{margin-bottom:6px}
 .vv .chips span{font-size:calc(var(--f,1)*29px)}
+.vv.poster .stk{top:auto;bottom:auto;right:auto;left:40px;top:175px;width:150px;height:150px;font-size:30px;padding:14px}
+.vv.poster .stks div{width:calc(var(--f,1)*var(--sw,260px));height:calc(var(--f,1)*var(--sh,250px))}
+.vv.poster .burst{--bw:calc(var(--f,1)*330px)}
+.vv.cover .burst{bottom:auto;top:180px;left:44px}
+.vv.cover .stk{width:150px;height:150px;font-size:30px;padding:14px}
+.s-sq.vv.poster .stk{top:150px;width:130px;height:130px;font-size:26px}
+.s-sq.vv.poster .tt{padding-left:150px}.vv .stks div span{font-size:calc(var(--f,1)*26px)}
+.vv .stk{white-space:normal}
+.vv .sub{margin-bottom:10px;line-height:1.4}
+.vv .ttl{line-height:1.25}
+.vv .burst b{line-height:1.2;margin:2px 0}
+.vv .burst small,.vv .burst em{line-height:1.3;display:block}
+.vv .p2 b{line-height:1.25;margin:4px 0}
+.vv .p2 small{display:block;line-height:1.35}
+.s-sq.vv.poster .stk{top:180px}
 </style>
 </head>
 <body>
@@ -1289,13 +1312,13 @@ const ZV={
   const dims={sq:['39%',220],pt:['37%',330],st:['33%',470]}[sz];
   return{cls:'poster',vars:`--hh:${dims[0]};--th:${dims[1]}px`,html:`
   <div class="hero">${H.img(c0.photos[0],c0.ar)}<div class="ov"></div>
-  <div class="htx">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
+  <div class="htx" data-tmin="185">${O.badge?`<span class="badge in">${esc(O.badge)}</span>`:''}${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}
   <div class="tiles">${tiles.map(t=>`<div class="tile">${H.img(t.src,t.t)}${multi?`<span class="n">${t.n}</span>`:''}${t.t?`<div class="lab">${esc(t.t)}${t.s?`<br><small>${esc(t.s)}</small>`:''}</div>`:''}</div>`).join('')}</div>
   <div class="low ${pr?'':'np'} ${inc.length?'':'ni'}">${inc.length?`<div class="incl" data-fit><h4>البرنامج يشمل</h4>${lis(inc)}</div>`:''}${pr?`<div class="prs" data-fit>${pr}</div>`:''}</div>${this.ftr()}`}},
  /* ---------- carousel ---------- */
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]},f=H.from();
-  return{cls:'cover',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div>${this.logo()}<span class="chip g swipe">اسحب ${IC.swipe}</span>${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
-  <div class="txt">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>
+  return{cls:'cover',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div>${this.logo()}<span class="chip g swipe">اسحب ${IC.swipe}</span>
+  <div class="txt">${O.badge?`<span class="badge in">${esc(O.badge)}</span>`:''}${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>
   ${O.cities.length>1?`<div class="cities">${H.cityLine().map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''}<div class="chips">${this.chips()}</div>
   ${f?`<div class="fromb"><span>يبدأ من<br>${esc(f.lab||'')}</span><b>${fmtAmt(f.amt)}</b><span style="font-size:30px;color:#F97A30;font-weight:900">${esc(f.cur)}</span></div>`:''}</div><div class="rbb"></div>`}},
  city(sz,i,n,c,ci){const r=H.ranges()[ci],ph=c.photos.slice(0,3),m=ph.length>=3?'':ph.length===2?'m2':'m1',multi=O.cities.length>1;
@@ -1410,7 +1433,7 @@ const MG={
  prc(){const P=H.prices();return P.length?`<div class="prc">${P.map(p=>`<div class="p">${+p.stars?`<span class="stars">${'★'.repeat(+p.stars)}</span>`:''}<small>${esc(p.lab||'')}</small><b>${fmtAmt(p.amt)}<em>${esc(p.cur)}</em></b></div>`).join('')}</div>`:''},
  poster(sz){const g={sq:['300px','400px'],pt:['330px','540px'],st:['420px','800px']}[sz];
   return{cls:'poster',vars:`--gt:${g[0]};--gh:${g[1]}`,html:`${this.top()}<div class="mhd">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div></div>
-  ${this.grid()}${this.facts()}<div class="bt" data-fit><h4>البرنامج يشمل</h4>${this.il(H.incl().slice(0,6))}</div>${this.foot()}`}},
+  ${this.grid()}${this.facts()}<div class="bt" data-fit><h4>البرنامج يشمل</h4>${this.il(H.incl().slice(0,sz==='sq'?4:6))}</div>${this.foot()}`}},
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]},f=H.from();
   return{cls:'cover',vars:`--cb:${{sq:'400px',pt:'440px',st:'520px'}[sz]}`,html:`${this.top()}<div class="pic">${H.img(c0.photos[0],O.title)}</div>
   <div class="tx">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>
@@ -1459,7 +1482,7 @@ const VV={
  poster(sz){const c0=O.cities[0]||{photos:[]},P=H.prices(),f=H.from();
   const d={sq:['44%','230px','210px'],pt:['44%','290px','270px'],st:['40%','320px','320px']}[sz];
   return{cls:'poster',vars:`--ph:${d[0]};--sw:${d[1]};--sh:${d[2]}`,html:`<div class="pic">${H.img(c0.photos[0],O.title)}</div>${this.logo()}${this.stk()}
-  <div class="tt">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div><div class="row1">${this.pills()}</div></div>
+  <div class="tt" data-tmin="150">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div><div class="row1">${this.pills()}</div></div>
   <div class="mid" data-fit>${this.stks()}<div class="pr">${P.length>1?this.p2s():this.burst(f)}</div>${this.chips(H.incl().slice(0,6))}</div>${this.ftr()}`}},
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]};
   return{cls:'cover',vars:`--bb:${{sq:'300px',pt:'360px',st:'480px'}[sz]}`,html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div>${this.logo()}${this.stk()}${this.burst(H.from())}
@@ -1548,7 +1571,11 @@ function fit(fr){
   const bad=()=>{const r=document.createRange();r.selectNodeContents(el);const rs=[...r.getClientRects()];const tops=new Set(rs.map(x=>Math.round(x.top/4)));const ew=el.getBoundingClientRect().width;
    const maxW=Math.max(0,...rs.map(x=>x.width));return tops.size>lines||maxW>ew*.95||el.scrollWidth>el.clientWidth+2};
   let g=0;while(g++<45&&bad()&&ts>30){ts-=3;el.style.fontSize=ts+'px'}if(g>1||lines===1){el.style.fontSize=(ts*.97)+'px'}});
- $$('[data-fit]',fr).forEach(el=>{let f=1;el.style.setProperty('--f',1);let g=0;while(g++<30&&(el.scrollHeight>el.clientHeight+1)&&f>.55){f-=.04;el.style.setProperty('--f',f.toFixed(2))}})}
+ const sc=fr.getBoundingClientRect().height/parseFloat(fr.style.height)||1;
+ const ovf=el=>{if(el.scrollHeight>el.clientHeight+1||el.scrollWidth>el.clientWidth+1)return true;const er=el.getBoundingClientRect();for(const c of el.children){const r=c.getBoundingClientRect();if(r.height&&(r.top<er.top-2||r.bottom>er.bottom+2))return true}return false};
+ $$('[data-fit]',fr).forEach(el=>{let f=1;el.style.setProperty('--f',1);let g=0;while(g++<30&&ovf(el)&&f>.5){f-=.04;el.style.setProperty('--f',f.toFixed(2))}
+  const t=el.querySelector('[data-ft]');if(t){let ts=parseFloat(t.style.fontSize||getComputedStyle(t).fontSize);g=0;while(g++<30&&ovf(el)&&ts>40){ts-=4;t.style.fontSize=ts+'px'}}});
+ $$('[data-tmin]',fr).forEach(el=>{const t=el.querySelector('[data-ft]');if(!t)return;const top=()=>(el.getBoundingClientRect().top-fr.getBoundingClientRect().top)/sc;let ts=parseFloat(t.style.fontSize||getComputedStyle(t).fontSize),g=0;while(g++<30&&top()<+el.dataset.tmin&&ts>40){ts-=4;t.style.fontSize=ts+'px'}})}
 function scale(){const pv=$('#pv');const W=pv.clientWidth-4;const mob=innerWidth<=900;
  $$('.fw',pv).forEach(wr=>{const fr=wr.firstElementChild,w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');
   let s=W/w;if(O.out==='poster'){const mh=mob?innerHeight*.6:innerHeight-210;s=Math.min(s,mh/h)}if(O.out==='slides'&&!mob)s=Math.min(s,(innerHeight-210)/h);

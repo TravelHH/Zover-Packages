@@ -13,7 +13,7 @@ const MG={
  prc(){const P=H.prices();return P.length?`<div class="prc">${P.map(p=>`<div class="p">${+p.stars?`<span class="stars">${'★'.repeat(+p.stars)}</span>`:''}<small>${esc(p.lab||'')}</small><b>${fmtAmt(p.amt)}<em>${esc(p.cur)}</em></b></div>`).join('')}</div>`:''},
  poster(sz){const g={sq:['300px','400px'],pt:['330px','540px'],st:['420px','800px']}[sz];
   return{cls:'poster',vars:`--gt:${g[0]};--gh:${g[1]}`,html:`${this.top()}<div class="mhd">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="1">${esc(O.title||'اسم الباكيدج')}</div></div>
-  ${this.grid()}${this.facts()}<div class="bt" data-fit><h4>البرنامج يشمل</h4>${this.il(H.incl().slice(0,6))}</div>${this.foot()}`}},
+  ${this.grid()}${this.facts()}<div class="bt" data-fit><h4>البرنامج يشمل</h4>${this.il(H.incl().slice(0,sz==='sq'?4:6))}</div>${this.foot()}`}},
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]},f=H.from();
   return{cls:'cover',vars:`--cb:${{sq:'400px',pt:'440px',st:'520px'}[sz]}`,html:`${this.top()}<div class="pic">${H.img(c0.photos[0],O.title)}</div>
   <div class="tx">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>

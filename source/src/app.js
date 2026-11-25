@@ -57,7 +57,11 @@ function fit(fr){
   const bad=()=>{const r=document.createRange();r.selectNodeContents(el);const rs=[...r.getClientRects()];const tops=new Set(rs.map(x=>Math.round(x.top/4)));const ew=el.getBoundingClientRect().width;
    const maxW=Math.max(0,...rs.map(x=>x.width));return tops.size>lines||maxW>ew*.95||el.scrollWidth>el.clientWidth+2};
   let g=0;while(g++<45&&bad()&&ts>30){ts-=3;el.style.fontSize=ts+'px'}if(g>1||lines===1){el.style.fontSize=(ts*.97)+'px'}});
- $$('[data-fit]',fr).forEach(el=>{let f=1;el.style.setProperty('--f',1);let g=0;while(g++<30&&(el.scrollHeight>el.clientHeight+1)&&f>.55){f-=.04;el.style.setProperty('--f',f.toFixed(2))}})}
+ const sc=fr.getBoundingClientRect().height/parseFloat(fr.style.height)||1;
+ const ovf=el=>{if(el.scrollHeight>el.clientHeight+1||el.scrollWidth>el.clientWidth+1)return true;const er=el.getBoundingClientRect();for(const c of el.children){const r=c.getBoundingClientRect();if(r.height&&(r.top<er.top-2||r.bottom>er.bottom+2))return true}return false};
+ $$('[data-fit]',fr).forEach(el=>{let f=1;el.style.setProperty('--f',1);let g=0;while(g++<30&&ovf(el)&&f>.5){f-=.04;el.style.setProperty('--f',f.toFixed(2))}
+  const t=el.querySelector('[data-ft]');if(t){let ts=parseFloat(t.style.fontSize||getComputedStyle(t).fontSize);g=0;while(g++<30&&ovf(el)&&ts>40){ts-=4;t.style.fontSize=ts+'px'}}});
+ $$('[data-tmin]',fr).forEach(el=>{const t=el.querySelector('[data-ft]');if(!t)return;const top=()=>(el.getBoundingClientRect().top-fr.getBoundingClientRect().top)/sc;let ts=parseFloat(t.style.fontSize||getComputedStyle(t).fontSize),g=0;while(g++<30&&top()<+el.dataset.tmin&&ts>40){ts-=4;t.style.fontSize=ts+'px'}})}
 function scale(){const pv=$('#pv');const W=pv.clientWidth-4;const mob=innerWidth<=900;
  $$('.fw',pv).forEach(wr=>{const fr=wr.firstElementChild,w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');
   let s=W/w;if(O.out==='poster'){const mh=mob?innerHeight*.6:innerHeight-210;s=Math.min(s,mh/h)}if(O.out==='slides'&&!mob)s=Math.min(s,(innerHeight-210)/h);

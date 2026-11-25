@@ -41,13 +41,13 @@ const ZV={
   const dims={sq:['39%',220],pt:['37%',330],st:['33%',470]}[sz];
   return{cls:'poster',vars:`--hh:${dims[0]};--th:${dims[1]}px`,html:`
   <div class="hero">${H.img(c0.photos[0],c0.ar)}<div class="ov"></div>
-  <div class="htx">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
+  <div class="htx" data-tmin="185">${O.badge?`<span class="badge in">${esc(O.badge)}</span>`:''}${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}
   <div class="tiles">${tiles.map(t=>`<div class="tile">${H.img(t.src,t.t)}${multi?`<span class="n">${t.n}</span>`:''}${t.t?`<div class="lab">${esc(t.t)}${t.s?`<br><small>${esc(t.s)}</small>`:''}</div>`:''}</div>`).join('')}</div>
   <div class="low ${pr?'':'np'} ${inc.length?'':'ni'}">${inc.length?`<div class="incl" data-fit><h4>البرنامج يشمل</h4>${lis(inc)}</div>`:''}${pr?`<div class="prs" data-fit>${pr}</div>`:''}</div>${this.ftr()}`}},
  /* ---------- carousel ---------- */
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]},f=H.from();
-  return{cls:'cover',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div>${this.logo()}<span class="chip g swipe">اسحب ${IC.swipe}</span>${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
-  <div class="txt">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>
+  return{cls:'cover',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div>${this.logo()}<span class="chip g swipe">اسحب ${IC.swipe}</span>
+  <div class="txt">${O.badge?`<span class="badge in">${esc(O.badge)}</span>`:''}${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>
   ${O.cities.length>1?`<div class="cities">${H.cityLine().map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''}<div class="chips">${this.chips()}</div>
   ${f?`<div class="fromb"><span>يبدأ من<br>${esc(f.lab||'')}</span><b>${fmtAmt(f.amt)}</b><span style="font-size:30px;color:#F97A30;font-weight:900">${esc(f.cur)}</span></div>`:''}</div><div class="rbb"></div>`}},
  city(sz,i,n,c,ci){const r=H.ranges()[ci],ph=c.photos.slice(0,3),m=ph.length>=3?'':ph.length===2?'m2':'m1',multi=O.cities.length>1;
