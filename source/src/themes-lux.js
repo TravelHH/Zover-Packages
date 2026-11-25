@@ -1,7 +1,7 @@
 /* ======================= LUXURY THEME (فاخر) ======================= */
 const LX={
  name:'فاخر',
- logo:()=>`<div class="logo"><img src="${IMG.logo}"></div>`,
+ logo:()=>`<div class="logo"><img src="${IMG.glow}"></div>`,
  meta(){const n=H.tot();return`<div class="meta">${n?`<span><b>${n}</b> ${nW(n)}</span><span><b>${n+1}</b> ${dW(n+1)}</span>`:''}${O.dates?`<span>${esc(O.dates)}</span>`:''}</div>`},
  dv:()=>`<div class="div"><i></i></div>`,
  prices(){const P=H.prices();if(!P.length)return'';return`<div class="prs">${P.map(p=>`<div class="pr">${+p.stars?`<div class="st">${IC.star(22).repeat(+p.stars)}</div>`:''}<div class="am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div>${p.lab?`<div class="lb">${esc(p.lab)}</div>`:''}</div>`).join('')}</div>`},

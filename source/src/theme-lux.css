@@ -138,3 +138,15 @@
 .lx.pg.pfin .cb .ct{font-family:'Playfair Display';font-size:17px;direction:ltr}
 
 .fr.lx{background:#0B1626;color:#fff}.fr.lx.city,.fr.lx.pg{background:#F6F0E2;color:#1a2233}.fr.lx.pg.pcov{background:#0B1626;color:#fff}
+
+.lx .logo{background:none!important;box-shadow:none!important;padding:16px 0 0!important}
+.lx .logo img{height:104px}
+.lx.pg .logo img{height:66px}
+.lx.city .logo img{height:80px}
+.lx .cir b{white-space:nowrap;font-size:calc(var(--f,1)*25px)}
+.lx .cir div{max-width:220px}
+.lx .meta span{white-space:nowrap}
+.lx .pr .lb{white-space:nowrap}
+.lx .ft .cta{white-space:nowrap}
+.lx .frm{white-space:nowrap}
+.lx .logo img{height:120px}

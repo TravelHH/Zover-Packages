@@ -32,13 +32,13 @@ function lis(arr,ic=IC.ck){return arr.map(x=>`<div class="li"><i class="ck">${ic
 const ZV={
  name:'زوفر',
  ftr(){const c=H.contacts();return`<div class="ftr"><div class="rbl"></div><div class="bar"><div class="cts">${c.map(([t,v])=>`<div class="ct"><i class="${t==='wa'?'wa':''}">${IC[t]}</i>${esc(v)}</div>`).join('')||'<span class="co">زوفر العالمية للسفر والسياحة</span>'}</div>${C.cta?`<div class="cta">${esc(C.cta)} ${IC.arr}</div>`:''}</div></div>`},
- logo:()=>`<div class="logo"><img src="${IMG.logo}"></div>`,
+ logo:()=>`<div class="logo"><img src="${IMG.glow}"></div>`,
  chips(){const n=H.tot();return`${n?`<span class="chip w">${IC.moon} ${H.nights(n)} • ${H.days(n+1)}</span>`:''}${O.dates?`<span class="chip o">${IC.cal} ${esc(O.dates)}</span>`:''}`},
  /* ---------- all-in-one poster ---------- */
  poster(sz){const c0=O.cities[0]||{photos:[],ar:''},multi=O.cities.length>1;
   const tiles=multi?O.cities.slice(0,4).map((c,i)=>({src:H.cityPh(c,i===0?1:0),t:c.ar,s:`${c.n} ${nW(+c.n)}`,n:i+1})):[1,2,3].map(i=>({src:c0.photos[i]||'',t:(c0.spots||[])[i-1]||'',s:''}));
   const inc=H.incl().slice(0,7),pr=pcards();
-  const dims={sq:['47%',190],pt:['50%',250],st:['48%',430]}[sz];
+  const dims={sq:['39%',220],pt:['37%',330],st:['33%',470]}[sz];
   return{cls:'poster',vars:`--hh:${dims[0]};--th:${dims[1]}px`,html:`
   <div class="hero">${H.img(c0.photos[0],c0.ar)}<div class="ov"></div>
   <div class="htx">${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div><div class="chips">${this.chips()}</div></div></div>${this.logo()}${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
@@ -57,7 +57,7 @@ const ZV={
   <div class="bt" data-fit><div class="cn"><h2 data-ft="1">${esc(c.ar)}</h2><span class="chip p">${IC.moon} ${H.nights(+c.n)}</span></div>
   <div class="dr">من اليوم ${r[0]} إلى اليوم ${r[1]}${O.dates&&ci===0?` • ${esc(O.dates)}`:''}</div>
   ${sp.length?`<div class="sp">${sp.map(s=>`<div><i class="ck">${IC.ck}</i>${esc(s)}</div>`).join('')}</div>`:''}</div>
-  <div class="mini"><img src="${IMG.logo}"></div><span class="pgn">${i}/${n}</span>`}},
+  <div class="mini"><img src="${IMG.glow}"></div><span class="pgn">${i}/${n}</span>`}},
  itin(sz,i,n){const D=O.days.length?O.days:genDays();const rs=H.ranges();
   const cityOf=d=>{for(let k=0;k<rs.length;k++)if(d>=rs[k][0]&&d<=rs[k][1])return O.cities[k].ar;return''};
   return{cls:'itin',html:`<div class="ihd"><h2>البرنامج اليومي</h2><div>${H.tot()} ${nW(H.tot())} • ${esc(H.cityLine().join(' – '))}</div></div>${this.logo()}

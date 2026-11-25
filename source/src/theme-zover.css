@@ -222,3 +222,28 @@
 .zv.price .incl .li{font-size:calc(var(--f,1)*30px)}
 .zv.city .sp div{font-size:calc(var(--f,1)*31px);padding:16px 18px}
 .s-st.zv.city .sp{grid-template-columns:1fr}
+
+/* integrated glow logo */
+.zv .logo{background:none!important;box-shadow:none!important;padding:0!important;border-radius:0}
+.zv .logo img{height:118px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.25))}
+.s-sq.zv .logo img{height:100px}
+.zv.poster .logo{top:26px;right:34px}
+.zv.poster .htx{bottom:112px}
+.zv.poster .ttl{font-size:var(--ts,92px)}
+.zv.poster .sub{font-size:34px}
+.zv.city .mini{background:none;padding:0}.zv.city .mini img{height:72px}
+.zv.itin .logo img,.zv.price .logo img{height:96px}
+.zv.pg.pcov .logo img{height:84px}
+.zv.poster .logo{right:auto;left:34px;top:24px}
+.zv.poster .badge{left:auto;right:44px;top:40px}
+.zv.poster .incl h4{font-size:calc(var(--f,1)*36px)}
+.zv.poster .incl .li{font-size:calc(var(--f,1)*33px)}
+.zv.poster .incl .ck{width:calc(var(--f,1)*38px);height:calc(var(--f,1)*38px)}
+.zv.poster .incl{gap:calc(var(--f,1)*18px);padding:26px 30px}
+.zv.poster .pc .am b{font-size:calc(var(--f,1)*96px)}
+.zv.poster .pc .lb{font-size:calc(var(--f,1)*30px)}
+.zv.poster .pc{padding:22px 18px 24px}
+.s-sq.zv.poster .incl .li{font-size:calc(var(--f,1)*28px)}.s-sq.zv.poster .incl h4{font-size:calc(var(--f,1)*30px)}.s-sq.zv.poster .pc .am b{font-size:calc(var(--f,1)*76px)}
+.zv.poster .tile .lab{font-size:30px}
+.zv.poster .logo img{height:140px}
+.s-sq.zv.poster .logo img{height:118px}

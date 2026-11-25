@@ -30,7 +30,7 @@ if img.exists():
 h=r(S/'shell.html')
 rep={'/*FONTS*/':fonts,'/*UICSS*/':r(S/'ui.css'),'/*THEMECSS*/':r(S/'theme-zover.css')+r(S/'theme-lux.css'),
  '/*LIBS*/':r(f'{NM}/html-to-image/dist/html-to-image.js').replace('//# sourceMappingURL=html-to-image.js.map','')+'\n'+r(f'{NM}/fflate/umd/index.js'),
- '/*LOGO*/':'data:image/png;base64,'+b64('/home/claude/build/logo_small.png'),'/*DOVE*/':'data:image/png;base64,'+b64('/home/claude/build/dove_white.png'),
+ '/*GLOW*/':'data:image/png;base64,'+b64('/home/claude/build/logo_glow.png'),'/*LOGO*/':'data:image/png;base64,'+b64('/home/claude/build/logo_small.png'),'/*DOVE*/':'data:image/png;base64,'+b64('/home/claude/build/dove_white.png'),
  '/*ICON*/':'data:image/png;base64,'+b64('/home/claude/build/icon-192.png'),'/*LIBMAP*/':json.dumps(lib),
  '/*DATA*/':'\n'.join(keep),'/*SPOTS*/':r(S/'spots.js'),'/*THEMES*/':r(S/'themes.js')+'\n'+r(S/'themes-lux.js'),'/*APPJS*/':r(S/'app.js')}
 for k,v in rep.items(): h=h.replace(k,v)
