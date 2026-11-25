@@ -10,6 +10,9 @@ def ff(fam,path,w,ur=''):
 AR="unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+200C-200E,U+FB50-FDFF,U+FE70-FEFC;"
 for w in (400,700): fonts+=ff('Amiri',f'{NM}/@fontsource/amiri/files/amiri-arabic-{w}-normal.woff2',w,AR)
 for w in (500,600,700): fonts+=ff('El Messiri',f'{NM}/@fontsource/el-messiri/files/el-messiri-arabic-{w}-normal.woff2',w,AR)
+for w in (300,500,700): fonts+=ff('IBM Plex Sans Arabic',f'{NM}/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-{w}-normal.woff2',w,AR)+ff('IBM Plex Sans Arabic',f'{NM}/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-latin-{w}-normal.woff2',w)
+fonts+=ff('Lalezar',f'{NM}/@fontsource/lalezar/files/lalezar-arabic-400-normal.woff2',400,AR)+ff('Lalezar',f'{NM}/@fontsource/lalezar/files/lalezar-latin-400-normal.woff2',400)
+for w in (500,700,800): fonts+=ff('Changa',f'{NM}/@fontsource/changa/files/changa-arabic-{w}-normal.woff2',w,AR)+ff('Changa',f'{NM}/@fontsource/changa/files/changa-latin-{w}-normal.woff2',w)
 for w in (700,900): fonts+=ff('Playfair Display',f'{NM}/@fontsource/playfair-display/files/playfair-display-latin-{w}-normal.woff2',w)
 for w in (500,700,800,900):
     fonts+="@font-face{font-family:'Outfit';font-weight:%d;font-display:block;src:url(data:font/woff2;base64,%s) format('woff2');}\n"%(w,b64(f'{NM}/@fontsource/outfit/files/outfit-latin-{w}-normal.woff2'))
@@ -28,11 +31,11 @@ if img.exists():
         fs=sorted(f.name for f in d.iterdir() if f.suffix=='.jpg')
         if fs: lib[d.name]=fs
 h=r(S/'shell.html')
-rep={'/*FONTS*/':fonts,'/*UICSS*/':r(S/'ui.css'),'/*THEMECSS*/':r(S/'theme-zover.css')+r(S/'theme-lux.css'),
+rep={'/*FONTS*/':fonts,'/*UICSS*/':r(S/'ui.css'),'/*THEMECSS*/':r(S/'theme-zover.css')+r(S/'theme-lux.css')+r(S/'theme-mag.css')+r(S/'theme-viv.css'),
  '/*LIBS*/':r(f'{NM}/html-to-image/dist/html-to-image.js').replace('//# sourceMappingURL=html-to-image.js.map','')+'\n'+r(f'{NM}/fflate/umd/index.js'),
  '/*GLOW*/':'data:image/png;base64,'+b64('/home/claude/build/logo_glow.png'),'/*LOGO*/':'data:image/png;base64,'+b64('/home/claude/build/logo_small.png'),'/*DOVE*/':'data:image/png;base64,'+b64('/home/claude/build/dove_white.png'),
  '/*ICON*/':'data:image/png;base64,'+b64('/home/claude/build/icon-192.png'),'/*LIBMAP*/':json.dumps(lib),
- '/*DATA*/':'\n'.join(keep),'/*SPOTS*/':r(S/'spots.js'),'/*THEMES*/':r(S/'themes.js')+'\n'+r(S/'themes-lux.js'),'/*APPJS*/':r(S/'app.js')}
+ '/*DATA*/':'\n'.join(keep),'/*SPOTS*/':r(S/'spots.js'),'/*THEMES*/':r(S/'themes.js')+'\n'+r(S/'themes-lux.js')+'\n'+r(S/'themes-mag.js')+'\n'+r(S/'themes-viv.js'),'/*APPJS*/':r(S/'app.js')}
 for k,v in rep.items(): h=h.replace(k,v)
 open(B/'dist'/'index.html','w',encoding='utf-8').write(h)
 print('size',len(h.encode())//1024,'KB', 'lib',{k:len(v) for k,v in lib.items()})

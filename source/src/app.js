@@ -10,7 +10,7 @@ function busy(on,m){$('#busy').classList.toggle('on',!!on);if(m)$('#busyMsg').te
 
 const SIZES={sq:[1080,1080,'مربع 1:1'],pt:[1080,1350,'طولي 4:5'],st:[1080,1920,'ستوري 9:16']};
 const OUTS=[['poster','🖼️','صورة شاملة'],['slides','🎞️','مجموعة صور'],['pdf','📄','بروشور PDF']];
-const THEME_LIST=[['zover','زوفر','بنفسجي وبرتقالي – هوية الشركة',1],['lux','فاخر','كحلي وذهبي – خط كلاسيكي',1],['mag','مجلة','أبيض نظيف – قريبًا',0],['viv','حيوي','ألوان جريئة – قريبًا',0]];
+const THEME_LIST=[['zover','زوفر','بنفسجي وبرتقالي – هوية الشركة',1],['lux','فاخر','كحلي وذهبي – خط كلاسيكي',1],['mag','مجلة','أبيض نظيف – أسلوب صحفي',1],['viv','حيوي','ألوان جريئة – للسوشيال',1]];
 const CURS=['ر.س','€','$','£','د.إ'];
 const LABELS=['السعر للشخصين','السعر للفرد','للفرد في غرفة مزدوجة','السعر للعائلة','فندق 4 نجوم','فندق 5 نجوم'];
 const BADGES=['عرض خاص','عروض الصيف','عروض الشتاء','عرض محدود','شامل الطيران','أفضل سعر'];
@@ -53,8 +53,10 @@ function renderFrames(){const pv=$('#pv');const specs=frameSpecs();pv.innerHTML=
  const imgs=$$('img',pv);Promise.all(imgs.map(im=>im.complete?0:new Promise(r=>{im.onload=im.onerror=r}))).then(()=>{$$('.fr',pv).forEach(fit);scale()});
  $$('.fr',pv).forEach(fit);scale()}
 function fit(fr){
- $$('[data-ft]',fr).forEach(el=>{const lines=+el.dataset.ft;let ts=parseFloat(getComputedStyle(el).fontSize);el.style.fontSize='';ts=parseFloat(getComputedStyle(el).fontSize);
-  let g=0;while(g++<40&&(el.scrollHeight>ts*1.14*lines+6||el.scrollWidth>el.clientWidth+2)&&ts>30){ts-=3;el.style.fontSize=ts+'px'}});
+ $$('[data-ft]',fr).forEach(el=>{const lines=+el.dataset.ft;el.style.fontSize='';let ts=parseFloat(getComputedStyle(el).fontSize);
+  const bad=()=>{const r=document.createRange();r.selectNodeContents(el);const rs=[...r.getClientRects()];const tops=new Set(rs.map(x=>Math.round(x.top/4)));const ew=el.getBoundingClientRect().width;
+   const maxW=Math.max(0,...rs.map(x=>x.width));return tops.size>lines||maxW>ew*.95||el.scrollWidth>el.clientWidth+2};
+  let g=0;while(g++<45&&bad()&&ts>30){ts-=3;el.style.fontSize=ts+'px'}if(g>1||lines===1){el.style.fontSize=(ts*.97)+'px'}});
  $$('[data-fit]',fr).forEach(el=>{let f=1;el.style.setProperty('--f',1);let g=0;while(g++<30&&(el.scrollHeight>el.clientHeight+1)&&f>.55){f-=.04;el.style.setProperty('--f',f.toFixed(2))}})}
 function scale(){const pv=$('#pv');const W=pv.clientWidth-4;const mob=innerWidth<=900;
  $$('.fw',pv).forEach(wr=>{const fr=wr.firstElementChild,w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');
@@ -144,8 +146,8 @@ document.addEventListener('input',e=>{const t=e.target,d=t.dataset;
 document.addEventListener('change',e=>{const t=e.target,d=t.dataset;if(d.p&&t.tagName==='SELECT'){const [i,k]=d.p.split('.');O.prices[+i][k]=t.value;touch()}if(d.a2){O[d.a2]=t.checked;touch()}});
 
 /* ---------- export ---------- */
-let _fc=null;
-async function capture(fr,ratio){await document.fonts.ready;if(!_fc)_fc=await htmlToImage.getFontEmbedCSS(fr);const w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');
+const _fcs={};
+async function capture(fr,ratio){await document.fonts.ready;const fk=O.theme+fr.className;if(!_fcs[fk])_fcs[fk]=await htmlToImage.getFontEmbedCSS(fr);const _fc=_fcs[fk];const w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');
  const o={width:w,height:h,pixelRatio:ratio||1,fontEmbedCSS:_fc,style:{transform:'none'},backgroundColor:getComputedStyle(fr).backgroundColor,cacheBust:false};
  if(!capture.w){await htmlToImage.toCanvas(fr,{...o,pixelRatio:.2}).catch(()=>{});capture.w=1}return htmlToImage.toCanvas(fr,o)}
 const blobOf=c=>new Promise(r=>c.toBlob(r,'image/jpeg',.93));
