@@ -123,3 +123,4 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .cty .ch{flex-wrap:wrap}
 .cty .nm{flex:1 1 55%}
 @media (max-width:900px){.cty .ch>div[style]{flex:1 1 auto}}
+#form input.in,#form textarea{unicode-bidi:plaintext}

@@ -17,7 +17,7 @@ for w in (400,600,800,900): fonts+=ff('Alexandria',f'{NM}/@fontsource/alexandria
 for w in (400,600,700): fonts+=ff('Readex Pro',f'{NM}/@fontsource/readex-pro/files/readex-pro-arabic-{w}-normal.woff2',w,AR)+ff('Readex Pro',f'{NM}/@fontsource/readex-pro/files/readex-pro-latin-{w}-normal.woff2',w)
 for w in (500,700,900): fonts+=ff('Noto Kufi Arabic',f'{NM}/@fontsource/noto-kufi-arabic/files/noto-kufi-arabic-arabic-{w}-normal.woff2',w,AR)
 for w in (700,900): fonts+=ff('Playfair Display',f'{NM}/@fontsource/playfair-display/files/playfair-display-latin-{w}-normal.woff2',w)
-for w in (500,700,800,900):
+for w in (400,500,600,700,800,900):
     fonts+="@font-face{font-family:'Outfit';font-weight:%d;font-display:block;src:url(data:font/woff2;base64,%s) format('woff2');}\n"%(w,b64(f'{NM}/@fontsource/outfit/files/outfit-latin-{w}-normal.woff2'))
 data=r(S/'data.js'); keep=[]
 for name in ('const CITIES = {','const DESTS = [','const VIA = '):
@@ -34,11 +34,11 @@ if img.exists():
         fs=sorted(f.name for f in d.iterdir() if f.suffix=='.jpg')
         if fs: lib[d.name]=fs
 h=r(S/'shell.html')
-rep={'/*FONTS*/':fonts,'/*UICSS*/':r(S/'ui.css'),'/*THEMECSS*/':r(S/'theme-zover.css')+r(S/'theme-lux.css')+r(S/'theme-mag.css')+r(S/'theme-viv.css'),
+rep={'/*FONTS*/':fonts,'/*UICSS*/':r(S/'ui.css'),'/*THEMECSS*/':r(S/'theme-zover.css')+r(S/'theme-lux.css')+r(S/'theme-mag.css')+r(S/'theme-viv.css')+r(S/'theme-p2.css'),
  '/*LIBS*/':r(f'{NM}/html-to-image/dist/html-to-image.js').replace('//# sourceMappingURL=html-to-image.js.map','')+'\n'+r(f'{NM}/fflate/umd/index.js'),
  '/*GLOW*/':'data:image/png;base64,'+b64('/home/claude/build/logo_glow.png'),'/*LOGO*/':'data:image/png;base64,'+b64('/home/claude/build/logo_small.png'),'/*DOVE*/':'data:image/png;base64,'+b64('/home/claude/build/dove_white.png'),
  '/*ICON*/':'data:image/png;base64,'+b64('/home/claude/build/icon-192.png'),'/*LIBMAP*/':json.dumps(lib),
- '/*DATA*/':'\n'.join(keep),'/*SPOTS*/':r(S/'spots.js'),'/*THEMES*/':r(S/'themes.js')+'\n'+r(S/'themes-lux.js')+'\n'+r(S/'themes-mag.js')+'\n'+r(S/'themes-viv.js'),'/*APPJS*/':r(S/'app.js')}
+ '/*DATA*/':'\n'.join(keep),'/*SPOTS*/':r(S/'spots.js'),'/*THEMES*/':r(S/'themes.js')+'\n'+r(S/'themes-lux.js')+'\n'+r(S/'themes-mag.js')+'\n'+r(S/'themes-viv.js')+'\n'+r(S/'poster2.js'),'/*APPJS*/':r(S/'app.js')}
 for k,v in rep.items(): h=h.replace(k,v)
 open(B/'dist'/'index.html','w',encoding='utf-8').write(h)
 print('size',len(h.encode())//1024,'KB', 'lib',{k:len(v) for k,v in lib.items()})

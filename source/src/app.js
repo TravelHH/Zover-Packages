@@ -10,16 +10,23 @@ function busy(on,m){$('#busy').classList.toggle('on',!!on);if(m)$('#busyMsg').te
 
 const SIZES={sq:[1080,1080,'مربع 1:1'],pt:[1080,1350,'طولي 4:5'],st:[1080,1920,'ستوري 9:16']};
 const OUTS=[['poster','🖼️','صورة شاملة'],['slides','🎞️','مجموعة صور'],['pdf','📄','بروشور PDF']];
-const THEME_LIST=[['zover','زوفر','بنفسجي وبرتقالي – هوية الشركة',1],['lux','فاخر','كحلي وذهبي – خط كلاسيكي',1],['mag','مجلة','أبيض نظيف – أسلوب صحفي',1],['viv','حيوي','ألوان جريئة – للسوشيال',1]];
-const CURS=['ر.س','€','$','£','د.إ'];
-const LABELS=['السعر للشخصين','السعر للفرد','للفرد في غرفة مزدوجة','السعر للعائلة','فندق 4 نجوم','فندق 5 نجوم'];
-const BADGES=['عرض خاص','عروض الصيف','عروض الشتاء','عرض محدود','شامل الطيران','أفضل سعر'];
-const INCL=n=>['تذاكر الطيران ذهاب وعودة',`الإقامة ${n} ${nW(n)} مع الإفطار`,'فنادق 4 نجوم','فنادق 5 نجوم','الاستقبال والتوديع من وإلى المطار','سيارة خاصة مع سائق','جولات سياحية حسب البرنامج','شريحة اتصال وإنترنت','تأمين السفر','التأشيرة','شامل الضرائب'];
-const EXCL0=['المصاريف الشخصية والإكراميات','الوجبات غير المذكورة','الجولات الاختيارية','رسوم التأشيرة ما لم تُذكر'];
+const THEME_LIST=[['zover','زوفر','بنفسجي وبرتقالي – هوية الشركة',1],['lux','فاخر','كحلي وذهبي – فخامة هادية',1],['mag','مجلة','أبيض نظيف – أسلوب مجلات',1],['viv','ملوّن','بنفسجي وأصفر – جريء ومرتب',1]];
+const isEN=()=>O&&O.lang==='en';
+const CURS_AR=['ر.س','€','$','£','د.إ'],CURS_EN=['SAR','€','$','£','AED'];
+const LABELS_AR=['السعر للشخصين','السعر للفرد','للفرد في غرفة مزدوجة','السعر للعائلة','فندق 4 نجوم','فندق 5 نجوم'],
+ LABELS_EN=['Price for two','Per person','Per person in a double room','Family price','4-star hotel','5-star hotel'];
+const BADGES_AR=['عرض خاص','عروض الصيف','عروض الشتاء','عرض محدود','شامل الطيران','أفضل سعر'],
+ BADGES_EN=['Special offer','Summer deal','Winter deal','Limited offer','Flights included','Best price'];
+const INCL_AR=n=>['تذاكر الطيران ذهاب وعودة',`الإقامة ${n} ${nW(n)} مع الإفطار`,'فنادق 4 نجوم','فنادق 5 نجوم','الاستقبال والتوديع من وإلى المطار','سيارة خاصة مع سائق','جولات سياحية حسب البرنامج','شريحة اتصال وإنترنت','تأمين السفر','التأشيرة','شامل الضرائب'],
+ INCL_EN=n=>['Return flights',`${n} ${n===1?'night':'nights'} with breakfast`,'4-star hotels','5-star hotels','Airport transfers','Private car with driver','Sightseeing tours as per program','SIM card with data','Travel insurance','Visa','All taxes included'];
+const EXCL_AR=['المصاريف الشخصية والإكراميات','الوجبات غير المذكورة','الجولات الاختيارية','رسوم التأشيرة ما لم تُذكر'],
+ EXCL_EN=['Personal expenses and tips','Meals not mentioned','Optional tours','Visa fees unless stated'];
+const CURS_=()=>isEN()?CURS_EN:CURS_AR,LABELS_=()=>isEN()?LABELS_EN:LABELS_AR,BADGES_=()=>isEN()?BADGES_EN:BADGES_AR,INCL=n=>isEN()?INCL_EN(n):INCL_AR(n);
+const EXCL0=EXCL_AR;
 
 const libPhotos=k=>(LIB[k]||[]).map(f=>`img/${k}/${f}`);
-const mkCity=(k,n)=>{const c=CITIES[k]||{ar:k};return{id:uid(),key:k,ar:c.ar,n:n||3,photos:libPhotos(k),spots:(SPOTS[k]||['','','','']).slice()}};
-const newOffer=()=>({v:3,id:uid(),theme:'zover',font:'alexandria',size:'pt',out:'poster',destId:'',sub:'',title:'',cities:[],dates:'',badge:'',
+const mkCity=(k,n)=>{const c=CITIES[k]||{ar:k};return{id:uid(),key:k,ar:isEN()?(c.en||c.ar):c.ar,n:n||3,photos:libPhotos(k),spots:((isEN()?SPOTS_EN[k]:SPOTS[k])||['','','','']).slice()}};
+const newOffer=()=>({v:3,id:uid(),lang:'ar',theme:'zover',font:'alexandria',size:'pt',out:'poster',destId:'',sub:'',title:'',cities:[],dates:'',badge:'',
  prices:[{amt:'',cur:'ر.س',lab:'السعر للشخصين',stars:''}],incl:[],excl:EXCL0.slice(),notes:'',showItin:true,days:[],updated:Date.now()});
 let O=newOffer();
 let C=Object.assign({phone:'',wa:'',web:'',cta:'احجز الآن'},JSON.parse(localStorage.getItem('zst_set')||'{}'));
@@ -27,12 +34,13 @@ const saveC=()=>localStorage.setItem('zst_set',JSON.stringify(C));
 
 function genDays(){const D=[],cs=O.cities;if(!cs.length)return D;
  cs.forEach((c,ci)=>{const t=CITIES[c.key],acts=t?t.act:[];let ai=0;const n=Math.max(1,+c.n||1);
+  const en=isEN(),v=(VIA[c.via]||VIA.air);
   for(let k=0;k<n;k++){
-   if(ci===0&&k===0)D.push(t&&t.arr?t.arr[0]:`الوصول إلى ${c.ar} والاستقبال في المطار ثم التوجه إلى الفندق`);
-   else if(k===0)D.push(`الانتقال ${(VIA[c.via]||VIA.air)[0]} إلى ${c.ar} وتسجيل الدخول في الفندق`);
-   else if(ai<acts.length)D.push(acts[ai++][0]);
-   else D.push(`يوم حر للراحة والتسوق في ${c.ar}`)}});
- D.push('تسجيل الخروج والتوجه إلى المطار للمغادرة مع أطيب الأمنيات');return D}
+   if(ci===0&&k===0)D.push(en?`Arrive in ${c.ar}, airport welcome and transfer to the hotel`:`الوصول إلى ${c.ar} والاستقبال في المطار ثم التوجه إلى الفندق`);
+   else if(k===0)D.push(en?`Travel ${v[1]} to ${c.ar} and hotel check-in`:`الانتقال ${v[0]} إلى ${c.ar} وتسجيل الدخول في الفندق`);
+   else if(ai<acts.length)D.push(acts[ai++][en?1:0]);
+   else D.push(en?`Free day for leisure and shopping in ${c.ar}`:`يوم حر للراحة والتسوق في ${c.ar}`)}});
+ D.push(isEN()?'Check out and transfer to the airport for departure':'تسجيل الخروج والتوجه إلى المطار للمغادرة مع أطيب الأمنيات');return D}
 
 /* ---------- IndexedDB ---------- */
 const DB={db:null,open(){return new Promise(r=>{try{const q=indexedDB.open('zover-studio',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{this.db=q.result;r()};q.onerror=()=>r()}catch(e){r()}})},
@@ -45,10 +53,10 @@ let _rt;const schedule=()=>{clearTimeout(_rt);_rt=setTimeout(renderFrames,220)};
 function frameSpecs(){const T=THEMES[O.theme]||ZV,sz=O.size,[w,h]=SIZES[sz];
  if(O.out==='poster')return[{...T.poster(sz),w,h,sz}];
  if(O.out==='slides')return T.slides(sz).map(f=>({...f,w,h,sz}));
- return T.pdf().map(f=>({...f,w:794,h:1123,sz:'a4'}))}
+ return T.pdf().map(f=>({...f,w:1080,h:1527,sz:'a4'}))}
 function renderFrames(){const pv=$('#pv');const specs=frameSpecs();pv.innerHTML='';
  specs.forEach((f,i)=>{const wr=document.createElement('div');wr.className='fw';
-  wr.innerHTML=`<div class="fr ${({zover:'zv',lux:'lx',mag:'mg',viv:'vv'})[O.theme]||'zv'} ${f.cls} s-${f.sz} zf-${O.font||'alexandria'}" style="width:${f.w}px;height:${f.h}px;${f.vars||''}">${f.html}</div>${O.out!=='poster'?`<span class="fno">${i+1}</span>`:''}`;
+  wr.innerHTML=`<div class="fr ${({zover:'zv',lux:'lx',mag:'mg',viv:'vv'})[O.theme]||'zv'} ${f.cls} s-${f.sz} zf-${O.font||'alexandria'}" dir="${isEN()?'ltr':'rtl'}" lang="${isEN()?'en':'ar'}" style="width:${f.w}px;height:${f.h}px;${f.vars||''}">${f.html}</div>${O.out!=='poster'?`<span class="fno">${i+1}</span>`:''}`;
   pv.appendChild(wr)});
  const imgs=$$('img',pv);Promise.all(imgs.map(im=>im.complete?0:new Promise(r=>{im.onload=im.onerror=r}))).then(()=>{$$('.fr',pv).forEach(fit);scale()});
  $$('.fr',pv).forEach(fit);scale()}
@@ -75,6 +83,7 @@ function form(){const n=O.cities.reduce((a,c)=>a+(+c.n||0),0)||6;
  $('#acts').innerHTML=O.out==='poster'?`<button class="btn o" data-a="dl">⬇️ تحميل الصورة</button><button class="btn wa" data-a="share">📤 مشاركة</button>`:O.out==='slides'?`<button class="btn o" data-a="zip">⬇️ تحميل كل الصور</button><button class="btn wa" data-a="shareall">📤 مشاركة الكل</button>`:`<button class="btn o" data-a="pdf">⬇️ تحميل PDF</button><button class="btn wa" data-a="sharepdf">📤 مشاركة</button>`;
  $('#mbar').innerHTML=$('#acts').innerHTML+'<button class="btn gh" data-a="save">💾</button>';
  $('#form').innerHTML=`
+ <div class="card"><h3>🌐 لغة العرض</h3><div class="seg lng"><button class="${!isEN()?'on':''}" data-a="lang" data-v="ar">العربية</button><button class="${isEN()?'on':''}" data-a="lang" data-v="en" style="font-family:Outfit">English</button></div></div>
  <div class="card"><h3>🎨 الثيم</h3><div class="ths">${THEME_LIST.map(([k,l,d,on])=>`<button class="th ${O.theme===k?'on':''} ${on?'':'soon'}" data-a="${on?'theme':''}" data-v="${k}"><span class="sw sw-${k}"></span><b>${l}</b><small>${d}</small></button>`).join('')}</div>
   ${O.theme==='zover'?`<div class="seg">${[['alexandria','Alexandria'],['readex','Readex'],['kufi','كوفي'],['tajawal','Tajawal']].map(([k,l])=>`<button class="${(O.font||'alexandria')===k?'on':''}" data-a="font" data-v="${k}" style="font-family:${({alexandria:'Alexandria',readex:'Readex Pro',kufi:'Noto Kufi Arabic',tajawal:'Tajawal'})[k]}">${l}</button>`).join('')}</div>`:''}
   ${O.out!=='pdf'?`<div class="seg">${Object.entries(SIZES).map(([k,v])=>`<button class="${O.size===k?'on':''}" data-a="size" data-v="${k}">${v[2]}</button>`).join('')}</div>`:''}</div>
@@ -83,7 +92,7 @@ function form(){const n=O.cities.reduce((a,c)=>a+(+c.n||0),0)||6;
   <label class="fl"><span>السطر الصغير</span><input class="in" data-b="sub" value="${esc(O.sub)}" placeholder="مثال: عروض الشتاء في"></label>
   <label class="fl"><span>اسم الباكيدج</span><input class="in" data-b="title" value="${esc(O.title)}" placeholder="مثال: إسطنبول وكبادوكيا"></label>
   <div class="g2"><label class="fl"><span>المواعيد</span><input class="in" data-b="dates" value="${esc(O.dates)}" placeholder="من 1 إلى 30 ديسمبر"></label>
-  <label class="fl"><span>شارة العرض</span><input class="in" data-b="badge" value="${esc(O.badge)}" list="bdl" placeholder="اختياري"><datalist id="bdl">${BADGES.map(b=>`<option value="${b}">`).join('')}</datalist></label></div></div>
+  <label class="fl"><span>شارة العرض</span><input class="in" data-b="badge" value="${esc(O.badge)}" list="bdl" placeholder="اختياري"><datalist id="bdl">${BADGES_().map(b=>`<option value="${b}">`).join('')}</datalist></label></div></div>
  <div class="card"><h3>🏙️ المدن والصور <span class="cnt">${O.cities.length} مدينة • ${n} ${nW(n)}</span></h3>
   ${O.cities.map((c,i)=>`<div class="cty"><div class="ch"><span class="no">${i+1}</span><input class="in nm" data-c="${i}.ar" value="${esc(c.ar)}"><div style="width:150px">${stp('c.'+i+'.n',c.n)}</div>
    <button class="btn gh xs" data-a="cmv" data-i="${i}" data-d="-1" ${i?'':'disabled'}>▲</button><button class="btn rd xs" data-a="cdel" data-i="${i}">✕</button></div>
@@ -92,8 +101,8 @@ function form(){const n=O.cities.reduce((a,c)=>a+(+c.n||0),0)||6;
    ${!(LIB[c.key]||[]).length&&!c.photos.length?'<div class="hint">مفيش صور جاهزة للمدينة دي لسه – ارفع صورك</div>':''}</div>`).join('')||'<div class="empty">اختار باكيدج جاهز من فوق أو ضيف مدينة</div>'}
   <select class="in" id="addc"><option value="">+ إضافة مدينة…</option>${Object.entries(CITIES).map(([k,c])=>`<option value="${k}">${c.ar}${(LIB[k]||[]).length?' 📸':''}</option>`).join('')}</select></div>
  <div class="card"><h3>💰 الأسعار<span class="sp"></span>${O.prices.length<3?'<button class="btn gh xs" data-a="padd">+ سعر</button>':''}</h3>
-  ${O.prices.map((p,i)=>`<div class="prow"><div class="top"><input class="in am" data-p="${i}.amt" inputmode="decimal" value="${esc(p.amt)}" placeholder="السعر"><select class="in" data-p="${i}.cur">${CURS.map(c=>`<option ${p.cur===c?'selected':''}>${c}</option>`).join('')}</select><select class="in" data-p="${i}.stars"><option value="">بدون نجوم</option>${[3,4,5].map(s=>`<option value="${s}" ${+p.stars===s?'selected':''}>${s} ★</option>`).join('')}</select><button class="btn rd xs" data-a="prm" data-i="${i}">✕</button></div>
-  <input class="in" style="margin-top:8px" data-p="${i}.lab" value="${esc(p.lab)}" list="lbl" placeholder="السعر للشخصين"></div>`).join('')}<datalist id="lbl">${LABELS.map(b=>`<option value="${b}">`).join('')}</datalist></div>
+  ${O.prices.map((p,i)=>`<div class="prow"><div class="top"><input class="in am" data-p="${i}.amt" inputmode="decimal" value="${esc(p.amt)}" placeholder="السعر"><select class="in" data-p="${i}.cur">${CURS_().map(c=>`<option ${p.cur===c?'selected':''}>${c}</option>`).join('')}</select><select class="in" data-p="${i}.stars"><option value="">بدون نجوم</option>${[3,4,5].map(s=>`<option value="${s}" ${+p.stars===s?'selected':''}>${s} ★</option>`).join('')}</select><button class="btn rd xs" data-a="prm" data-i="${i}">✕</button></div>
+  <input class="in" style="margin-top:8px" data-p="${i}.lab" value="${esc(p.lab)}" list="lbl" placeholder="السعر للشخصين"></div>`).join('')}<datalist id="lbl">${LABELS_().map(b=>`<option value="${b}">`).join('')}</datalist></div>
  <div class="card"><h3>✅ البرنامج يشمل</h3>
   <div class="chips">${INCL(n).map(x=>`<button class="chip ${O.incl.includes(x)?'on':''}" data-a="ich" data-v="${esc(x)}">${O.incl.includes(x)?'✓':'+'} ${esc(x)}</button>`).join('')}</div>
   ${O.incl.map((x,i)=>`<div class="irow"><input class="in" data-l="incl.${i}" value="${esc(x)}"><button class="btn rd xs" data-a="ldel" data-l="incl" data-i="${i}">✕</button></div>`).join('')}
@@ -111,9 +120,23 @@ function form(){const n=O.cities.reduce((a,c)=>a+(+c.n||0),0)||6;
  $('#addc').onchange=e=>{const k=e.target.value;if(!k)return;const c=mkCity(k,3);c.via='air';O.cities.push(c);O.days=[];touch();form()};
  $$('[data-up]').forEach(inp=>inp.onchange=()=>addPhotos(+inp.dataset.up,inp.files));
 }
-function loadDest(d){O.destId=d.id;O.title=d.ar;O.sub=d.ar===d.car||d.ar.includes(d.car)?'باكيدج':`باكيدج ${d.car}`;
+function loadDest(d){O.destId=d.id;if(isEN()){O.title=d.en;O.sub=d.en===d.cen||d.en.includes(d.cen)?'Holiday package':`${d.cen} holiday package`}else{O.title=d.ar;O.sub=d.ar===d.car||d.ar.includes(d.car)?'باكيدج':`باكيدج ${d.car}`}
  O.cities=d.cities.map(([k,n,via])=>{const c=mkCity(k,n);c.via=via||'air';return c});O.days=[];const t=O.cities.reduce((a,c)=>a+c.n,0);
- if(!O.incl.length)O.incl=[`الإقامة ${t} ${nW(t)} مع الإفطار`,'الاستقبال والتوديع من وإلى المطار','جولات سياحية حسب البرنامج','شريحة اتصال وإنترنت'];touch();form()}
+ if(!O.incl.length){const I=INCL(t);O.incl=[I[1],I[4],I[6],I[7]]}touch();form()}
+/* switch an offer between Arabic and English, translating every built-in text */
+function relang(to){if(O.lang===to)return;const from=O.lang,n=H.tot()||1;
+ const sw=(v,A,B)=>{const i=A.indexOf(v);return i>=0?B[i]:v};
+ const IA=from==='ar'?INCL_AR(n):INCL_EN(n),IB=from==='ar'?INCL_EN(n):INCL_AR(n),EA=from==='ar'?EXCL_AR:EXCL_EN,EB=from==='ar'?EXCL_EN:EXCL_AR;
+ const LA=from==='ar'?LABELS_AR:LABELS_EN,LB=from==='ar'?LABELS_EN:LABELS_AR,BA=from==='ar'?BADGES_AR:BADGES_EN,BB=from==='ar'?BADGES_EN:BADGES_AR,CA=from==='ar'?CURS_AR:CURS_EN,CB=from==='ar'?CURS_EN:CURS_AR;
+ const d=DESTS.find(x=>x.id===O.destId);
+ if(d){const ar={t:d.ar,s:d.ar===d.car||d.ar.includes(d.car)?'باكيدج':`باكيدج ${d.car}`},en={t:d.en,s:d.en===d.cen||d.en.includes(d.cen)?'Holiday package':`${d.cen} holiday package`};
+  const A=from==='ar'?ar:en,B=from==='ar'?en:ar;if(O.title===A.t)O.title=B.t;if(O.sub===A.s)O.sub=B.s}
+ O.cities.forEach(c=>{const t=CITIES[c.key];if(!t)return;const nmA=from==='ar'?t.ar:t.en,nmB=from==='ar'?t.en:t.ar;if(c.ar===nmA)c.ar=nmB;
+  const SA=(from==='ar'?SPOTS:SPOTS_EN)[c.key]||[],SB=(from==='ar'?SPOTS_EN:SPOTS)[c.key]||[];c.spots=(c.spots||[]).map(x=>sw(x,SA,SB))});
+ O.incl=O.incl.map(x=>sw(x,IA,IB));O.excl=O.excl.map(x=>sw(x,EA,EB));O.badge=sw(O.badge,BA,BB);
+ O.prices.forEach(p=>{p.lab=sw(p.lab,LA,LB);p.cur=sw(p.cur,CA,CB)});
+ if(C.cta===(from==='ar'?'احجز الآن':'Book now')){C.cta=from==='ar'?'Book now':'احجز الآن';saveC()}
+ O.days=[];O.lang=to;touch();form()}
 
 /* ---------- photos ---------- */
 const loadImg=src=>new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=src});
@@ -122,18 +145,19 @@ async function addPhotos(ci,files){busy(true,'جاري تجهيز الصور…'
 
 /* ---------- events ---------- */
 const A={
+ lang:e=>relang(e.dataset.v),
  out:e=>{O.out=e.dataset.v;touch();form()},theme:e=>{O.theme=e.dataset.v;touch();form()},font:e=>{O.font=e.dataset.v;touch();form()},size:e=>{O.size=e.dataset.v;touch();form()},
  st:e=>{const [_,i,k]=e.dataset.k.split('.');const c=O.cities[+i];c[k]=Math.max(+(e.dataset.min||1),(+c[k]||0)+(+e.dataset.d));O.days=[];touch();form()},
  cmv:e=>{const i=+e.dataset.i;[O.cities[i-1],O.cities[i]]=[O.cities[i],O.cities[i-1]];O.days=[];touch();form()},
  cdel:e=>{O.cities.splice(+e.dataset.i,1);O.days=[];touch();form()},
  pdel:e=>{O.cities[+e.dataset.i].photos.splice(+e.dataset.k,1);touch();form()},
  pmain:e=>{const c=O.cities[+e.dataset.i],[p]=c.photos.splice(+e.dataset.k,1);c.photos.unshift(p);touch();form()},
- padd:()=>{O.prices.push({amt:'',cur:O.prices[0]?O.prices[0].cur:'ر.س',lab:'',stars:''});touch();form()},prm:e=>{O.prices.splice(+e.dataset.i,1);touch();form()},
+ padd:()=>{O.prices.push({amt:'',cur:O.prices[0]?O.prices[0].cur:CURS_()[0],lab:'',stars:''});touch();form()},prm:e=>{O.prices.splice(+e.dataset.i,1);touch();form()},
  ich:e=>{const v=e.dataset.v,i=O.incl.indexOf(v);i>=0?O.incl.splice(i,1):O.incl.push(v);touch();form()},
  ladd:e=>{O[e.dataset.l].push('');touch();form()},ldel:e=>{O[e.dataset.l].splice(+e.dataset.i,1);touch();form()},
  dreset:()=>{O.days=[];touch();form()},
  dl:()=>exportOne(),share:()=>shareFiles('poster'),zip:()=>exportZip(),shareall:()=>shareFiles('slides'),pdf:()=>exportPdf(),sharepdf:()=>shareFiles('pdf'),
- save:()=>saveOffer(),newo:()=>{if(!confirm('بدء عرض جديد؟'))return;const k={theme:O.theme,size:O.size,out:O.out};O=Object.assign(newOffer(),k);touch();form()},
+ save:()=>saveOffer(),newo:()=>{if(!confirm('بدء عرض جديد؟'))return;const k={theme:O.theme,size:O.size,out:O.out,font:O.font,lang:O.lang};O=Object.assign(newOffer(),k);touch();form()},
  lib:()=>openLib(),close:()=>$$('.mdl').forEach(m=>m.classList.remove('on')),
  lo:async e=>{const L=await DB.get('offers')||[];const x=L.find(o=>o.id===e.dataset.id);if(x){O=Object.assign(newOffer(),JSON.parse(JSON.stringify(x.data)));touch();form();A.close()}},
  lc:async e=>{const L=await DB.get('offers')||[];const x=L.find(o=>o.id===e.dataset.id);if(x){O=Object.assign(newOffer(),JSON.parse(JSON.stringify(x.data)));O.id=uid();touch();form();A.close();toast('نسخة جديدة – عدّل واحفظ')}},
@@ -153,15 +177,24 @@ document.addEventListener('change',e=>{const t=e.target,d=t.dataset;if(d.p&&t.ta
 
 /* ---------- export ---------- */
 const _fcs={};
-async function capture(fr,ratio){await document.fonts.ready;const fk=O.theme+fr.className;if(!_fcs[fk])_fcs[fk]=await htmlToImage.getFontEmbedCSS(fr);const _fc=_fcs[fk];const w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');
+const IS_WK=/AppleWebKit/.test(navigator.userAgent)&&!/Chrome|CriOS|Edg|Android/.test(navigator.userAgent);
+const _durl={};
+async function toData(src){if(!src||src.startsWith('data:'))return src;if(_durl[src])return _durl[src];
+ try{const b=await (await fetch(src)).blob();_durl[src]=await new Promise((r,j)=>{const f=new FileReader();f.onload=()=>r(f.result);f.onerror=j;f.readAsDataURL(b)})}catch(e){_durl[src]=src}return _durl[src]}
+async function inlineImgs(fr){const ims=[...fr.querySelectorAll('img')];
+ await Promise.all(ims.map(async im=>{const s=im.getAttribute('src');const d=await toData(s);if(d!==s)im.setAttribute('src',d)}));
+ await Promise.all(ims.map(im=>im.decode?im.decode().catch(()=>{}):0))}
+async function capture(fr,ratio){await document.fonts.ready;await inlineImgs(fr);const fk=O.theme+fr.className;if(!_fcs[fk])_fcs[fk]=await htmlToImage.getFontEmbedCSS(fr);const _fc=_fcs[fk];const w=+fr.style.width.replace('px',''),h=+fr.style.height.replace('px','');
  const o={width:w,height:h,pixelRatio:ratio||1,fontEmbedCSS:_fc,style:{transform:'none'},backgroundColor:getComputedStyle(fr).backgroundColor,cacheBust:false};
- if(!capture.w){await htmlToImage.toCanvas(fr,{...o,pixelRatio:.2}).catch(()=>{});capture.w=1}return htmlToImage.toCanvas(fr,o)}
+ if(!capture.w){await htmlToImage.toCanvas(fr,{...o,pixelRatio:.2}).catch(()=>{});capture.w=1}
+ if(IS_WK){await htmlToImage.toCanvas(fr,{...o,pixelRatio:.25}).catch(()=>{});await new Promise(r=>setTimeout(r,120));await htmlToImage.toCanvas(fr,o).catch(()=>{})}
+ return htmlToImage.toCanvas(fr,o)}
 const blobOf=c=>new Promise(r=>c.toBlob(r,'image/jpeg',.93));
 const base=()=>`Zover-${(O.title||'offer').replace(/[\\/:*?"<>|\s]+/g,'-')}`;
 async function frames(){renderFrames();await new Promise(r=>setTimeout(r,350));await Promise.all($$('#pv img').map(im=>im.complete?0:new Promise(r=>{im.onload=im.onerror=r})));$$('#pv .fr').forEach(fit);return $$('#pv .fr')}
 function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},5000)}
 async function buildFiles(kind){const F=await frames();const out=[];
- if(kind==='pdf'){const imgs=[];for(let i=0;i<F.length;i++){busy(true,`جاري تجهيز الصفحة ${i+1} من ${F.length}…`);const c=await capture(F[i],2);imgs.push({b:new Uint8Array(await (await blobOf(c)).arrayBuffer()),w:c.width,h:c.height})}
+ if(kind==='pdf'){const imgs=[];for(let i=0;i<F.length;i++){busy(true,`جاري تجهيز الصفحة ${i+1} من ${F.length}…`);const c=await capture(F[i],1.5);imgs.push({b:new Uint8Array(await (await blobOf(c)).arrayBuffer()),w:c.width,h:c.height})}
   out.push(new File([makePdf(imgs)],base()+'.pdf',{type:'application/pdf'}))}
  else for(let i=0;i<F.length;i++){busy(true,F.length>1?`جاري تجهيز الصورة ${i+1} من ${F.length}…`:'جاري تجهيز الصورة…');const c=await capture(F[i],1);out.push(new File([await blobOf(c)],kind==='poster'?`${base()}-${O.size}.jpg`:`${base()}-${String(i+1).padStart(2,'0')}.jpg`,{type:'image/jpeg'}))}
  return out}

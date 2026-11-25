@@ -17,7 +17,7 @@ const LX={
  cover(sz,i,n){const c0=O.cities[0]||{photos:[]},f=H.from();
   return{cls:'cover',html:`${H.img(c0.photos[0],O.title)}<div class="ov"></div><div class="frame"></div>${this.logo()}<span class="swp">اسحب ←</span>${O.badge?`<div class="badge">${esc(O.badge)}</div>`:''}
   <div class="c" data-fit>${O.sub?`<div class="sub">${esc(O.sub)}</div>`:''}<div class="ttl" data-ft="2">${esc(O.title||'اسم الباكيدج')}</div>${this.dv()}${this.meta()}
-  ${O.cities.length>1?`<div class="sub" style="color:#fff;letter-spacing:0">${esc(H.cityLine().join('  ◆  '))}</div>`:''}
+  ${O.cities.length>1?`<div class="sub rt">${esc(H.cityLine().join('  ◆  '))}</div>`:''}
   ${f?`<div class="frm">تبدأ الأسعار من</div><div class="prs"><div class="pr"><div class="am"><b>${fmtAmt(f.amt)}</b><small>${esc(f.cur)}</small></div><div class="lb">${esc(f.lab||'')}</div></div></div>`:''}</div><span class="pgn">${i} / ${n}</span>`}},
  city(sz,i,n,c,ci){const r=H.ranges()[ci],ph=c.photos,sp=(c.spots||[]).filter(Boolean).slice(0,4);
   const dim={sq:['60%','46%'],pt:['66%','50%'],st:['74%','46%']}[sz];
