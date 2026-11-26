@@ -274,3 +274,6 @@
 .fr[dir=ltr].ms .sub{font-family:'Outfit'}
 .fr[dir=ltr] .q-tn figcaption,.fr[dir=ltr] .q-inc,.fr[dir=ltr] .q-meta,.fr[dir=ltr] .q-sm,.fr[dir=ltr] .q-days,.fr[dir=ltr] .q-ok,.fr[dir=ltr] .q-sp{font-family:'Outfit','Readex Pro',sans-serif}
 .fr[dir=ltr]{direction:ltr!important;text-align:left}.fr[dir=ltr] .am,.fr[dir=ltr] .q-am{direction:ltr}
+.fr.vs ul.q-inc{padding:24px 60px}.fr.s-sq.vs ul.q-inc{padding:18px 60px}
+.fr.ms ul.q-inc{padding:20px 0 0}
+.vs .q-tag b{white-space:nowrap;font-size:54px!important}.vs .q-tag b i{font-size:22px}.vs .q-tag small{font-size:17px;max-width:200px}

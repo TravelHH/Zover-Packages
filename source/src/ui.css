@@ -124,3 +124,5 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .cty .nm{flex:1 1 55%}
 @media (max-width:900px){.cty .ch>div[style]{flex:1 1 auto}}
 #form input.in,#form textarea{unicode-bidi:plaintext}
+
+.sw-day{background:linear-gradient(90deg,#fff,#F3EEFB 55%,#F97A30);border:1px solid #e6def5}.sw-tkt{background:linear-gradient(90deg,#EFE9FA,#fff 50%,#4B2D8E)}.sw-pc{background:linear-gradient(90deg,#FFF1E6,#fff 50%,#F97A30 85%,#4B2D8E)}.sw-arch{background:linear-gradient(90deg,#FBF3EA,#F6E3D0 55%,#4B2D8E)}

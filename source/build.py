@@ -34,11 +34,11 @@ if img.exists():
         fs=sorted(f.name for f in d.iterdir() if f.suffix=='.jpg')
         if fs: lib[d.name]=fs
 h=r(S/'shell.html')
-rep={'/*FONTS*/':fonts,'/*UICSS*/':r(S/'ui.css'),'/*THEMECSS*/':r(S/'theme-zover.css')+r(S/'theme-lux.css')+r(S/'theme-mag.css')+r(S/'theme-viv.css')+r(S/'theme-p2.css'),
+rep={'/*FONTS*/':fonts,'/*UICSS*/':r(S/'ui.css'),'/*THEMECSS*/':r(S/'theme-zover.css')+r(S/'theme-lux.css')+r(S/'theme-mag.css')+r(S/'theme-viv.css')+r(S/'theme-p2.css')+r(S/'theme-light.css'),
  '/*LIBS*/':r(f'{NM}/html-to-image/dist/html-to-image.js').replace('//# sourceMappingURL=html-to-image.js.map','')+'\n'+r(f'{NM}/fflate/umd/index.js'),
  '/*GLOW*/':'data:image/png;base64,'+b64('/home/claude/build/logo_glow.png'),'/*LOGO*/':'data:image/png;base64,'+b64('/home/claude/build/logo_small.png'),'/*DOVE*/':'data:image/png;base64,'+b64('/home/claude/build/dove_white.png'),
  '/*ICON*/':'data:image/png;base64,'+b64('/home/claude/build/icon-192.png'),'/*LIBMAP*/':json.dumps(lib),
- '/*DATA*/':'\n'.join(keep),'/*SPOTS*/':r(S/'spots.js'),'/*THEMES*/':r(S/'themes.js')+'\n'+r(S/'themes-lux.js')+'\n'+r(S/'themes-mag.js')+'\n'+r(S/'themes-viv.js')+'\n'+r(S/'poster2.js'),'/*APPJS*/':r(S/'app.js')}
+ '/*DATA*/':'\n'.join(keep),'/*SPOTS*/':r(S/'spots.js'),'/*THEMES*/':r(S/'themes.js')+'\n'+r(S/'themes-lux.js')+'\n'+r(S/'themes-mag.js')+'\n'+r(S/'themes-viv.js')+'\n'+r(S/'poster2.js')+'\n'+r(S/'themes-light.js'),'/*APPJS*/':r(S/'app.js')}
 for k,v in rep.items(): h=h.replace(k,v)
 open(B/'dist'/'index.html','w',encoding='utf-8').write(h)
 print('size',len(h.encode())//1024,'KB', 'lib',{k:len(v) for k,v in lib.items()})
