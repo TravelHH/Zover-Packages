@@ -1426,6 +1426,107 @@ button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 .s-st.tk .q-rt{padding-top:40px}.s-st.tk .q-flds{padding-top:20px}
 .fr.dy ul.q-inc{padding:22px 60px 0}.fr.s-sq.dy ul.q-inc{padding:16px 50px 0}
 .fr.tk ul.q-inc{padding:4px 34px 0}
+
+/* ================= Full price list (all themes) ================= */
+.fr.p2 .q-pl{display:flex;flex-direction:column;gap:12px}
+.fr.p2 .q-pr{display:flex;flex-direction:column;line-height:1.25}
+.fr.p2 .q-pr .q-lb{line-height:1.35}
+.fr.p2 .q-pl .q-am{justify-content:flex-start}
+/* zover */
+.zs .q-pl.q-pz{gap:16px}
+.zs .q-pr{align-items:flex-end;text-align:end}
+.zs .q-pr .q-lb{font-size:22px;color:rgba(255,255,255,.75)}
+.zs .q-pl .q-am{justify-content:flex-end}
+.zs .q-pl.n2 .q-am b{font-size:calc(var(--f,1)*68px)}.zs .q-pl.n3 .q-am b{font-size:calc(var(--f,1)*54px)}
+.zs .q-pl.n2 .q-am small,.zs .q-pl.n3 .q-am small{font-size:24px}
+.zs .q-pl.n2 .q-pr+.q-pr,.zs .q-pl.n3 .q-pr+.q-pr{padding-top:14px;border-top:1px solid rgba(255,255,255,.14)}
+.s-sq.zs .q-pl.n2 .q-am b{font-size:calc(var(--f,1)*54px)}
+/* lux */
+.ls .q-pl.n2,.ls .q-pl.n3{flex-direction:row;justify-content:center;gap:0}
+.ls .q-pr{align-items:center;text-align:center}
+.ls .q-pl.n2 .q-pr,.ls .q-pl.n3 .q-pr{padding:0 34px}
+.ls .q-pl .q-pr+.q-pr{border-inline-start:1px solid rgba(217,183,106,.5)}
+.ls .q-pr .q-lb{font-size:22px;color:rgba(255,255,255,.75);margin-bottom:4px}
+.ls .q-pl .q-am{justify-content:center}
+.ls .q-pl.n2 .q-am b{font-size:calc(var(--f,1)*74px)}.ls .q-pl.n3 .q-am b{font-size:calc(var(--f,1)*58px)}
+/* mag */
+.fr.ms .q-mpl{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;border-bottom:1px solid #d8d8d8}
+.ms .q-mpl .q-fr2{display:none}
+.ms .q-mpl .q-pr{padding:16px 0;padding-inline-end:20px}
+.ms .q-mpl .q-pr+.q-pr{border-inline-start:1px solid #d8d8d8;padding-inline-start:20px}
+.ms .q-mpl .q-lb{font-size:20px;color:#888}
+.ms .q-mpl .q-am b{font-family:'Outfit';font-weight:800;font-size:46px;color:#F97A30}
+.ms .q-mpl .q-am small{font-size:22px;color:#F97A30;font-weight:700}
+.ms .q-mpl.n1 .q-lb:empty:before{content:'السعر'}
+.s-sq.ms .q-mpl .q-am b{font-size:38px}.s-sq.ms .q-mpl .q-pr{padding-top:10px;padding-bottom:10px}
+/* viv */
+.fr.vs .q-vpl{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:16px;padding:26px 60px 0}
+.vs .q-vpl .q-pr{background:#FBC42E;color:#2A1660;border-radius:20px;padding:16px 22px 14px}
+.vs .q-vpl .q-lb{font-size:20px;font-weight:700;font-family:'Alexandria'}
+.vs .q-vpl .q-am b{font-family:'Outfit';font-weight:900;font-size:50px;color:#2A1660}
+.vs .q-vpl .q-am small{font-size:22px;font-weight:700}
+.s-sq.vs .q-vpl{padding-top:18px}.s-sq.vs .q-vpl .q-am b{font-size:40px}
+/* day */
+.dy .q-tag.q-pl{gap:10px}
+.dy .q-tag .q-pr{align-items:flex-end;text-align:end}
+.dy .q-tag .q-pl .q-am,.dy .q-tag .q-am{justify-content:flex-end}
+.dy .q-tag .q-pr+.q-pr{border-top:1px solid #eee8f6;padding-top:10px}
+.dy .q-tag.n2 .q-am b{font-size:54px}.dy .q-tag.n3 .q-am b{font-size:44px}
+.dy .q-tag .q-lb{font-size:19px;color:var(--mu)}
+/* ticket */
+.tk .q-pl.q-pz{flex-direction:row;gap:34px}
+.tk .q-pl.n1{flex-direction:column;gap:2px}
+.tk .q-pr .q-lb{font-size:19px;color:var(--mu)}
+.tk .q-pl.n2 .q-am b{font-size:56px}.tk .q-pl.n3 .q-am b{font-size:44px}
+.tk .q-pl .q-pr+.q-pr{border-inline-start:1px solid #eee8f6;padding-inline-start:30px}
+.s-sq.tk .q-pl.n2 .q-am b{font-size:44px}
+/* postcard */
+.pk .q-pl.q-pz{gap:12px}
+.pk .q-pr{align-items:flex-end;text-align:end}
+.pk .q-pl .q-am{justify-content:flex-end}
+.pk .q-pr .q-lb{font-size:20px;color:var(--mu)}
+.pk .q-pl.n2 .q-am b{font-size:60px}.pk .q-pl.n3 .q-am b{font-size:48px}
+.pk .q-pl .q-pr+.q-pr{border-top:2px dashed #F1C7A6;padding-top:10px}
+.pk .q-hd .q-meta{margin-top:12px;color:#fff;font-size:26px;font-weight:600}
+.pk .q-hd .q-meta svg{color:var(--ye);width:24px;height:24px}
+.s-sq.pk .q-hd .q-meta{font-size:21px;margin-top:6px}
+/* arch */
+.ar .q-bt .q-pl{flex-direction:row;gap:0}
+.ar .q-bt .q-pl.n1{flex-direction:column;align-items:flex-start;gap:0}
+.ar .q-bt .q-pr{padding-inline-end:22px;align-items:flex-start;text-align:start}
+.ar .q-bt .q-pr+.q-pr{border-inline-start:1px solid rgba(255,255,255,.25);padding-inline-start:22px}
+.ar .q-bt .q-lb{font-size:18px;color:rgba(255,255,255,.8)}
+.ar .q-bt .q-pl.n2 .q-am b{font-size:46px}.ar .q-bt .q-pl.n3 .q-am b{font-size:38px}
+/* room for full data */
+.vs:has(.q-vpl) .q-ph1{flex-basis:30%}
+.vs:has(.q-vpl) .q-tn figure{height:140px}
+.vs:has(.q-vpl) .q-blk{padding-top:28px}
+.s-st.vs:has(.q-vpl) .q-ph1{flex-basis:34%}.s-st.vs:has(.q-vpl) .q-tn figure{height:200px}
+.ls .q-cn{top:250px;bottom:140px}
+.ls .ttl{font-size:var(--ts,96px)}
+.ls .q-tn img.ph{width:calc(var(--f,1)*150px);height:calc(var(--f,1)*176px)}
+.ls .q-rule{margin:calc(var(--f,1)*20px) auto}
+.ar:has(.q-inc) .q-arch{flex-basis:36%;width:66%}
+.s-st.ar:has(.q-inc) .q-arch{flex-basis:40%;width:76%}
+.ar .ttl{font-size:var(--ts,84px)}
+.ls .q-cn{top:205px}
+.ls .ttl{font-size:var(--ts,88px)}
+.ls .q-inc{display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;text-align:start;max-width:none;width:100%}
+.ls .q-inc span{padding:0;padding-inline-start:20px}
+.ls .q-inc span+span:before,.ls .q-inc span:before{content:'';position:absolute;inset-inline-start:0;top:.75em;width:7px;height:7px;background:#D9B76A;transform:rotate(45deg)}
+.ar:has(.q-inc) .q-arch{flex-basis:31%;width:58%}
+.ar .q-inc{display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;text-align:start;width:100%}
+.ar .q-inc span{padding:0;padding-inline-start:20px}
+.ar .q-inc span+span:before,.ar .q-inc span:before{content:'';position:absolute;inset-inline-start:0;top:.75em;width:7px;height:7px;background:var(--or);transform:rotate(45deg)}
+.s-sq.ar .q-inc,.s-sq.ls .q-inc{grid-template-columns:1fr 1fr}
+.ls .q-cn{padding-bottom:16px}
+.ar:has(.q-inc) .q-tn img.ph{width:calc(var(--f,1)*118px);height:calc(var(--f,1)*136px)}
+.ar:has(.q-inc) .q-tn{margin-top:calc(var(--f,1)*16px)}
+.ar:has(.q-inc) .ttl{font-size:var(--ts,78px)}
+.ar .q-cn{padding-bottom:10px;padding-top:28px}
+.ar .q-inc{font-size:calc(var(--f,1)*23px)}
+.ar .q-cn{padding-top:46px}
+.tk .q-ph1:after{background:linear-gradient(0deg,rgba(30,15,69,.85),rgba(30,15,69,.35) 60%,rgba(30,15,69,0) 85%)}.pk .q-ph1:after{background:linear-gradient(0deg,rgba(25,12,50,.85) 0%,rgba(25,12,50,.35) 60%,rgba(25,12,50,0) 85%)}
 </style>
 </head>
 <body>
@@ -2172,6 +2273,8 @@ const nWL=n=>L(nW(n),n===1?'night':'nights'),dWL=n=>L(dW(n),n===1?'day':'days');
 const ctaT=()=>{const c=C.cta||'';if(isEN()&&c==='احجز الآن')return'Book now';if(!isEN()&&c==='Book now')return'احجز الآن';return c};
 const exT=x=>{const A=isEN()?EXCL_AR:EXCL_EN,B=isEN()?EXCL_EN:EXCL_AR,i=A.indexOf(x);return i>=0?B[i]:x};
 const P2={
+ plist(cls){const P=H.prices().slice(0,3);if(!P.length)return'';const one=P.length===1;
+  return`<div class="q-pl n${P.length} ${cls||''}">${one?`<span class="q-fr2">${L('السعر','Price')}</span>`:''}${P.map(p=>`<div class="q-pr"><span class="q-lb">${esc(p.lab||'')}</span><div class="q-am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div></div>`).join('')}</div>`},
  meta(){const n=H.tot();const a=[];if(n)a.push(`<span class="q-m">${IC.moon}<span><b>${n}</b> ${nWL(n)} · <b>${n+1}</b> ${dWL(n+1)}</span></span>`);if(O.dates)a.push(`<span class="q-m">${IC.cal}<span>${esc(O.dates)}</span></span>`);return a.join('')},
  thumbs(max){const multi=O.cities.length>1,c0=O.cities[0]||{photos:[],spots:[]};
   const t=multi?O.cities.slice(0,max).map((c,i)=>({s:H.cityPh(c,i===0?1:0),a:c.ar,b:`${c.n} ${nWL(+c.n)}`}))
@@ -2185,8 +2288,8 @@ const P2={
 
 /* ---------- ZOVER · Signature ---------- */
 ZV.poster=function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''};
- const cfg={...{sq:{ph:'50%',tn:3,inc:3},pt:{ph:'55%',tn:3,inc:4},st:{ph:'52%',tn:3,inc:6},a4:{ph:'52%',tn:3,inc:6}}[sz]};if(o.cover)cfg.inc=0;
- const th=P2.thumbs(cfg.tn),inc=H.incl().slice(0,cfg.inc),pr=P2.price();
+ const cfg={...{sq:{ph:'48%',tn:3,inc:4},pt:{ph:'52%',tn:3,inc:8},st:{ph:'50%',tn:3,inc:8},a4:{ph:'50%',tn:3,inc:8}}[sz]};if(o.cover)cfg.inc=0;
+ const th=P2.thumbs(cfg.tn),inc=H.incl().slice(0,cfg.inc),pr=P2.plist('q-pz');
  return{cls:'p2 zs',vars:`--ph:${cfg.ph}`,html:`
  <div class="q-hero">${H.img(c0.photos[0],c0.ar)}<i class="q-sh"></i></div>
  <img class="q-lg2" src="${IMG.glow}">${O.badge?`<span class="q-bdg">${esc(O.badge)}</span>`:''}
@@ -2200,38 +2303,39 @@ ZV.poster=function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''};
 /* ---------- LUX · Night & gold ---------- */
 LX.poster=function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''};
  const cfg={sq:{tn:0},pt:{tn:3},st:{tn:3},a4:{tn:3}}[sz];
- const th=P2.thumbs(cfg.tn),f=H.from(),inc=o.cover?[]:H.incl().slice(0,sz==='st'||sz==='a4'?4:3);
+ const th=P2.thumbs(cfg.tn),f=H.from(),inc=o.cover?[]:H.incl().slice(0,sz==='sq'?4:8);
  return{cls:'p2 ls',html:`${H.img(c0.photos[0],c0.ar)}<i class="q-sh"></i><i class="q-bd"></i>
  <img class="q-lg2" src="${IMG.glow}">${O.badge?`<span class="q-bdg">${esc(O.badge)}</span>`:''}
  <div class="q-cn" data-fit>${P2.title()}<i class="q-rule"></i><div class="q-meta">${P2.meta()}</div>
   ${th.length?`<div class="q-tn">${th.map(t=>`<figure>${H.img(t.s,t.a)}<figcaption>${esc(t.a)}</figcaption></figure>`).join('')}</div>`:''}
   ${inc.length?`<div class="q-inc">${inc.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''}
-  ${f?`<div class="q-pz"><span class="q-fr2">${H.prices().length>1?L('يبدأ من','From'):L('السعر','Price')}</span><div class="q-am"><b>${fmtAmt(f.amt)}</b><small>${esc(f.cur)}</small></div>${f.lab?`<span class="q-lb">${esc(f.lab)}</span>`:''}</div>`:''}
+  ${P2.plist('q-pz')}
  </div>
  <div class="q-ft">${P2.contacts()}${C.cta?`<span class="q-cta">${esc(ctaT())}</span>`:''}</div>`}};
 
 /* ---------- MAG · Editorial ---------- */
 MG.poster=function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''},multi=O.cities.length>1;
- const cfg={...{sq:{inc:0,tn:0},pt:{inc:4,tn:3},st:{inc:6,tn:3},a4:{inc:6,tn:3}}[sz]};if(o.cover)cfg.inc=0;
+ const cfg={...{sq:{inc:4,tn:0},pt:{inc:8,tn:3},st:{inc:8,tn:3},a4:{inc:8,tn:3}}[sz]};if(o.cover)cfg.inc=0;
  const th=P2.thumbs(cfg.tn),inc=H.incl().slice(0,cfg.inc),f=H.from(),n=H.tot();
  return{cls:'p2 ms',html:`
  <div class="q-top"><img src="${IMG.logo}">${O.badge?`<span class="q-bdg">${esc(O.badge)}</span>`:''}</div>
  <div class="q-hd" data-tmin="0">${P2.title()}</div>
  <div class="q-pics ${th.length?'':'q-one'}"><div class="q-big">${H.img(c0.photos[0],c0.ar)}</div>${th.length?`<div class="q-col">${th.slice(0,2).map(t=>`<figure>${H.img(t.s,t.a)}<figcaption>${esc(t.a)}</figcaption></figure>`).join('')}</div>`:''}</div>
  <div class="q-facts">${n?`<div><small>${L('المدة','Duration')}</small><b>${n} ${nWL(n)}</b></div>`:''}${O.dates?`<div><small>${L('المواعيد','Dates')}</small><b>${esc(O.dates)}</b></div>`:multi?`<div><small>${L('المدن','Cities')}</small><b>${esc(H.cityLine().join(L('، ',', ')))}</b></div>`:''}
-  ${f?`<div class="q-pr"><small>${H.prices().length>1?L('يبدأ من','From'):L('السعر','Price')}${f.lab?` · ${esc(f.lab)}`:''}</small><b>${fmtAmt(f.amt)} <span>${esc(f.cur)}</span></b></div>`:''}</div>
+  </div>${P2.plist('q-mpl')}
  ${inc.length?`<ul class="q-inc" data-fit>${inc.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
  <div class="q-ft"><div class="q-cts">${P2.contacts()}</div>${C.cta?`<span class="q-cta">${esc(ctaT())}</span>`:''}</div>`}};
 
 /* ---------- VIV · Color block ---------- */
 VV.poster=function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''};
- const cfg={...{sq:{inc:3,tn:0},pt:{inc:4,tn:3},st:{inc:6,tn:3},a4:{inc:6,tn:3}}[sz]};if(o.cover)cfg.inc=0;
+ const cfg={...{sq:{inc:4,tn:0},pt:{inc:8,tn:3},st:{inc:8,tn:3},a4:{inc:8,tn:3}}[sz]};if(o.cover)cfg.inc=0;
  const th=P2.thumbs(cfg.tn),inc=H.incl().slice(0,cfg.inc),f=H.from();
  return{cls:'p2 vs',html:`
  <div class="q-ph1">${H.img(c0.photos[0],c0.ar)}</div>
  <img class="q-lg2" src="${IMG.glow}">
  <div class="q-blk"><div class="q-hd" data-fit>${O.badge?`<span class="q-bdg">${esc(O.badge)}</span>`:''}${P2.title()}<div class="q-meta">${P2.meta()}</div></div>
-  ${f?`<div class="q-tag"><span class="q-fr2">${H.prices().length>1?L('يبدأ من','From'):L('السعر','Price')}</span><b><bdi>${fmtAmt(f.amt)}</bdi> <i>${esc(f.cur)}</i></b>${f.lab?`<small>${esc(f.lab)}</small>`:''}</div>`:''}</div>
+  ${H.prices().length===1?`<div class="q-tag"><span class="q-fr2">${L('السعر','Price')}</span><b><bdi>${fmtAmt(f.amt)}</bdi> <i>${esc(f.cur)}</i></b>${f.lab?`<small>${esc(f.lab)}</small>`:''}</div>`:''}</div>
+ ${H.prices().length>1?P2.plist('q-vpl'):''}
  ${th.length?`<div class="q-tn">${th.map(t=>`<figure>${H.img(t.s,t.a)}<figcaption>${esc(t.a)}</figcaption></figure>`).join('')}</div>`:''}
  ${inc.length?`<ul class="q-inc" data-fit>${inc.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
  <div class="q-ft"><div class="q-cts">${P2.contacts()}</div>${C.cta?`<span class="q-cta">${esc(ctaT())}</span>`:''}</div>`}};
@@ -2284,19 +2388,19 @@ const mkT=poster=>({poster,slides(sz){return P3.slides(this,sz)},pdf(){return P3
 
 /* ---------- نهار · Day ---------- */
 THEMES.day=mkT(function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''};
- const cfg={sq:{tn:0,inc:3},pt:{tn:3,inc:4},st:{tn:3,inc:6},a4:{tn:3,inc:6}}[sz];if(o.cover)cfg.inc=0;
+ const cfg={sq:{tn:0,inc:4},pt:{tn:3,inc:8},st:{tn:3,inc:8},a4:{tn:3,inc:8}}[sz];if(o.cover)cfg.inc=0;
  const th=P2.thumbs(cfg.tn),inc=H.incl().slice(0,cfg.inc),f=H.from();
  return{cls:'p2 dy',html:`
  <div class="q-top"><img src="${IMG.logo}">${O.badge?`<span class="q-bdg">${esc(O.badge)}</span>`:''}</div><i class="q-rb"></i>
  <div class="q-hd">${P2.title()}<div class="q-meta">${P2.meta()}</div></div>
- <div class="q-ph1">${H.img(c0.photos[0],c0.ar)}${f?`<div class="q-tag"><span class="q-fr2">${fromL()}</span><div class="q-am"><b>${fmtAmt(f.amt)}</b><small>${esc(f.cur)}</small></div>${f.lab?`<span class="q-lb">${esc(f.lab)}</span>`:''}</div>`:''}</div>
+ <div class="q-ph1">${H.img(c0.photos[0],c0.ar)}${P2.plist('q-tag')}</div>
  ${th.length?`<div class="q-tn">${th.map(t=>`<figure>${H.img(t.s,t.a)}<figcaption><b>${esc(t.a)}</b>${t.b?`<small>${esc(t.b)}</small>`:''}</figcaption></figure>`).join('')}</div>`:''}
  ${inc.length?`<ul class="q-inc" data-fit>${inc.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
  <div class="q-ft"><div class="q-cts">${P2.contacts()}</div>${ctaB()}</div>`}});
 
 /* ---------- تذكرة · Boarding pass ---------- */
 THEMES.tkt=mkT(function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''},cs=O.cities,last=cs[cs.length-1]||c0;
- const cfg={sq:{inc:0},pt:{inc:4},st:{inc:6},a4:{inc:6}}[sz];if(o.cover)cfg.inc=0;
+ const cfg={sq:{inc:4},pt:{inc:8},st:{inc:8},a4:{inc:8}}[sz];if(o.cover)cfg.inc=0;
  const inc=H.incl().slice(0,cfg.inc),f=H.from(),n=H.tot(),code=k=>{const c=CITIES[k]||{};return c.iata||({florence:'FLR',granada:'GRX'})[k]||(c.en||'').replace(/[^A-Za-z]/g,'').slice(0,3).toUpperCase()};
  const route=[`<div class="q-ap"><b>RUH</b><span>${L('الرياض','Riyadh')}</span></div>`].concat(cs.slice(0,3).map(c=>`<div class="q-ap"><b>${code(c.key)||'✈'}</b><span>${esc(c.ar)}</span></div>`)).join(`<i class="q-fl">${IC.plane}</i>`);
  return{cls:'p2 tk',html:`
@@ -2307,30 +2411,30 @@ THEMES.tkt=mkT(function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''},cs=O.ci
   <div class="q-flds">${n?`<div><small>${L('المدة','Duration')}</small><b>${n} ${nWL(n)}</b></div>`:''}${O.dates?`<div><small>${L('المواعيد','Dates')}</small><b>${esc(O.dates)}</b></div>`:''}<div><small>${L('المدن','Cities')}</small><b>${cs.length}</b></div></div>
   ${inc.length?`<ul class="q-inc" data-fit>${inc.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
   <div class="q-perf"></div>
-  <div class="q-stub">${f?`<div class="q-pz"><span class="q-fr2">${fromL()}${f.lab?` · ${esc(f.lab)}`:''}</span><div class="q-am"><b>${fmtAmt(f.amt)}</b><small>${esc(f.cur)}</small></div></div>`:'<span></span>'}${ctaB()}</div>
+  <div class="q-stub">${P2.plist('q-pz')||'<span></span>'}${ctaB()}</div>
  </div>
  <div class="q-ft"><div class="q-cts">${P2.contacts()}</div></div>`}});
 
 /* ---------- بطاقة بريدية · Postcard ---------- */
 THEMES.pc=mkT(function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''};
- const cfg={sq:{tn:0,inc:0},pt:{tn:3,inc:3},st:{tn:3,inc:5},a4:{tn:3,inc:5}}[sz];if(o.cover)cfg.inc=0;
+ const cfg={sq:{tn:0,inc:4},pt:{tn:3,inc:8},st:{tn:3,inc:8},a4:{tn:3,inc:8}}[sz];if(o.cover)cfg.inc=0;
  const th=P2.thumbs(cfg.tn),inc=H.incl().slice(0,cfg.inc),f=H.from(),n=H.tot();
  return{cls:'p2 pk',html:`
  <div class="q-card">
   <div class="q-ph1">${H.img(c0.photos[0],c0.ar)}</div>
   <div class="q-stamp"><img src="${IMG.logo}"></div>
   ${n?`<div class="q-pm"><b>${n}</b><span>${nWL(n)}</span><i></i><small>ZOVER</small></div>`:''}
-  <div class="q-hd">${P2.title()}</div>
+  <div class="q-hd">${P2.title()}${O.dates?`<div class="q-meta"><span class="q-m">${IC.cal}<span>${esc(O.dates)}</span></span></div>`:''}</div>
  </div>
  ${O.badge?`<span class="q-bdg">${esc(O.badge)}</span>`:''}
  ${th.length?`<div class="q-tn">${th.map(t=>`<figure>${H.img(t.s,t.a)}<figcaption>${esc(t.a)}</figcaption></figure>`).join('')}</div>`:''}
  <div class="q-row">${inc.length?`<ul class="q-inc" data-fit>${inc.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<span></span>'}
-  ${f?`<div class="q-pz"><span class="q-fr2">${fromL()}</span><div class="q-am"><b>${fmtAmt(f.amt)}</b><small>${esc(f.cur)}</small></div>${f.lab?`<span class="q-lb">${esc(f.lab)}</span>`:''}</div>`:''}</div>
+  ${P2.plist('q-pz')}</div>
  <div class="q-ft"><div class="q-cts">${P2.contacts()}</div>${ctaB()}</div>`}});
 
 /* ---------- قوس · Arch ---------- */
 THEMES.arch=mkT(function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''};
- const cfg={sq:{tn:0,inc:0},pt:{tn:3,inc:0},st:{tn:3,inc:4},a4:{tn:3,inc:0}}[sz];if(o.cover)cfg.inc=0;
+ const cfg={sq:{tn:0,inc:4},pt:{tn:3,inc:8},st:{tn:3,inc:8},a4:{tn:3,inc:8}}[sz];if(o.cover)cfg.inc=0;
  const th=P2.thumbs(cfg.tn),inc=H.incl().slice(0,cfg.inc),f=H.from();
  return{cls:'p2 ar',html:`
  <div class="q-top"><img src="${IMG.logo}"></div>
@@ -2338,7 +2442,7 @@ THEMES.arch=mkT(function(sz,o={}){const c0=O.cities[0]||{photos:[],ar:''};
  <div class="q-cn" data-fit>${P2.title()}<i class="q-orn"></i><div class="q-meta">${P2.meta()}</div>
   ${th.length?`<div class="q-tn">${th.map(t=>`<figure>${H.img(t.s,t.a)}<figcaption>${esc(t.a)}</figcaption></figure>`).join('')}</div>`:''}
   ${inc.length?`<div class="q-inc">${inc.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:''}</div>
- <div class="q-bt">${f?`<div class="q-pz"><span class="q-fr2">${fromL()}${f.lab?` · ${esc(f.lab)}`:''}</span><div class="q-am"><b>${fmtAmt(f.amt)}</b><small>${esc(f.cur)}</small></div></div>`:''}${ctaB()}</div>
+ <div class="q-bt">${P2.plist('q-pz')}${ctaB()}</div>
  <div class="q-ft"><div class="q-cts">${P2.contacts()}</div></div>`}});
 
 'use strict';

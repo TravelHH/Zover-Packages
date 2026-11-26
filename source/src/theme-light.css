@@ -165,3 +165,104 @@
 .s-st.tk .q-rt{padding-top:40px}.s-st.tk .q-flds{padding-top:20px}
 .fr.dy ul.q-inc{padding:22px 60px 0}.fr.s-sq.dy ul.q-inc{padding:16px 50px 0}
 .fr.tk ul.q-inc{padding:4px 34px 0}
+
+/* ================= Full price list (all themes) ================= */
+.fr.p2 .q-pl{display:flex;flex-direction:column;gap:12px}
+.fr.p2 .q-pr{display:flex;flex-direction:column;line-height:1.25}
+.fr.p2 .q-pr .q-lb{line-height:1.35}
+.fr.p2 .q-pl .q-am{justify-content:flex-start}
+/* zover */
+.zs .q-pl.q-pz{gap:16px}
+.zs .q-pr{align-items:flex-end;text-align:end}
+.zs .q-pr .q-lb{font-size:22px;color:rgba(255,255,255,.75)}
+.zs .q-pl .q-am{justify-content:flex-end}
+.zs .q-pl.n2 .q-am b{font-size:calc(var(--f,1)*68px)}.zs .q-pl.n3 .q-am b{font-size:calc(var(--f,1)*54px)}
+.zs .q-pl.n2 .q-am small,.zs .q-pl.n3 .q-am small{font-size:24px}
+.zs .q-pl.n2 .q-pr+.q-pr,.zs .q-pl.n3 .q-pr+.q-pr{padding-top:14px;border-top:1px solid rgba(255,255,255,.14)}
+.s-sq.zs .q-pl.n2 .q-am b{font-size:calc(var(--f,1)*54px)}
+/* lux */
+.ls .q-pl.n2,.ls .q-pl.n3{flex-direction:row;justify-content:center;gap:0}
+.ls .q-pr{align-items:center;text-align:center}
+.ls .q-pl.n2 .q-pr,.ls .q-pl.n3 .q-pr{padding:0 34px}
+.ls .q-pl .q-pr+.q-pr{border-inline-start:1px solid rgba(217,183,106,.5)}
+.ls .q-pr .q-lb{font-size:22px;color:rgba(255,255,255,.75);margin-bottom:4px}
+.ls .q-pl .q-am{justify-content:center}
+.ls .q-pl.n2 .q-am b{font-size:calc(var(--f,1)*74px)}.ls .q-pl.n3 .q-am b{font-size:calc(var(--f,1)*58px)}
+/* mag */
+.fr.ms .q-mpl{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;border-bottom:1px solid #d8d8d8}
+.ms .q-mpl .q-fr2{display:none}
+.ms .q-mpl .q-pr{padding:16px 0;padding-inline-end:20px}
+.ms .q-mpl .q-pr+.q-pr{border-inline-start:1px solid #d8d8d8;padding-inline-start:20px}
+.ms .q-mpl .q-lb{font-size:20px;color:#888}
+.ms .q-mpl .q-am b{font-family:'Outfit';font-weight:800;font-size:46px;color:#F97A30}
+.ms .q-mpl .q-am small{font-size:22px;color:#F97A30;font-weight:700}
+.ms .q-mpl.n1 .q-lb:empty:before{content:'السعر'}
+.s-sq.ms .q-mpl .q-am b{font-size:38px}.s-sq.ms .q-mpl .q-pr{padding-top:10px;padding-bottom:10px}
+/* viv */
+.fr.vs .q-vpl{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:16px;padding:26px 60px 0}
+.vs .q-vpl .q-pr{background:#FBC42E;color:#2A1660;border-radius:20px;padding:16px 22px 14px}
+.vs .q-vpl .q-lb{font-size:20px;font-weight:700;font-family:'Alexandria'}
+.vs .q-vpl .q-am b{font-family:'Outfit';font-weight:900;font-size:50px;color:#2A1660}
+.vs .q-vpl .q-am small{font-size:22px;font-weight:700}
+.s-sq.vs .q-vpl{padding-top:18px}.s-sq.vs .q-vpl .q-am b{font-size:40px}
+/* day */
+.dy .q-tag.q-pl{gap:10px}
+.dy .q-tag .q-pr{align-items:flex-end;text-align:end}
+.dy .q-tag .q-pl .q-am,.dy .q-tag .q-am{justify-content:flex-end}
+.dy .q-tag .q-pr+.q-pr{border-top:1px solid #eee8f6;padding-top:10px}
+.dy .q-tag.n2 .q-am b{font-size:54px}.dy .q-tag.n3 .q-am b{font-size:44px}
+.dy .q-tag .q-lb{font-size:19px;color:var(--mu)}
+/* ticket */
+.tk .q-pl.q-pz{flex-direction:row;gap:34px}
+.tk .q-pl.n1{flex-direction:column;gap:2px}
+.tk .q-pr .q-lb{font-size:19px;color:var(--mu)}
+.tk .q-pl.n2 .q-am b{font-size:56px}.tk .q-pl.n3 .q-am b{font-size:44px}
+.tk .q-pl .q-pr+.q-pr{border-inline-start:1px solid #eee8f6;padding-inline-start:30px}
+.s-sq.tk .q-pl.n2 .q-am b{font-size:44px}
+/* postcard */
+.pk .q-pl.q-pz{gap:12px}
+.pk .q-pr{align-items:flex-end;text-align:end}
+.pk .q-pl .q-am{justify-content:flex-end}
+.pk .q-pr .q-lb{font-size:20px;color:var(--mu)}
+.pk .q-pl.n2 .q-am b{font-size:60px}.pk .q-pl.n3 .q-am b{font-size:48px}
+.pk .q-pl .q-pr+.q-pr{border-top:2px dashed #F1C7A6;padding-top:10px}
+.pk .q-hd .q-meta{margin-top:12px;color:#fff;font-size:26px;font-weight:600}
+.pk .q-hd .q-meta svg{color:var(--ye);width:24px;height:24px}
+.s-sq.pk .q-hd .q-meta{font-size:21px;margin-top:6px}
+/* arch */
+.ar .q-bt .q-pl{flex-direction:row;gap:0}
+.ar .q-bt .q-pl.n1{flex-direction:column;align-items:flex-start;gap:0}
+.ar .q-bt .q-pr{padding-inline-end:22px;align-items:flex-start;text-align:start}
+.ar .q-bt .q-pr+.q-pr{border-inline-start:1px solid rgba(255,255,255,.25);padding-inline-start:22px}
+.ar .q-bt .q-lb{font-size:18px;color:rgba(255,255,255,.8)}
+.ar .q-bt .q-pl.n2 .q-am b{font-size:46px}.ar .q-bt .q-pl.n3 .q-am b{font-size:38px}
+/* room for full data */
+.vs:has(.q-vpl) .q-ph1{flex-basis:30%}
+.vs:has(.q-vpl) .q-tn figure{height:140px}
+.vs:has(.q-vpl) .q-blk{padding-top:28px}
+.s-st.vs:has(.q-vpl) .q-ph1{flex-basis:34%}.s-st.vs:has(.q-vpl) .q-tn figure{height:200px}
+.ls .q-cn{top:250px;bottom:140px}
+.ls .ttl{font-size:var(--ts,96px)}
+.ls .q-tn img.ph{width:calc(var(--f,1)*150px);height:calc(var(--f,1)*176px)}
+.ls .q-rule{margin:calc(var(--f,1)*20px) auto}
+.ar:has(.q-inc) .q-arch{flex-basis:36%;width:66%}
+.s-st.ar:has(.q-inc) .q-arch{flex-basis:40%;width:76%}
+.ar .ttl{font-size:var(--ts,84px)}
+.ls .q-cn{top:205px}
+.ls .ttl{font-size:var(--ts,88px)}
+.ls .q-inc{display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;text-align:start;max-width:none;width:100%}
+.ls .q-inc span{padding:0;padding-inline-start:20px}
+.ls .q-inc span+span:before,.ls .q-inc span:before{content:'';position:absolute;inset-inline-start:0;top:.75em;width:7px;height:7px;background:#D9B76A;transform:rotate(45deg)}
+.ar:has(.q-inc) .q-arch{flex-basis:31%;width:58%}
+.ar .q-inc{display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;text-align:start;width:100%}
+.ar .q-inc span{padding:0;padding-inline-start:20px}
+.ar .q-inc span+span:before,.ar .q-inc span:before{content:'';position:absolute;inset-inline-start:0;top:.75em;width:7px;height:7px;background:var(--or);transform:rotate(45deg)}
+.s-sq.ar .q-inc,.s-sq.ls .q-inc{grid-template-columns:1fr 1fr}
+.ls .q-cn{padding-bottom:16px}
+.ar:has(.q-inc) .q-tn img.ph{width:calc(var(--f,1)*118px);height:calc(var(--f,1)*136px)}
+.ar:has(.q-inc) .q-tn{margin-top:calc(var(--f,1)*16px)}
+.ar:has(.q-inc) .ttl{font-size:var(--ts,78px)}
+.ar .q-cn{padding-bottom:10px;padding-top:28px}
+.ar .q-inc{font-size:calc(var(--f,1)*23px)}
+.ar .q-cn{padding-top:46px}
+.tk .q-ph1:after{background:linear-gradient(0deg,rgba(30,15,69,.85),rgba(30,15,69,.35) 60%,rgba(30,15,69,0) 85%)}.pk .q-ph1:after{background:linear-gradient(0deg,rgba(25,12,50,.85) 0%,rgba(25,12,50,.35) 60%,rgba(25,12,50,0) 85%)}
