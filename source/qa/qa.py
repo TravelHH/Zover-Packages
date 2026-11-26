@@ -9,6 +9,7 @@ SC={
 }
 SC_EN={"maldives": "O.lang='en';loadDest(DESTS.find(d=>d.id==='mle'));O.badge='Best price';O.dates='1 – 15 June';O.prices=[{amt:'7990',cur:'SAR',lab:'Price for two',stars:'5'}];", "spain": "O.lang='en';loadDest(DESTS.find(d=>d.id==='esp'));O.badge='Summer deal';O.sub='Our summer package to';O.dates='1 July – 31 August 2027';O.prices=[{amt:'12490',cur:'SAR',lab:'Price for two – 4-star',stars:'4'},{amt:'15990',cur:'SAR',lab:'Price for two – 5-star',stars:'5'}];O.incl=['Return flights','7 nights with breakfast','Airport transfers','High-speed train between cities','Sightseeing tours as per program','SIM card with data'];", "cairo": "O.lang='en';loadDest(DESTS.find(d=>d.id==='cai'));O.badge='';O.dates='';O.prices=[{amt:'2450',cur:'SAR',lab:'Per person',stars:''}];"}
 if __import__('os').environ.get('EN'): SC=SC_EN
+EXTRA=("O.prices.forEach(p=>p.old=String(Math.round(parseFloat(p.amt)*1.2)));O.inst='both';O.instN=4;" if __import__('os').environ.get('EXTRA') else '')
 async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch(executable_path='/usr/bin/google-chrome',args=['--no-sandbox'])
@@ -22,8 +23,8 @@ async def main():
         for sc,code in SC.items():
             for th in themes:
                 for out in ('poster','slides','pdf'):
-                    for sz in (('sq','pt','st') if out!='pdf' else ('pt',)):
-                        await pg.evaluate(f"O=newOffer();{code}O.theme='{th}';O.font='{FONT}';O.out='{out}';O.size='{sz}';O.showItin=true;form();renderFrames()")
+                    for sz in (('sq','pt','tall','st') if out!='pdf' else ('pt',)):
+                        await pg.evaluate(f"O=newOffer();{code}{EXTRA}O.theme='{th}';O.font='{FONT}';O.out='{out}';O.size='{sz}';O.showItin=true;form();renderFrames()")
                         await pg.wait_for_timeout(600)
                         await pg.evaluate("$$('#pv .fr').forEach(fit)")
                         r=await pg.evaluate("__qa()")

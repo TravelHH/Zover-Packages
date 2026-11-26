@@ -3,9 +3,15 @@ const L=(a,e)=>(O.lang==='en'?e:a);
 const nWL=n=>L(nW(n),n===1?'night':'nights'),dWL=n=>L(dW(n),n===1?'day':'days');
 const ctaT=()=>{const c=C.cta||'';if(isEN()&&c==='احجز الآن')return'Book now';if(!isEN()&&c==='Book now')return'احجز الآن';return c};
 const exT=x=>{const A=isEN()?EXCL_AR:EXCL_EN,B=isEN()?EXCL_EN:EXCL_AR,i=A.indexOf(x);return i>=0?B[i]:x};
+IC.card='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/></svg>';
 const P2={
  plist(cls){const P=H.prices().slice(0,3);if(!P.length)return'';const one=P.length===1;
-  return`<div class="q-pl n${P.length} ${cls||''}">${one?`<span class="q-fr2">${L('السعر','Price')}</span>`:''}${P.map(p=>`<div class="q-pr"><span class="q-lb">${esc(p.lab||'')}</span><div class="q-am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div></div>`).join('')}</div>`},
+  return`<div class="q-pl n${P.length} ${cls||''}">${one?`<span class="q-fr2">${L('السعر','Price')}</span>`:''}${P.map(p=>`<div class="q-pr"><span class="q-lb">${esc(p.lab||'')}</span>${this.old(p)}<div class="q-am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div></div>`).join('')}${this.inst()}</div>`},
+ old(p){const o=parseFloat(String(p.old||'').replace(/[^\d.]/g,'')),a=parseFloat(String(p.amt||'').replace(/[^\d.]/g,''));if(!o||!a||o<=a)return'';
+  const pc=Math.round((1-a/o)*100);return`<span class="q-old"><s><bdi>${fmtAmt(p.old)} ${esc(p.cur)}</bdi></s>${pc>=3?`<em>${L(`خصم ${pc}٪`,`${pc}% off`)}</em>`:''}</span>`},
+ inst(){if(!O.inst)return'';const f=H.from();const a=f?parseFloat(String(f.amt).replace(/[^\d.]/g,'')):0,n=+O.instN||4;
+  const who=O.inst==='both'?L('تمارا وتابي','Tamara & Tabby'):O.inst==='tabby'?L('تابي','Tabby'):L('تمارا','Tamara');
+  return`<span class="q-inst">${IC.card}<span>${a?L(`قسّطها على ${n} دفعات × <b>${fmtAmt(Math.ceil(a/n))}</b> مع ${who}`,`Split in ${n} × <b>${fmtAmt(Math.ceil(a/n))}</b> with ${who}`):L(`قسّطها مع ${who}`,`Pay in installments with ${who}`)}</span></span>`},
  meta(){const n=H.tot();const a=[];if(n)a.push(`<span class="q-m">${IC.moon}<span><b>${n}</b> ${nWL(n)} · <b>${n+1}</b> ${dWL(n+1)}</span></span>`);if(O.dates)a.push(`<span class="q-m">${IC.cal}<span>${esc(O.dates)}</span></span>`);return a.join('')},
  thumbs(max){const multi=O.cities.length>1,c0=O.cities[0]||{photos:[],spots:[]};
   const t=multi?O.cities.slice(0,max).map((c,i)=>({s:H.cityPh(c,i===0?1:0),a:c.ar,b:`${c.n} ${nWL(+c.n)}`}))
@@ -95,7 +101,7 @@ const P3={
   return{cls:`p3 q-price ${SKIN[O.theme]}`,html:`
   <div class="q-head"><h2 class="q-h">${esc(O.title||'')}</h2><div class="q-sm">${P2.meta()}</div></div>
   <div class="q-body" data-fit style="--k:${(inc.length+ex.length<=8?1.25:inc.length+ex.length<=12?1.1:1)*(sz==='a4'?1.25:1)}">
-  ${P.length?`<div class="q-prs">${P.map(p=>`<div class="q-prw"><div class="q-pl">${+p.stars?`<span class="q-st">${'★'.repeat(+p.stars)}</span>`:''}<span>${esc(p.lab||L('السعر','Price'))}</span></div><div class="q-am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div></div>`).join('')}</div>`:''}
+  ${P.length?`<div class="q-prs">${P.map(p=>`<div class="q-prw"><div class="q-pl">${+p.stars?`<span class="q-st">${'★'.repeat(+p.stars)}</span>`:''}<span>${esc(p.lab||L('السعر','Price'))}</span></div><div class="q-amw">${P2.old(p)}<div class="q-am"><b>${fmtAmt(p.amt)}</b><small>${esc(p.cur)}</small></div></div></div>`).join('')}${P2.inst()}</div>`:''}
   <div class="q-lists ${ex.length?'two':''}">${inc.length?`<div><h3>${L('البرنامج يشمل','Included')}</h3><ul class="q-ok">${inc.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
   ${ex.length?`<div><h3>${L('لا يشمل','Not included')}</h3><ul class="q-no">${ex.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}</div>
   ${full&&O.notes?`<p class="q-note">${esc(O.notes)}</p>`:''}</div>

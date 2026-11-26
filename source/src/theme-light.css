@@ -266,3 +266,40 @@
 .ar .q-inc{font-size:calc(var(--f,1)*23px)}
 .ar .q-cn{padding-top:46px}
 .tk .q-ph1:after{background:linear-gradient(0deg,rgba(30,15,69,.85),rgba(30,15,69,.35) 60%,rgba(30,15,69,0) 85%)}.pk .q-ph1:after{background:linear-gradient(0deg,rgba(25,12,50,.85) 0%,rgba(25,12,50,.35) 60%,rgba(25,12,50,0) 85%)}
+
+/* ===== optional: price before discount + installments ===== */
+.fr .q-old{display:inline-flex;align-items:center;gap:10px;font-size:22px;line-height:1.3;margin:2px 0}
+.fr .q-old s{font-family:'Outfit',sans-serif;font-weight:600;opacity:.7;text-decoration-thickness:2px;direction:ltr}
+.fr .q-old em{font-style:normal;background:#F97A30;color:#fff;font-weight:800;font-size:.85em;padding:4px 10px 3px;border-radius:99px;line-height:1.1}
+.fr .q-inst{display:flex;align-items:center;gap:10px;font-size:21px;line-height:1.35;margin-top:6px;flex-basis:100%;width:100%}
+.fr .q-inst svg{width:24px;height:24px;flex:none}
+.fr .q-inst b{font-family:'Outfit',sans-serif;font-weight:800}
+.fr.p2 .q-pl{flex-wrap:wrap}
+.zs .q-old,.zs .q-inst{justify-content:flex-end;color:#fff}.zs .q-inst svg{color:#FBC42E}
+.zs .q-pr .q-old{align-self:flex-end}
+.ls .q-old{justify-content:center;color:#fff}.ls .q-old em{background:#D9B76A;color:#0D1829}.ls .q-inst{justify-content:center;color:rgba(255,255,255,.88)}.ls .q-inst svg{color:#D9B76A}
+.ms .q-mpl{grid-template-rows:auto auto}.ms .q-mpl .q-inst{grid-column:1/-1;grid-row:2;padding:10px 0 12px;color:#333}.ms .q-inst svg{color:#F97A30}
+.ms .q-old{color:#777}
+.vs .q-vpl .q-old{color:#2A1660}.vs .q-vpl .q-old em{background:#2A1660;color:#FBC42E}
+.vs .q-vpl{grid-template-rows:auto auto}.vs .q-vpl .q-inst{grid-column:1/-1;grid-row:2;color:#fff;margin-top:0}.vs .q-inst svg{color:#FBC42E}
+.vs .q-blk .q-inst{color:#fff}
+.dy .q-tag .q-old{color:var(--mu);align-self:flex-end}.dy .q-tag .q-inst{color:var(--pd);justify-content:flex-end;font-size:19px;border-top:1px solid #eee8f6;padding-top:8px}.dy .q-inst svg{color:var(--or)}
+.tk .q-old{color:var(--mu)}.tk .q-inst{color:var(--pd);font-size:19px}.tk .q-inst svg{color:var(--or)}
+.pk .q-old{color:var(--mu);align-self:flex-end}.pk .q-inst{color:var(--pd);justify-content:flex-end}.pk .q-inst svg{color:var(--or)}
+.ar .q-bt .q-old{color:rgba(255,255,255,.8);font-size:18px}.ar .q-bt .q-old em{background:#FBC42E;color:#2E1A63}.ar .q-bt .q-inst{color:#fff;font-size:17px;margin-top:4px}.ar .q-inst svg{color:#FBC42E;width:20px;height:20px}
+/* slides & pdf price page */
+.q-price .q-amw{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.q-price .q-old{color:var(--mut)}
+.q-price .q-inst{color:var(--fg);justify-content:center;font-size:calc(var(--f,1)*var(--k,1)*22px);background:var(--card);border-radius:calc(var(--rad)*.7);padding:14px 20px;margin-top:6px}
+.q-price .q-inst svg{color:var(--ac)}
+/* make room when optional price extras are on */
+.vs:has(.q-vpl):has(.q-old,.q-inst) .q-ph1{flex-basis:23%}
+.vs:has(.q-vpl):has(.q-old,.q-inst) .q-tn figure{height:120px}
+.vs:has(.q-vpl):has(.q-old,.q-inst) .q-tn{padding-top:22px}
+.pk:has(.q-pl.n2,.q-pl.n3,.q-old,.q-inst) .q-card{flex-basis:44%}
+.pk:has(.q-pl.n2,.q-pl.n3):has(.q-old,.q-inst) .q-card{flex-basis:38%}
+.pk .q-row{margin-top:18px}
+.ar:has(.q-inc):has(.q-old,.q-inst) .q-arch{flex-basis:25%;width:46%}
+.ar:has(.q-inc):has(.q-pl.n2,.q-pl.n3) .q-arch{flex-basis:27%;width:50%}
+.s-st.vs:has(.q-vpl):has(.q-old,.q-inst) .q-ph1{flex-basis:30%}
+.s-st.ar:has(.q-inc):has(.q-old,.q-inst) .q-arch{flex-basis:34%;width:66%}

@@ -8,9 +8,9 @@ const nW=n=>n>=3&&n<=10?'ليالي':'ليلة',dW=n=>n>=3&&n<=10?'أيام':'ي
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
 function busy(on,m){$('#busy').classList.toggle('on',!!on);if(m)$('#busyMsg').textContent=m}
 
-const SIZES={sq:[1080,1080,'مربع 1:1'],pt:[1080,1350,'طولي 4:5'],st:[1080,1920,'ستوري 9:16']};
+const SIZES={sq:[1080,1080,'مربع 1:1'],pt:[1080,1350,'طولي 4:5'],tall:[1080,1620,'بوستر 2:3'],st:[1080,1920,'ستوري 9:16']};
 const OUTS=[['poster','🖼️','صورة شاملة'],['slides','🎞️','مجموعة صور'],['pdf','📄','بروشور PDF']];
-const THEME_LIST=[['zover','زوفر','بنفسجي وبرتقالي – هوية الشركة',1],['lux','فاخر','كحلي وذهبي – فخامة هادية',1],['mag','مجلة','أبيض نظيف – أسلوب مجلات',1],['viv','ملوّن','بنفسجي وأصفر – جريء ومرتب',1],['day','نهار','أبيض ومشرق – بألوان اللوجو',1],['tkt','تذكرة','على شكل بطاقة صعود الطائرة',1],['pc','بطاقة بريدية','كارت سفر بطابع وختم',1],['arch','قوس','فاتح دافئ – قوس عربي',1]];
+const THEME_LIST=[['kcl','كلاسيك','صورة كاملة وكحلي – دواير للمدن',1],['ksp','سبلاش','عنوان ضخم وسعر جانبي',1],['klt','فاتح','كروت صور وقائمة مميزات',1],['kbn','بانر','شرائط وتفاصيل – للكروز والرحلات',1]];
 const isEN=()=>O&&O.lang==='en';
 const CURS_AR=['ر.س','€','$','£','د.إ'],CURS_EN=['SAR','€','$','£','AED'];
 const LABELS_AR=['السعر للشخصين','السعر للفرد','للفرد في غرفة مزدوجة','السعر للعائلة','فندق 4 نجوم','فندق 5 نجوم'],
@@ -26,7 +26,7 @@ const EXCL0=EXCL_AR;
 
 const libPhotos=k=>(LIB[k]||[]).map(f=>`img/${k}/${f}`);
 const mkCity=(k,n)=>{const c=CITIES[k]||{ar:k};return{id:uid(),key:k,ar:isEN()?(c.en||c.ar):c.ar,n:n||3,photos:libPhotos(k),spots:((isEN()?SPOTS_EN[k]:SPOTS[k])||['','','','']).slice()}};
-const newOffer=()=>({v:3,id:uid(),lang:'ar',theme:'zover',font:'alexandria',size:'pt',out:'poster',destId:'',sub:'',title:'',cities:[],dates:'',badge:'',
+const newOffer=()=>({v:3,id:uid(),lang:'ar',theme:'kcl',font:'alexandria',size:'tall',out:'poster',destId:'',sub:'',title:'',cities:[],dates:'',badge:'',
  prices:[{amt:'',cur:'ر.س',lab:'السعر للشخصين',stars:''}],incl:[],excl:EXCL0.slice(),notes:'',showItin:true,days:[],updated:Date.now()});
 let O=newOffer();
 let C=Object.assign({phone:'',wa:'',web:'',cta:'احجز الآن'},JSON.parse(localStorage.getItem('zst_set')||'{}'));
@@ -50,13 +50,13 @@ let _sv;function touch(){O.updated=Date.now();clearTimeout(_sv);_sv=setTimeout((
 
 /* ---------- frames ---------- */
 let _rt;const schedule=()=>{clearTimeout(_rt);_rt=setTimeout(renderFrames,220)};
-function frameSpecs(){const T=THEMES[O.theme]||ZV,sz=O.size,[w,h]=SIZES[sz];
+function frameSpecs(){if(!THEME_LIST.some(t=>t[0]===O.theme))O.theme='kcl';if(!SIZES[O.size])O.size='tall';const T=THEMES[O.theme]||THEMES.kcl,sz=O.size,[w,h]=SIZES[sz];
  if(O.out==='poster')return[{...T.poster(sz),w,h,sz}];
  if(O.out==='slides')return T.slides(sz).map(f=>({...f,w,h,sz}));
  return T.pdf().map(f=>({...f,w:1080,h:1527,sz:'a4'}))}
 function renderFrames(){const pv=$('#pv');const specs=frameSpecs();pv.innerHTML='';
  specs.forEach((f,i)=>{const wr=document.createElement('div');wr.className='fw';
-  wr.innerHTML=`<div class="fr ${({zover:'zv',lux:'lx',mag:'mg',viv:'vv'})[O.theme]||'zv'} ${f.cls} s-${f.sz} zf-${O.font||'alexandria'}" dir="${isEN()?'ltr':'rtl'}" lang="${isEN()?'en':'ar'}" style="width:${f.w}px;height:${f.h}px;${f.vars||''}">${f.html}</div>${O.out!=='poster'?`<span class="fno">${i+1}</span>`:''}`;
+  wr.innerHTML=`<div class="fr ${({zover:'zv',lux:'lx',mag:'mg',viv:'vv'})[O.theme]||'kz'} ${f.cls} s-${f.sz} zf-${O.font||'alexandria'}" dir="${isEN()?'ltr':'rtl'}" lang="${isEN()?'en':'ar'}" style="width:${f.w}px;height:${f.h}px;${f.vars||''}">${f.html}</div>${O.out!=='poster'?`<span class="fno">${i+1}</span>`:''}`;
   pv.appendChild(wr)});
  const imgs=$$('img',pv);Promise.all(imgs.map(im=>im.complete?0:new Promise(r=>{im.onload=im.onerror=r}))).then(()=>{$$('.fr',pv).forEach(fit);scale()});
  $$('.fr',pv).forEach(fit);scale()}
@@ -89,7 +89,8 @@ function form(){const n=O.cities.reduce((a,c)=>a+(+c.n||0),0)||6;
   ${O.out!=='pdf'?`<div class="seg">${Object.entries(SIZES).map(([k,v])=>`<button class="${O.size===k?'on':''}" data-a="size" data-v="${k}">${v[2]}</button>`).join('')}</div>`:''}</div>
  <div class="card"><h3>🌍 الوجهة</h3>
   <label class="fl"><span>اختيار باكيدج جاهز</span><select class="in" id="qd"><option value="">— اختار من ${DESTS.length} وجهة —</option>${DESTS.map(d=>`<option value="${d.id}" ${O.destId===d.id?'selected':''}>${d.ar}</option>`).join('')}</select></label>
-  <label class="fl"><span>السطر الصغير</span><input class="in" data-b="sub" value="${esc(O.sub)}" placeholder="مثال: عروض الشتاء في"></label>
+  ${O.cities[0]&&O.cities[0].photos.length>1?`<div class="fl"><span>الصورة الرئيسية</span><div class="hpick">${O.cities[0].photos.map((p,i)=>`<button class="${(+O.hero||0)===i?'on':''}" data-a="hero" data-v="${i}"><img src="${p}" loading="lazy"></button>`).join('')}</div></div>`:''}
+  <label class="fl"><span>جملة تسويقية (اختياري)</span><input class="in" data-b="sub" value="${esc(O.sub)}" placeholder="مثال: شهر العسل / استمتع بتجربة لا تُنسى"></label>
   <label class="fl"><span>اسم الباكيدج</span><input class="in" data-b="title" value="${esc(O.title)}" placeholder="مثال: إسطنبول وكبادوكيا"></label>
   <div class="g2"><label class="fl"><span>المواعيد</span><input class="in" data-b="dates" value="${esc(O.dates)}" placeholder="من 1 إلى 30 ديسمبر"></label>
   <label class="fl"><span>شارة العرض</span><input class="in" data-b="badge" value="${esc(O.badge)}" list="bdl" placeholder="اختياري"><datalist id="bdl">${BADGES_().map(b=>`<option value="${b}">`).join('')}</datalist></label></div></div>
@@ -102,7 +103,9 @@ function form(){const n=O.cities.reduce((a,c)=>a+(+c.n||0),0)||6;
   <select class="in" id="addc"><option value="">+ إضافة مدينة…</option>${Object.entries(CITIES).map(([k,c])=>`<option value="${k}">${c.ar}${(LIB[k]||[]).length?' 📸':''}</option>`).join('')}</select></div>
  <div class="card"><h3>💰 الأسعار<span class="sp"></span>${O.prices.length<3?'<button class="btn gh xs" data-a="padd">+ سعر</button>':''}</h3>
   ${O.prices.map((p,i)=>`<div class="prow"><div class="top"><input class="in am" data-p="${i}.amt" inputmode="decimal" value="${esc(p.amt)}" placeholder="السعر"><select class="in" data-p="${i}.cur">${CURS_().map(c=>`<option ${p.cur===c?'selected':''}>${c}</option>`).join('')}</select><select class="in" data-p="${i}.stars"><option value="">بدون نجوم</option>${[3,4,5].map(s=>`<option value="${s}" ${+p.stars===s?'selected':''}>${s} ★</option>`).join('')}</select><button class="btn rd xs" data-a="prm" data-i="${i}">✕</button></div>
-  <input class="in" style="margin-top:8px" data-p="${i}.lab" value="${esc(p.lab)}" list="lbl" placeholder="السعر للشخصين"></div>`).join('')}<datalist id="lbl">${LABELS_().map(b=>`<option value="${b}">`).join('')}</datalist></div>
+  <div class="prow2"><input class="in" data-p="${i}.lab" value="${esc(p.lab)}" list="lbl" placeholder="السعر للشخصين"><input class="in old" data-p="${i}.old" inputmode="decimal" value="${esc(p.old||'')}" placeholder="قبل الخصم (اختياري)"></div></div>`).join('')}<datalist id="lbl">${LABELS_().map(b=>`<option value="${b}">`).join('')}</datalist>
+  <div class="opt"><b>💳 التقسيط (اختياري)</b><div class="seg sm">${[['','بدون'],['tamara','تمارا'],['tabby','تابي'],['both','تمارا وتابي']].map(([k,l])=>`<button class="${(O.inst||'')===k?'on':''}" data-a="inst" data-v="${k}">${l}</button>`).join('')}</div>
+  ${O.inst?`<div class="seg sm">${[3,4,6].map(m=>`<button class="${(+O.instN||4)===m?'on':''}" data-a="instn" data-v="${m}">${m} دفعات</button>`).join('')}</div>`:''}</div></div>
  <div class="card"><h3>✅ البرنامج يشمل</h3>
   <div class="chips">${INCL(n).map(x=>`<button class="chip ${O.incl.includes(x)?'on':''}" data-a="ich" data-v="${esc(x)}">${O.incl.includes(x)?'✓':'+'} ${esc(x)}</button>`).join('')}</div>
   ${O.incl.map((x,i)=>`<div class="irow"><input class="in" data-l="incl.${i}" value="${esc(x)}"><button class="btn rd xs" data-a="ldel" data-l="incl" data-i="${i}">✕</button></div>`).join('')}
@@ -120,9 +123,10 @@ function form(){const n=O.cities.reduce((a,c)=>a+(+c.n||0),0)||6;
  $('#addc').onchange=e=>{const k=e.target.value;if(!k)return;const c=mkCity(k,3);c.via='air';O.cities.push(c);O.days=[];touch();form()};
  $$('[data-up]').forEach(inp=>inp.onchange=()=>addPhotos(+inp.dataset.up,inp.files));
 }
-function loadDest(d){O.destId=d.id;if(isEN()){O.title=d.en;O.sub=d.en===d.cen||d.en.includes(d.cen)?'Holiday package':`${d.cen} holiday package`}else{O.title=d.ar;O.sub=d.ar===d.car||d.ar.includes(d.car)?'باكيدج':`باكيدج ${d.car}`}
+function loadDest(d){O.destId=d.id;O.hero=0;O.title=dTitle(d,isEN());O.sub='';
  O.cities=d.cities.map(([k,n,via])=>{const c=mkCity(k,n);c.via=via||'air';return c});O.days=[];const t=O.cities.reduce((a,c)=>a+c.n,0);
  if(!O.incl.length){const I=INCL(t);O.incl=[I[1],I[4],I[6],I[7]]}touch();form()}
+const dTitle=(d,en)=>{const t=en?d.en:d.ar,c=en?d.cen:d.car;return d.cities.length>1||t.length>22?c:t};
 /* switch an offer between Arabic and English, translating every built-in text */
 function relang(to){if(O.lang===to)return;const from=O.lang,n=H.tot()||1;
  const sw=(v,A,B)=>{const i=A.indexOf(v);return i>=0?B[i]:v};
@@ -130,7 +134,8 @@ function relang(to){if(O.lang===to)return;const from=O.lang,n=H.tot()||1;
  const LA=from==='ar'?LABELS_AR:LABELS_EN,LB=from==='ar'?LABELS_EN:LABELS_AR,BA=from==='ar'?BADGES_AR:BADGES_EN,BB=from==='ar'?BADGES_EN:BADGES_AR,CA=from==='ar'?CURS_AR:CURS_EN,CB=from==='ar'?CURS_EN:CURS_AR;
  const d=DESTS.find(x=>x.id===O.destId);
  if(d){const ar={t:d.ar,s:d.ar===d.car||d.ar.includes(d.car)?'باكيدج':`باكيدج ${d.car}`},en={t:d.en,s:d.en===d.cen||d.en.includes(d.cen)?'Holiday package':`${d.cen} holiday package`};
-  const A=from==='ar'?ar:en,B=from==='ar'?en:ar;if(O.title===A.t)O.title=B.t;if(O.sub===A.s)O.sub=B.s}
+  const A=from==='ar'?ar:en,B=from==='ar'?en:ar;if(O.title===A.t)O.title=B.t;if(O.sub===A.s)O.sub=B.s;
+  if(O.title===dTitle(d,from==='en'))O.title=dTitle(d,to==='en')}
  O.cities.forEach(c=>{const t=CITIES[c.key];if(!t)return;const nmA=from==='ar'?t.ar:t.en,nmB=from==='ar'?t.en:t.ar;if(c.ar===nmA)c.ar=nmB;
   const SA=(from==='ar'?SPOTS:SPOTS_EN)[c.key]||[],SB=(from==='ar'?SPOTS_EN:SPOTS)[c.key]||[];c.spots=(c.spots||[]).map(x=>sw(x,SA,SB))});
  O.incl=O.incl.map(x=>sw(x,IA,IB));O.excl=O.excl.map(x=>sw(x,EA,EB));O.badge=sw(O.badge,BA,BB);
@@ -145,7 +150,8 @@ async function addPhotos(ci,files){busy(true,'جاري تجهيز الصور…'
 
 /* ---------- events ---------- */
 const A={
- lang:e=>relang(e.dataset.v),
+ lang:e=>relang(e.dataset.v),hero:e=>{O.hero=+e.dataset.v;touch();form()},
+ inst:e=>{O.inst=e.dataset.v;if(!O.instN)O.instN=4;touch();form()},instn:e=>{O.instN=+e.dataset.v;touch();form()},
  out:e=>{O.out=e.dataset.v;touch();form()},theme:e=>{O.theme=e.dataset.v;touch();form()},font:e=>{O.font=e.dataset.v;touch();form()},size:e=>{O.size=e.dataset.v;touch();form()},
  st:e=>{const [_,i,k]=e.dataset.k.split('.');const c=O.cities[+i];c[k]=Math.max(+(e.dataset.min||1),(+c[k]||0)+(+e.dataset.d));O.days=[];touch();form()},
  cmv:e=>{const i=+e.dataset.i;[O.cities[i-1],O.cities[i]]=[O.cities[i],O.cities[i-1]];O.days=[];touch();form()},
