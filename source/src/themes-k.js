@@ -78,7 +78,7 @@ const KLT={poster(sz,o={}){const inc=H.incl(),n=H.tot(),multi=O.cities.length>1,
 const KBN={poster(sz,o={}){const inc=H.incl(),n=H.tot(),P=H.prices().slice(0,3);
  const rows=[];if(O.dates)rows.push([L('المواعيد:','Dates:'),O.dates]);if(O.cities.length)rows.push([L('المدن:','Cities:'),O.cities.map(c=>`${c.ar} (${c.n})`).join(L('، ',', '))]);
  return{cls:'k k4',html:`${kHero()}<i class="k-top"></i>
- <div class="k-main" data-fit><img class="k-lg" src="${IMG.glow}">
+ <div class="k-main" data-fit><img class="k-lg" src="${IMG.logo}">
   <div class="k-bar"><div class="ttl" data-ft="2">${esc(O.title||'')}</div></div>
   ${O.sub?`<div class="k-ob">${esc(O.sub)}</div>`:''}${n?`<div class="k-nb2">${L(`${n+1} أيام / ${n} ليالي`,`${n+1} days / ${n} nights`)}${kStars()?` · ${'★'.repeat(kStars())}`:''}</div>`:''}
   ${O.badge?`<div class="k-bd">${esc(O.badge)}</div>`:''}

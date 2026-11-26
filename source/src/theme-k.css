@@ -229,3 +229,16 @@
 .s-st.k3 .k-pol img.ph{height:calc(var(--f,1)*340px)}
 .k3 .k-bot{margin-top:calc(var(--f,1)*26px)}
 .k3 .k-dt{font-size:calc(var(--f,1)*30px)}
+/* integrated logo: soft white haze that melts into the photo */
+.k .k-lp{width:600px;height:440px;background:radial-gradient(ellipse 100% 100% at 0 0,#fff 0%,#fff 38%,rgba(255,255,255,.92) 50%,rgba(255,255,255,.55) 64%,rgba(255,255,255,.18) 78%,rgba(255,255,255,0) 90%);border-radius:0;box-shadow:none;padding:0;align-items:flex-start;justify-content:flex-start}
+.k .k-lp img{width:350px;height:auto;margin:34px 0 0 36px;filter:drop-shadow(0 2px 6px rgba(255,255,255,.9))}
+.s-sq.k .k-lp{width:480px;height:340px;border-radius:0}.s-sq.k .k-lp img{width:270px;margin:24px 0 0 26px}
+.s-pt.k .k-lp img{width:320px}
+.s-st.k .k-lp{height:520px}.s-st.k .k-lp img{margin-top:80px}
+.k3 .k-lp{width:620px}
+.k4 .k-fade{background:radial-gradient(ellipse 70% 26% at 50% 0,rgba(255,255,255,.95) 0%,rgba(255,255,255,.8) 45%,rgba(255,255,255,0) 100%),linear-gradient(180deg,rgba(14,42,94,0) 45%,rgba(14,42,94,.45) 75%,rgba(14,42,94,.8) 100%)}
+.k4 .k-lg{height:calc(var(--f,1)*230px)}
+.k .k-lp{direction:ltr;width:720px;height:500px;background:radial-gradient(ellipse 100% 100% at 0 0,#fff 0%,#fff 52%,rgba(255,255,255,.9) 62%,rgba(255,255,255,.55) 74%,rgba(255,255,255,.2) 86%,rgba(255,255,255,0) 97%)}
+.s-sq.k .k-lp{width:560px;height:390px}
+.s-st.k .k-lp{width:740px;height:600px}
+.s-sq.k .k-lp img{width:300px}
